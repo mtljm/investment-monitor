@@ -1,0 +1,213 @@
+{
+  "universe_date": "2026-11-16",
+  "universe_source": "https://stockanalysis.com/list/largest-us-companies/",
+  "universe_note": "미국 기업 시가총액 상위 20개, 회사별 대표 티커 1개. 확인일 기준 고정 목록으로 자동 순위 갱신 아님.",
+  "instruments": [
+    {
+      "group": "지수",
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "unit": "pt"
+    },
+    {
+      "group": "지수",
+      "symbol": "^NDX",
+      "name": "Nasdaq 100",
+      "unit": "pt"
+    },
+    {
+      "group": "지수",
+      "symbol": "^DJI",
+      "name": "Dow Jones",
+      "unit": "pt"
+    },
+    {
+      "group": "지수",
+      "symbol": "^RUT",
+      "name": "Russell 2000",
+      "unit": "pt"
+    },
+    {
+      "group": "시장지표",
+      "symbol": "^VIX",
+      "name": "VIX",
+      "unit": "pt"
+    },
+    {
+      "group": "시장지표",
+      "symbol": "^TNX",
+      "name": "미국 10년물 수익률",
+      "unit": "%"
+    },
+    {
+      "group": "시장지표",
+      "symbol": "KRW=X",
+      "name": "USD/KRW",
+      "unit": "KRW/USD"
+    },
+    {
+      "group": "지수 ETF",
+      "symbol": "SPY",
+      "name": "SPY",
+      "unit": "USD"
+    },
+    {
+      "group": "지수 ETF",
+      "symbol": "QQQ",
+      "name": "QQQ",
+      "unit": "USD"
+    },
+    {
+      "group": "지수 ETF",
+      "symbol": "DIA",
+      "name": "DIA",
+      "unit": "USD"
+    },
+    {
+      "group": "지수 ETF",
+      "symbol": "IWM",
+      "name": "IWM",
+      "unit": "USD"
+    },
+    {
+      "group": "대형주",
+      "symbol": "AAPL",
+      "name": "Apple",
+      "unit": "USD",
+      "snapshot_rank": 1
+    },
+    {
+      "group": "대형주",
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "unit": "USD",
+      "snapshot_rank": 2
+    },
+    {
+      "group": "대형주",
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "unit": "USD",
+      "snapshot_rank": 3
+    },
+    {
+      "group": "대형주",
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "unit": "USD",
+      "snapshot_rank": 4
+    },
+    {
+      "group": "대형주",
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "unit": "USD",
+      "snapshot_rank": 5
+    },
+    {
+      "group": "대형주",
+      "symbol": "SPCX",
+      "name": "Space Exploration Technologies",
+      "unit": "USD",
+      "snapshot_rank": 6
+    },
+    {
+      "group": "대형주",
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "unit": "USD",
+      "snapshot_rank": 7
+    },
+    {
+      "group": "대형주",
+      "symbol": "META",
+      "name": "Meta Platforms",
+      "unit": "USD",
+      "snapshot_rank": 8
+    },
+    {
+      "group": "대형주",
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "unit": "USD",
+      "snapshot_rank": 9
+    },
+    {
+      "group": "대형주",
+      "symbol": "LLY",
+      "name": "Eli Lilly",
+      "unit": "USD",
+      "snapshot_rank": 10
+    },
+    {
+      "group": "대형주",
+      "symbol": "WMT",
+      "name": "Walmart",
+      "unit": "USD",
+      "snapshot_rank": 11
+    },
+    {
+      "group": "대형주",
+      "symbol": "JPM",
+      "name": "JPMorgan Chase",
+      "unit": "USD",
+      "snapshot_rank": 12
+    },
+    {
+      "group": "대형주",
+      "symbol": "MU",
+      "name": "Micron",
+      "unit": "USD",
+      "snapshot_rank": 13
+    },
+    {
+      "group": "대형주",
+      "symbol": "AMD",
+      "name": "AMD",
+      "unit": "USD",
+      "snapshot_rank": 14
+    },
+    {
+      "group": "대형주",
+      "symbol": "V",
+      "name": "Visa",
+      "unit": "USD",
+      "snapshot_rank": 15
+    },
+    {
+      "group": "대형주",
+      "symbol": "XOM",
+      "name": "ExxonMobil",
+      "unit": "USD",
+      "snapshot_rank": 16
+    },
+    {
+      "group": "대형주",
+      "symbol": "JNJ",
+      "name": "Johnson & Johnson",
+      "unit": "USD",
+      "snapshot_rank": 17
+    },
+    {
+      "group": "대형주",
+      "symbol": "MA",
+      "name": "Mastercard",
+      "unit": "USD",
+      "snapshot_rank": 18
+    },
+    {
+      "group": "대형주",
+      "symbol": "ABBV",
+      "name": "AbbVie",
+      "unit": "USD",
+      "snapshot_rank": 19
+    },
+    {
+      "group": "대형주",
+      "symbol": "COST",
+      "name": "Costco",
+      "unit": "USD",
+      "snapshot_rank": 20
+    }
+  ]
+}
