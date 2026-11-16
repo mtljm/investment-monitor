@@ -3,10 +3,13 @@
 **접속 주소:** https://mtljm.github.io/investment-monitor/
 
 - 공개 저장소 `main`에서 GitHub Actions로 생성한 시장 화면만 Pages에 게시합니다.
-- 매일 한국시간 오전 8시 목표로 대형주 200개와 지수·지표·ETF 22개를 수집합니다.
+- 매일 한국시간 오전 8시 목표로 대형주 20개와 지수·지표·ETF 22개를 수집합니다.
 - 예약 실행은 지연·누락될 수 있습니다. 휴장일에는 최근 거래일 자료를 표시합니다.
 - 휴대폰에서 주소를 열면 됩니다. 새로고침 자체는 수집 코드를 실행하지 않습니다.
 - 수동 갱신: Actions → **Pages 시장 대시보드** → **Run workflow**.
+
+표시 범위 20·50·100·200 메뉴는 유지합니다. 현재 배포에 없는 범위는 선택 불가하며, 해당 범위 JSON을 불러오면 사용할 수 있습니다.
+기술적 분석 탭은 S&P 500·나스닥100·상위 20개만 다룹니다.
 
 ## 배포와 실패 처리
 
@@ -25,3 +28,4 @@
 배포 권한은 deploy 작업의 `pages: write`, `id-token: write`로 제한합니다.
 
 [Pages 안내](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
+
