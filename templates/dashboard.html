@@ -263,6 +263,7 @@ function signalMeta(value){
 function signalLabel(value){const m=signalMeta(value);return '<span class="'+m.css+'" title="'+m.label+'"><span aria-hidden="true">'+m.icon+'</span> '+esc(value||'미확인')+'</span>';}
 function eventHtml(event){const mapping={heat:['⚠','signal-up'],up:['▲','signal-up'],down:['▼','signal-down'],oversold:['↘','signal-down'],neutral:['●','signal-neutral']};const [icon,css]=mapping[event.kind]||mapping.neutral;return '<span class="event-chip '+css+'">'+icon+' '+esc(event.text)+'</span>';}
 function changesHtml(r,compact=false){
+ if(!['^GSPC','^NDX'].includes(r.symbol)&&!(r.group==='대형주'&&r.snapshot_rank<=20))return '<span class="company">신호 비교 대상: S&P 500·나스닥100·상위 20개 주식</span>';
  const c=r.changes;if(r.status!=='ok')return '<span class="company">수집 실패 · 비교 보류</span>';if(!c?.available)return '<span class="company">비교 기준 없음 · 첫 기록</span>';
  const events=Array.isArray(c.events)?c.events:[];
  return (events.length?events.slice(0,compact?2:10).map(eventHtml).join('')+(compact&&events.length>2?'<span class="company">외 '+(events.length-2)+'개 · 상세 보기</span>':''):'<span class="company">포착된 신호 변화 없음</span>')+'<span class="company">기준 '+esc(c.baseline_day)+' → '+esc(c.current_day)+'</span>';
