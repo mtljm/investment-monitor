@@ -1,0 +1,53 @@
+name: 시장 모니터 수동 실행 (20종목)
+run-name: 미국 시장 20종목 수동 수집
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: market-monitor-manual
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: 20종목 수집 및 HTML 생성
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Node.js 준비
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - name: 이전 결과 제거
+        run: |
+          node --input-type=module <<'NODE'
+          import {rmSync} from 'node:fs';
+          for (const path of ['dashboard.html','reports/latest.json','reports/latest.md']) {
+            rmSync(path,{force:true});
+          }
+          NODE
+      - name: 20종목과 지수 및 지표 수집
+        timeout-minutes: 6
+        run: node scripts/monitor.mjs --limit 20
+      - name: 실행 요약 작성
+        if: ${{ !cancelled() }}
+        run: node scripts/actions-summary.mjs
+      - name: HTML 및 데이터 다운로드 준비
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: market-monitor-20-${{ github.run_number }}
+          path: |
+            dashboard.html
+            reports/latest.json
+            reports/latest.md
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 6
