@@ -1,10 +1,8 @@
-name: Telegram 오전 브리핑
+name: Telegram 수동 시험 전송
 run-name: 미국 시장 오전 브리핑 Telegram 전송
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 23 * * *' # UTC 23:00 = 다음 날 한국시간 08:00
 
 permissions:
   contents: read
