@@ -4,11 +4,12 @@ const lines=[isTelegram?'# 미국 시장 모니터 · Telegram 오전 브리핑'
 try {
   const data=JSON.parse(readFileSync('reports/latest.json','utf8'));
   const stocks=data.rows.filter(r=>r.group==='대형주').length;
-  if(stocks!==20||data.rows.length!==31)throw new Error('예상 범위(대형주 20개, 전체 31개)와 다릅니다.');
+  const sectors=data.rows.filter(r=>r.group==='섹터 ETF').length;
+  if(stocks!==20||sectors!==11||data.rows.length!==42)throw new Error('예상 범위(대형주 20개, 섹터 ETF 11개, 전체 42개)와 다릅니다.');
   const failures=data.rows.filter(r=>r.status!=='ok');
   lines.push(
     '- 수집 시각: '+data.collected_at_kst,
-    '- 대형주: '+stocks+'개 / 전체: '+data.rows.length+'개',
+    '- 대형주: '+stocks+'개 / 섹터 ETF: '+sectors+'개 / 전체: '+data.rows.length+'개',
     '- 성공: '+(data.rows.length-failures.length)+'개 / 실패: '+failures.length+'개',
     '',
     '## 휴대폰에서 결과 열기',

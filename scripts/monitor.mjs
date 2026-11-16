@@ -68,7 +68,7 @@ function render(result) {
     lines.push('| '+[r.group,r.symbol,r.name,fmt(r.close),r.unit,
       r.status==='ok'?daily:'미확인',
       ...[r.change_5d_pct,r.change_20d_pct,r.sma20,r.sma50,r.sma200,
-        r.group==='대형주'||r.group==='지수 ETF'?r.volume_ratio:null].map(fmt),
+        ['대형주','지수 ETF','섹터 ETF'].includes(r.group)?r.volume_ratio:null].map(fmt),
       r.bar_time_utc||'미확인',r.quote_time_utc||'미확인',state].join(' | ')+' |');
   }
   lines.push('', '## 수집 실패');
@@ -83,12 +83,15 @@ function render(result) {
 export function selectInstruments(config,requested) {
   const limit=Number(requested??config.stock_limit??200);
   if(![20,50,100,200].includes(limit))throw new Error('종목 범위는 20, 50, 100, 200 중 선택하세요.');
-  if(!Array.isArray(config.instruments)||config.instruments.length>211)throw new Error('수집 대상은 대형주 200개와 지수·지표·ETF 11개 이하여야 합니다.');
+  if(!Array.isArray(config.instruments)||config.instruments.length>222)throw new Error('수집 대상은 대형주 200개와 지수·지표·ETF 22개 이하여야 합니다.');
   const symbols=new Set();
   for(const item of config.instruments) {
     if(!item||typeof item.symbol!=='string'||!item.symbol||symbols.has(item.symbol))throw new Error('잘못되거나 중복된 티커');
     symbols.add(item.symbol);
-    if(!['대형주','지수 ETF','지수','시장지표'].includes(item.group))throw new Error('지원하지 않는 그룹');
+    if(!['대형주','지수 ETF','섹터 ETF','지수','시장지표'].includes(item.group))throw new Error('지원하지 않는 그룹');
+  }
+  for(const [group,max] of [['지수',4],['시장지표',3],['지수 ETF',4],['섹터 ETF',11]]){
+    if(config.instruments.filter(r=>r.group===group).length>max)throw new Error(group+' 최대 '+max+'개를 초과했습니다.');
   }
   const stocks=config.instruments.filter(r=>r.group==='대형주');
   const ranks=stocks.map(r=>r.snapshot_rank);
@@ -119,7 +122,7 @@ export async function main() {
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',
-    universe_date:config.universe_date,universe_source:config.universe_source,rows};
+    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows};
   const out = resolve(root,'reports');
   await mkdir(out,{recursive:true});
   const stamp = now.toISOString().replace(/[:.]/g,'-');

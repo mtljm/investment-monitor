@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+      - name: 종목 및 섹터 구성 검증
+        run: node --test tests/sector.test.mjs
       - name: 이전 결과 제거
         run: |
           node --input-type=module <<'NODE'

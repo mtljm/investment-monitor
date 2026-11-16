@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: '24'
       - name: 전송 로직 검증
-        run: node --test tests/telegram.test.mjs
+        run: node --test tests/telegram.test.mjs tests/sector.test.mjs
       - name: 이전 결과 제거
         run: |
           node --input-type=module <<'NODE'

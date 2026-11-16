@@ -46,3 +46,10 @@ test('ZIP 생성은 중복 파일명과 경로를 거부한다',()=>{
   assert.throws(()=>createZip([{name:'../secret',bytes:Buffer.alloc(0)}]));
   assert.throws(()=>createZip([{name:'same',bytes:Buffer.alloc(0)},{name:'same',bytes:Buffer.alloc(0)}]));
 });
+
+test('11개 섹터가 텔레그램 캡션에 빠짐없이 포함된다',()=>{
+  const rows=[["XLC","커뮤니케이션"],["XLY","경기소비재"],["XLP","필수소비재"],["XLE","에너지"],["XLF","금융"],["XLV","헬스케어"],["XLI","산업재"],["XLB","소재"],["XLRE","부동산"],["XLK","정보기술"],["XLU","유틸리티"]].map(([symbol,name])=>({group:'섹터 ETF',symbol,name,status:'ok',change_1d_pct:-99.99}));
+  const text=makeBrief({collected_at_utc:'2026-11-16T23:00:00Z',collected_at_kst:'2026-11-17 08:00 KST',rows});
+  for(const row of rows)assert.ok(text.includes(row.symbol+' '+row.name));
+  assert.ok(text.length<=1024);
+});

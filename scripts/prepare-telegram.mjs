@@ -19,6 +19,11 @@ export function makeBrief(data){
     if(r.symbol==='^TNX')change=number(r.change*100)+' bp';
     lines.push(r.name+': '+number(r.close)+' '+r.unit+' ('+change+')');
   }
+  const sectors=data.rows.filter(r=>r.group==='섹터 ETF');
+  if(sectors.length){
+    lines.push('','미국 섹터 ETF · 전일 대비');
+    for(const r of sectors)lines.push(r.symbol+' '+r.name+' '+percent(r.change_1d_pct));
+  }
   lines.push('','대형주 '+stockCount+'개 / 전체 '+data.rows.length+'개 · 실패 '+failures.length+'개',
     '휴장일에는 최근 거래일 자료입니다. 마지막 봉과 수집 시각을 구분해 확인하세요.',
     'ZIP을 내려받아 압축 해제 후 dashboard.html을 여세요.');

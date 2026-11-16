@@ -70,6 +70,72 @@
       "unit": "USD"
     },
     {
+      "group": "섹터 ETF",
+      "symbol": "XLC",
+      "name": "커뮤니케이션",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLY",
+      "name": "경기소비재",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLP",
+      "name": "필수소비재",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLE",
+      "name": "에너지",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLF",
+      "name": "금융",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLV",
+      "name": "헬스케어",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLI",
+      "name": "산업재",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLB",
+      "name": "소재",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLRE",
+      "name": "부동산",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLK",
+      "name": "정보기술",
+      "unit": "USD"
+    },
+    {
+      "group": "섹터 ETF",
+      "symbol": "XLU",
+      "name": "유틸리티",
+      "unit": "USD"
+    },
+    {
       "group": "대형주",
       "symbol": "AAPL",
       "name": "Apple Inc.",
@@ -2070,5 +2136,7 @@
       "snapshot_rank": 200
     }
   ],
-  "stock_limit": 200
+  "stock_limit": 200,
+  "sector_source": "https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs",
+  "sector_note": "S&P 500의 GICS 11개 섹터에 대응하는 Select Sector SPDR ETF를 관찰 대상으로 사용. 보유 또는 매수 추천을 의미하지 않음."
 }

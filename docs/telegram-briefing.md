@@ -5,7 +5,7 @@
 GitHub Actions에서 매일 **한국시간 오전 8시**를 목표로 데이터를 수집하고,
 개인 Telegram 대화로 간단한 시황과 HTML이 포함된 ZIP을 보냅니다.
 
-- 대상: 초기 단계는 대형주 20개 + ETF 4개 + 지수·지표 7개
+- 대상: 초기 단계는 대형주 20개 + 지수 ETF 4개 + 섹터 ETF 11개 + 지수·지표 7개 (총 42개)
 - 파일: dashboard.html, briefing.txt, latest.json, latest.md
 - 휴장일: 최신 거래일 자료를 보내며 지수 봉 기준일을 표시
 - 실행: UTC 23:00, 한국시간 다음 날 08:00
@@ -87,6 +87,11 @@ GitHub Artifact의 1일 보관 설정은 Telegram 대화에 전송된 파일의 
 - [첫 실제 전송 성공](https://github.com/mtljm/investment-monitor/actions/runs/43859521742): 데이터 수집·브리핑 ZIP 생성·Telegram 개인 대화 전송 모두 성공
 - 저장소 변수 TELEGRAM_DELIVERY_ENABLED=true를 GitHub 화면에서 확인
 - 첫 예약 실행 목표: 2026-11-17 08:00 KST (GitHub 예약 작업 지연 가능)
-- 대상: 대형주 20개 + ETF 4개 + 지수·지표 7개
+- 대상: 대형주 20개 + 지수 ETF 4개 + 섹터 ETF 11개 + 지수·지표 7개 (총 42개)
 - 토큰과 개인 대화 ID 값은 이 문서에 기록하지 않음
 - 실제 휴대폰에서 받은 ZIP의 압축 해제 및 HTML 실행 여부는 사용자 기기에서 별도로 확인할 항목
+
+## 섹터 ETF 추가
+
+2026-11-16부터 11개 미국 섹터 ETF를 수집 대상과 HTML·캡션·ZIP 브리핑에 포함합니다.
+기존 오전 8시 예약, 개인 Telegram 수신자, 예산 $0 설정과 1일 Artifact 보관 정책은 유지합니다.
