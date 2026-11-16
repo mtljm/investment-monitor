@@ -80,13 +80,42 @@ function render(result) {
     '가격 출처: Yahoo Finance chart API (비공식 엔드포인트, 지연·차단·변경 가능)');
   return lines.join('\n')+'\n';
 }
+export function selectInstruments(config,requested) {
+  const limit=Number(requested??config.stock_limit??200);
+  if(![20,50,100,200].includes(limit))throw new Error('종목 범위는 20, 50, 100, 200 중 선택하세요.');
+  if(!Array.isArray(config.instruments)||config.instruments.length>211)throw new Error('수집 대상은 대형주 200개와 지수·지표·ETF 11개 이하여야 합니다.');
+  const symbols=new Set();
+  for(const item of config.instruments) {
+    if(!item||typeof item.symbol!=='string'||!item.symbol||symbols.has(item.symbol))throw new Error('잘못되거나 중복된 티커');
+    symbols.add(item.symbol);
+    if(!['대형주','지수 ETF','지수','시장지표'].includes(item.group))throw new Error('지원하지 않는 그룹');
+  }
+  const stocks=config.instruments.filter(r=>r.group==='대형주');
+  const ranks=stocks.map(r=>r.snapshot_rank);
+  if(stocks.length>200||ranks.some(r=>!Number.isInteger(r)||r<1||r>200)||new Set(ranks).size!==ranks.length)throw new Error('대형주 순위가 잘못되었습니다.');
+  if(stocks.length<limit||Array.from({length:limit},(_,i)=>i+1).some(r=>!ranks.includes(r)))throw new Error('선택 범위의 순위 목록이 부족합니다. update-universe.mjs를 실행하세요.');
+  return config.instruments.filter(r=>r.group!=='대형주'||r.snapshot_rank<=limit);
+}
+export async function collectInstruments(items,workerCount=4) {
+  const results=new Array(items.length);
+  let cursor=0;
+  await Promise.all(Array.from({length:Math.min(workerCount,items.length)},async()=>{
+    while(cursor<items.length){
+      const i=cursor++,item=items[i];
+      try{results[i]=await collect(item);}
+      catch(e){results[i]={...item,status:'error',error:e.message};}
+    }
+  }));
+  return results;
+}
+
 export async function main() {
   const config = JSON.parse(await readFile(resolve(root,'config/monitor.json'),'utf8'));
-  const rows = [];
-  for (const item of config.instruments) {
-    try { rows.push(await collect(item)); }
-    catch(e) { rows.push({...item,status:'error',error:e.message}); }
-  }
+  const flag=process.argv.indexOf('--limit');
+  const requested=flag>=0?process.argv[flag+1]:undefined;
+  if(flag>=0&&!requested)throw new Error('--limit 값이 필요합니다.');
+  const items=selectInstruments(config,requested);
+  const rows=await collectInstruments(items);
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',

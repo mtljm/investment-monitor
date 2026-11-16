@@ -1,7 +1,7 @@
 {
   "universe_date": "2026-11-16",
-  "universe_source": "https://stockanalysis.com/list/largest-us-companies/",
-  "universe_note": "미국 기업 시가총액 상위 20개, 회사별 대표 티커 1개. 확인일 기준 고정 목록으로 자동 순위 갱신 아님.",
+  "universe_source": "https://stockanalysis.com/list/largest-us-companies/?count=500",
+  "universe_note": "출처 목록 중 country=United States, stock, primary listing인 회사만 시가총액순으로 정렬. OTC 등 경로형 티커 제외, 동일 회사 대표 티커 1개. 확인일 기준 상위 200개 스냅샷.",
   "instruments": [
     {
       "group": "지수",
@@ -72,113 +72,161 @@
     {
       "group": "대형주",
       "symbol": "AAPL",
-      "name": "Apple",
+      "name": "Apple Inc.",
       "unit": "USD",
+      "market_cap_usd": 5177380481140,
+      "country": "United States",
+      "provider_rank": 1,
       "snapshot_rank": 1
     },
     {
       "group": "대형주",
       "symbol": "NVDA",
-      "name": "NVIDIA",
+      "name": "NVIDIA Corporation",
       "unit": "USD",
+      "market_cap_usd": 3932338950000,
+      "country": "United States",
+      "provider_rank": 2,
       "snapshot_rank": 2
     },
     {
       "group": "대형주",
       "symbol": "MSFT",
-      "name": "Microsoft",
+      "name": "Microsoft Corporation",
       "unit": "USD",
+      "market_cap_usd": 3890434801902,
+      "country": "United States",
+      "provider_rank": 3,
       "snapshot_rank": 3
     },
     {
       "group": "대형주",
       "symbol": "GOOGL",
-      "name": "Alphabet",
+      "name": "Alphabet Inc.",
       "unit": "USD",
+      "market_cap_usd": 3636196380000,
+      "country": "United States",
+      "provider_rank": 4,
       "snapshot_rank": 4
     },
     {
       "group": "대형주",
       "symbol": "AMZN",
-      "name": "Amazon",
+      "name": "Amazon.com, Inc.",
       "unit": "USD",
+      "market_cap_usd": 2883431460678,
+      "country": "United States",
+      "provider_rank": 5,
       "snapshot_rank": 5
     },
     {
       "group": "대형주",
       "symbol": "SPCX",
-      "name": "Space Exploration Technologies",
+      "name": "Space Exploration Technologies Corp.",
       "unit": "USD",
+      "market_cap_usd": 1889261772559,
+      "country": "United States",
+      "provider_rank": 6,
       "snapshot_rank": 6
     },
     {
       "group": "대형주",
       "symbol": "AVGO",
-      "name": "Broadcom",
+      "name": "Broadcom Inc.",
       "unit": "USD",
+      "market_cap_usd": 1656497299454,
+      "country": "United States",
+      "provider_rank": 7,
       "snapshot_rank": 7
     },
     {
       "group": "대형주",
       "symbol": "META",
-      "name": "Meta Platforms",
+      "name": "Meta Platforms, Inc.",
       "unit": "USD",
+      "market_cap_usd": 1640314449638,
+      "country": "United States",
+      "provider_rank": 8,
       "snapshot_rank": 8
     },
     {
       "group": "대형주",
       "symbol": "TSLA",
-      "name": "Tesla",
+      "name": "Tesla, Inc.",
       "unit": "USD",
+      "market_cap_usd": 1542445205688,
+      "country": "United States",
+      "provider_rank": 9,
       "snapshot_rank": 9
     },
     {
       "group": "대형주",
       "symbol": "LLY",
-      "name": "Eli Lilly",
+      "name": "Eli Lilly and Company",
       "unit": "USD",
+      "market_cap_usd": 1285799248938,
+      "country": "United States",
+      "provider_rank": 10,
       "snapshot_rank": 10
     },
     {
       "group": "대형주",
       "symbol": "WMT",
-      "name": "Walmart",
+      "name": "Walmart Inc.",
       "unit": "USD",
+      "market_cap_usd": 1016233556010,
+      "country": "United States",
+      "provider_rank": 11,
       "snapshot_rank": 11
     },
     {
       "group": "대형주",
       "symbol": "JPM",
-      "name": "JPMorgan Chase",
+      "name": "JPMorgan Chase & Co.",
       "unit": "USD",
+      "market_cap_usd": 919345455921,
+      "country": "United States",
+      "provider_rank": 12,
       "snapshot_rank": 12
     },
     {
       "group": "대형주",
       "symbol": "MU",
-      "name": "Micron",
+      "name": "Micron Technology, Inc.",
       "unit": "USD",
+      "market_cap_usd": 880598000132,
+      "country": "United States",
+      "provider_rank": 13,
       "snapshot_rank": 13
     },
     {
       "group": "대형주",
       "symbol": "AMD",
-      "name": "AMD",
+      "name": "Advanced Micro Devices, Inc.",
       "unit": "USD",
+      "market_cap_usd": 875904997269,
+      "country": "United States",
+      "provider_rank": 14,
       "snapshot_rank": 14
     },
     {
       "group": "대형주",
       "symbol": "V",
-      "name": "Visa",
+      "name": "Visa Inc.",
       "unit": "USD",
+      "market_cap_usd": 803112353359,
+      "country": "United States",
+      "provider_rank": 15,
       "snapshot_rank": 15
     },
     {
       "group": "대형주",
       "symbol": "XOM",
-      "name": "ExxonMobil",
+      "name": "ExxonMobil Holdings Corporation",
       "unit": "USD",
+      "market_cap_usd": 695874556722,
+      "country": "United States",
+      "provider_rank": 16,
       "snapshot_rank": 16
     },
     {
@@ -186,28 +234,1841 @@
       "symbol": "JNJ",
       "name": "Johnson & Johnson",
       "unit": "USD",
+      "market_cap_usd": 687888908510,
+      "country": "United States",
+      "provider_rank": 17,
       "snapshot_rank": 17
     },
     {
       "group": "대형주",
       "symbol": "MA",
-      "name": "Mastercard",
+      "name": "Mastercard Incorporated",
       "unit": "USD",
+      "market_cap_usd": 576012934816,
+      "country": "United States",
+      "provider_rank": 18,
       "snapshot_rank": 18
     },
     {
       "group": "대형주",
       "symbol": "ABBV",
-      "name": "AbbVie",
+      "name": "AbbVie Inc.",
       "unit": "USD",
+      "market_cap_usd": 521499838759,
+      "country": "United States",
+      "provider_rank": 19,
       "snapshot_rank": 19
     },
     {
       "group": "대형주",
       "symbol": "COST",
-      "name": "Costco",
+      "name": "Costco Wholesale Corporation",
       "unit": "USD",
+      "market_cap_usd": 490194117157,
+      "country": "United States",
+      "provider_rank": 20,
       "snapshot_rank": 20
+    },
+    {
+      "group": "대형주",
+      "symbol": "CVX",
+      "name": "Chevron Corporation",
+      "unit": "USD",
+      "market_cap_usd": 429061173015,
+      "country": "United States",
+      "provider_rank": 21,
+      "snapshot_rank": 21
+    },
+    {
+      "group": "대형주",
+      "symbol": "KO",
+      "name": "The Coca-Cola Company",
+      "unit": "USD",
+      "market_cap_usd": 426963806749,
+      "country": "United States",
+      "provider_rank": 22,
+      "snapshot_rank": 22
+    },
+    {
+      "group": "대형주",
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc.",
+      "unit": "USD",
+      "market_cap_usd": 404771480657,
+      "country": "United States",
+      "provider_rank": 23,
+      "snapshot_rank": 23
+    },
+    {
+      "group": "대형주",
+      "symbol": "PG",
+      "name": "The Procter & Gamble Company",
+      "unit": "USD",
+      "market_cap_usd": 393559577681,
+      "country": "United States",
+      "provider_rank": 24,
+      "snapshot_rank": 24
+    },
+    {
+      "group": "대형주",
+      "symbol": "ORCL",
+      "name": "Oracle Corporation",
+      "unit": "USD",
+      "market_cap_usd": 390804703566,
+      "country": "United States",
+      "provider_rank": 25,
+      "snapshot_rank": 25
+    },
+    {
+      "group": "대형주",
+      "symbol": "CSCO",
+      "name": "Cisco Systems, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 376532776573,
+      "country": "United States",
+      "provider_rank": 26,
+      "snapshot_rank": 26
+    },
+    {
+      "group": "대형주",
+      "symbol": "UNH",
+      "name": "UnitedHealth Group Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 365093373078,
+      "country": "United States",
+      "provider_rank": 27,
+      "snapshot_rank": 27
+    },
+    {
+      "group": "대형주",
+      "symbol": "MRK",
+      "name": "Merck & Co., Inc.",
+      "unit": "USD",
+      "market_cap_usd": 364264702859,
+      "country": "United States",
+      "provider_rank": 28,
+      "snapshot_rank": 28
+    },
+    {
+      "group": "대형주",
+      "symbol": "BAC",
+      "name": "Bank of America Corporation",
+      "unit": "USD",
+      "market_cap_usd": 352048663486,
+      "country": "United States",
+      "provider_rank": 29,
+      "snapshot_rank": 29
+    },
+    {
+      "group": "대형주",
+      "symbol": "HD",
+      "name": "The Home Depot, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 347884395690,
+      "country": "United States",
+      "provider_rank": 30,
+      "snapshot_rank": 30
+    },
+    {
+      "group": "대형주",
+      "symbol": "GE",
+      "name": "GE Aerospace",
+      "unit": "USD",
+      "market_cap_usd": 342876500907,
+      "country": "United States",
+      "provider_rank": 31,
+      "snapshot_rank": 31
+    },
+    {
+      "group": "대형주",
+      "symbol": "INTC",
+      "name": "Intel Corporation",
+      "unit": "USD",
+      "market_cap_usd": 317092900000,
+      "country": "United States",
+      "provider_rank": 32,
+      "snapshot_rank": 32
+    },
+    {
+      "group": "대형주",
+      "symbol": "PM",
+      "name": "Philip Morris International Inc.",
+      "unit": "USD",
+      "market_cap_usd": 310110123946,
+      "country": "United States",
+      "provider_rank": 33,
+      "snapshot_rank": 33
+    },
+    {
+      "group": "대형주",
+      "symbol": "MS",
+      "name": "Morgan Stanley",
+      "unit": "USD",
+      "market_cap_usd": 297994312862,
+      "country": "United States",
+      "provider_rank": 34,
+      "snapshot_rank": 34
+    },
+    {
+      "group": "대형주",
+      "symbol": "AMAT",
+      "name": "Applied Materials, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 294027852632,
+      "country": "United States",
+      "provider_rank": 35,
+      "snapshot_rank": 35
+    },
+    {
+      "group": "대형주",
+      "symbol": "LRCX",
+      "name": "Lam Research Corporation",
+      "unit": "USD",
+      "market_cap_usd": 282212712320,
+      "country": "United States",
+      "provider_rank": 36,
+      "snapshot_rank": 36
+    },
+    {
+      "group": "대형주",
+      "symbol": "TXN",
+      "name": "Texas Instruments Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 277420667938,
+      "country": "United States",
+      "provider_rank": 37,
+      "snapshot_rank": 37
+    },
+    {
+      "group": "대형주",
+      "symbol": "GS",
+      "name": "The Goldman Sachs Group, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 274994110045,
+      "country": "United States",
+      "provider_rank": 38,
+      "snapshot_rank": 38
+    },
+    {
+      "group": "대형주",
+      "symbol": "CAT",
+      "name": "Caterpillar Inc.",
+      "unit": "USD",
+      "market_cap_usd": 274407943235,
+      "country": "United States",
+      "provider_rank": 39,
+      "snapshot_rank": 39
+    },
+    {
+      "group": "대형주",
+      "symbol": "RTX",
+      "name": "RTX Corporation",
+      "unit": "USD",
+      "market_cap_usd": 267971904022,
+      "country": "United States",
+      "provider_rank": 40,
+      "snapshot_rank": 40
+    },
+    {
+      "group": "대형주",
+      "symbol": "PANW",
+      "name": "Palo Alto Networks, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 263180492769,
+      "country": "United States",
+      "provider_rank": 41,
+      "snapshot_rank": 41
+    },
+    {
+      "group": "대형주",
+      "symbol": "TMO",
+      "name": "Thermo Fisher Scientific Inc.",
+      "unit": "USD",
+      "market_cap_usd": 259442621091,
+      "country": "United States",
+      "provider_rank": 42,
+      "snapshot_rank": 42
+    },
+    {
+      "group": "대형주",
+      "symbol": "WFC",
+      "name": "Wells Fargo & Company",
+      "unit": "USD",
+      "market_cap_usd": 258309219778,
+      "country": "United States",
+      "provider_rank": 43,
+      "snapshot_rank": 43
+    },
+    {
+      "group": "대형주",
+      "symbol": "NFLX",
+      "name": "Netflix, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 255208154871,
+      "country": "United States",
+      "provider_rank": 44,
+      "snapshot_rank": 44
+    },
+    {
+      "group": "대형주",
+      "symbol": "AMGN",
+      "name": "Amgen Inc.",
+      "unit": "USD",
+      "market_cap_usd": 251886253548,
+      "country": "United States",
+      "provider_rank": 45,
+      "snapshot_rank": 45
+    },
+    {
+      "group": "대형주",
+      "symbol": "ANET",
+      "name": "Arista Networks, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 249256646672,
+      "country": "United States",
+      "provider_rank": 46,
+      "snapshot_rank": 46
+    },
+    {
+      "group": "대형주",
+      "symbol": "IBM",
+      "name": "International Business Machines Corporation",
+      "unit": "USD",
+      "market_cap_usd": 233567704540,
+      "country": "United States",
+      "provider_rank": 48,
+      "snapshot_rank": 47
+    },
+    {
+      "group": "대형주",
+      "symbol": "CRWD",
+      "name": "CrowdStrike Holdings, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 232531282816,
+      "country": "United States",
+      "provider_rank": 49,
+      "snapshot_rank": 48
+    },
+    {
+      "group": "대형주",
+      "symbol": "DELL",
+      "name": "Dell Technologies Inc.",
+      "unit": "USD",
+      "market_cap_usd": 219056566757,
+      "country": "United States",
+      "provider_rank": 50,
+      "snapshot_rank": 49
+    },
+    {
+      "group": "대형주",
+      "symbol": "AXP",
+      "name": "American Express Company",
+      "unit": "USD",
+      "market_cap_usd": 214978976971,
+      "country": "United States",
+      "provider_rank": 51,
+      "snapshot_rank": 50
+    },
+    {
+      "group": "대형주",
+      "symbol": "GEV",
+      "name": "GE Vernova Inc.",
+      "unit": "USD",
+      "market_cap_usd": 211445710017,
+      "country": "United States",
+      "provider_rank": 52,
+      "snapshot_rank": 51
+    },
+    {
+      "group": "대형주",
+      "symbol": "GILD",
+      "name": "Gilead Sciences, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 208476114241,
+      "country": "United States",
+      "provider_rank": 53,
+      "snapshot_rank": 52
+    },
+    {
+      "group": "대형주",
+      "symbol": "DIS",
+      "name": "The Walt Disney Company",
+      "unit": "USD",
+      "market_cap_usd": 205423940731,
+      "country": "United States",
+      "provider_rank": 54,
+      "snapshot_rank": 53
+    },
+    {
+      "group": "대형주",
+      "symbol": "C",
+      "name": "Citigroup Inc.",
+      "unit": "USD",
+      "market_cap_usd": 205261912401,
+      "country": "United States",
+      "provider_rank": 55,
+      "snapshot_rank": 54
+    },
+    {
+      "group": "대형주",
+      "symbol": "KLAC",
+      "name": "KLA Corporation",
+      "unit": "USD",
+      "market_cap_usd": 198467238099,
+      "country": "United States",
+      "provider_rank": 57,
+      "snapshot_rank": 55
+    },
+    {
+      "group": "대형주",
+      "symbol": "PEP",
+      "name": "PepsiCo, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 198197064420,
+      "country": "United States",
+      "provider_rank": 58,
+      "snapshot_rank": 56
+    },
+    {
+      "group": "대형주",
+      "symbol": "BLK",
+      "name": "BlackRock, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 198148532873,
+      "country": "United States",
+      "provider_rank": 59,
+      "snapshot_rank": 57
+    },
+    {
+      "group": "대형주",
+      "symbol": "APH",
+      "name": "Amphenol Corporation",
+      "unit": "USD",
+      "market_cap_usd": 193170302737,
+      "country": "United States",
+      "provider_rank": 60,
+      "snapshot_rank": 58
+    },
+    {
+      "group": "대형주",
+      "symbol": "ADI",
+      "name": "Analog Devices, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 192842518106,
+      "country": "United States",
+      "provider_rank": 61,
+      "snapshot_rank": 59
+    },
+    {
+      "group": "대형주",
+      "symbol": "VZ",
+      "name": "Verizon Communications Inc.",
+      "unit": "USD",
+      "market_cap_usd": 192143578857,
+      "country": "United States",
+      "provider_rank": 62,
+      "snapshot_rank": 60
+    },
+    {
+      "group": "대형주",
+      "symbol": "MCD",
+      "name": "McDonald's Corporation",
+      "unit": "USD",
+      "market_cap_usd": 191952276826,
+      "country": "United States",
+      "provider_rank": 63,
+      "snapshot_rank": 61
+    },
+    {
+      "group": "대형주",
+      "symbol": "ABT",
+      "name": "Abbott Laboratories",
+      "unit": "USD",
+      "market_cap_usd": 187950302541,
+      "country": "United States",
+      "provider_rank": 65,
+      "snapshot_rank": 62
+    },
+    {
+      "group": "대형주",
+      "symbol": "QCOM",
+      "name": "QUALCOMM Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 184542900000,
+      "country": "United States",
+      "provider_rank": 66,
+      "snapshot_rank": 63
+    },
+    {
+      "group": "대형주",
+      "symbol": "DE",
+      "name": "Deere & Company",
+      "unit": "USD",
+      "market_cap_usd": 181603499998,
+      "country": "United States",
+      "provider_rank": 67,
+      "snapshot_rank": 64
+    },
+    {
+      "group": "대형주",
+      "symbol": "TMUS",
+      "name": "T-Mobile US, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 180023373441,
+      "country": "United States",
+      "provider_rank": 68,
+      "snapshot_rank": 65
+    },
+    {
+      "group": "대형주",
+      "symbol": "UNP",
+      "name": "Union Pacific Corporation",
+      "unit": "USD",
+      "market_cap_usd": 179725095815,
+      "country": "United States",
+      "provider_rank": 69,
+      "snapshot_rank": 66
+    },
+    {
+      "group": "대형주",
+      "symbol": "WELL",
+      "name": "Welltower Inc.",
+      "unit": "USD",
+      "market_cap_usd": 179338267109,
+      "country": "United States",
+      "provider_rank": 70,
+      "snapshot_rank": 67
+    },
+    {
+      "group": "대형주",
+      "symbol": "CRM",
+      "name": "Salesforce, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 179282320000,
+      "country": "United States",
+      "provider_rank": 71,
+      "snapshot_rank": 68
+    },
+    {
+      "group": "대형주",
+      "symbol": "NEE",
+      "name": "NextEra Energy, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 178522690891,
+      "country": "United States",
+      "provider_rank": 72,
+      "snapshot_rank": 69
+    },
+    {
+      "group": "대형주",
+      "symbol": "COP",
+      "name": "ConocoPhillips",
+      "unit": "USD",
+      "market_cap_usd": 168222631910,
+      "country": "United States",
+      "provider_rank": 73,
+      "snapshot_rank": 70
+    },
+    {
+      "group": "대형주",
+      "symbol": "PFE",
+      "name": "Pfizer Inc.",
+      "unit": "USD",
+      "market_cap_usd": 164668774346,
+      "country": "United States",
+      "provider_rank": 74,
+      "snapshot_rank": 71
+    },
+    {
+      "group": "대형주",
+      "symbol": "DHR",
+      "name": "Danaher Corporation",
+      "unit": "USD",
+      "market_cap_usd": 163936750511,
+      "country": "United States",
+      "provider_rank": 75,
+      "snapshot_rank": 72
+    },
+    {
+      "group": "대형주",
+      "symbol": "SCHW",
+      "name": "The Charles Schwab Corporation",
+      "unit": "USD",
+      "market_cap_usd": 160484196411,
+      "country": "United States",
+      "provider_rank": 76,
+      "snapshot_rank": 73
+    },
+    {
+      "group": "대형주",
+      "symbol": "ISRG",
+      "name": "Intuitive Surgical, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 153767686868,
+      "country": "United States",
+      "provider_rank": 77,
+      "snapshot_rank": 74
+    },
+    {
+      "group": "대형주",
+      "symbol": "BX",
+      "name": "Blackstone Inc.",
+      "unit": "USD",
+      "market_cap_usd": 149444882646,
+      "country": "United States",
+      "provider_rank": 78,
+      "snapshot_rank": 75
+    },
+    {
+      "group": "대형주",
+      "symbol": "T",
+      "name": "AT&T Inc.",
+      "unit": "USD",
+      "market_cap_usd": 149414980744,
+      "country": "United States",
+      "provider_rank": 79,
+      "snapshot_rank": 76
+    },
+    {
+      "group": "대형주",
+      "symbol": "TJX",
+      "name": "The TJX Companies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 147803514577,
+      "country": "United States",
+      "provider_rank": 81,
+      "snapshot_rank": 77
+    },
+    {
+      "group": "대형주",
+      "symbol": "UBER",
+      "name": "Uber Technologies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 142299876498,
+      "country": "United States",
+      "provider_rank": 83,
+      "snapshot_rank": 78
+    },
+    {
+      "group": "대형주",
+      "symbol": "SCCO",
+      "name": "Southern Copper Corporation",
+      "unit": "USD",
+      "market_cap_usd": 140008365320,
+      "country": "United States",
+      "provider_rank": 84,
+      "snapshot_rank": 79
+    },
+    {
+      "group": "대형주",
+      "symbol": "LMT",
+      "name": "Lockheed Martin Corporation",
+      "unit": "USD",
+      "market_cap_usd": 137688005626,
+      "country": "United States",
+      "provider_rank": 85,
+      "snapshot_rank": 80
+    },
+    {
+      "group": "대형주",
+      "symbol": "MRVL",
+      "name": "Marvell Technology, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 137633380382,
+      "country": "United States",
+      "provider_rank": 86,
+      "snapshot_rank": 81
+    },
+    {
+      "group": "대형주",
+      "symbol": "SPGI",
+      "name": "S&P Global Inc.",
+      "unit": "USD",
+      "market_cap_usd": 137293741000,
+      "country": "United States",
+      "provider_rank": 87,
+      "snapshot_rank": 82
+    },
+    {
+      "group": "대형주",
+      "symbol": "PGR",
+      "name": "The Progressive Corporation",
+      "unit": "USD",
+      "market_cap_usd": 136602013622,
+      "country": "United States",
+      "provider_rank": 89,
+      "snapshot_rank": 83
+    },
+    {
+      "group": "대형주",
+      "symbol": "VRTX",
+      "name": "Vertex Pharmaceuticals Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 136555391216,
+      "country": "United States",
+      "provider_rank": 90,
+      "snapshot_rank": 84
+    },
+    {
+      "group": "대형주",
+      "symbol": "BA",
+      "name": "The Boeing Company",
+      "unit": "USD",
+      "market_cap_usd": 135905164710,
+      "country": "United States",
+      "provider_rank": 91,
+      "snapshot_rank": 85
+    },
+    {
+      "group": "대형주",
+      "symbol": "APP",
+      "name": "AppLovin Corporation",
+      "unit": "USD",
+      "market_cap_usd": 135543858019,
+      "country": "United States",
+      "provider_rank": 92,
+      "snapshot_rank": 86
+    },
+    {
+      "group": "대형주",
+      "symbol": "MO",
+      "name": "Altria Group, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 130812678996,
+      "country": "United States",
+      "provider_rank": 93,
+      "snapshot_rank": 87
+    },
+    {
+      "group": "대형주",
+      "symbol": "BMY",
+      "name": "Bristol-Myers Squibb Company",
+      "unit": "USD",
+      "market_cap_usd": 129656364260,
+      "country": "United States",
+      "provider_rank": 94,
+      "snapshot_rank": 88
+    },
+    {
+      "group": "대형주",
+      "symbol": "LOW",
+      "name": "Lowe's Companies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 127768831747,
+      "country": "United States",
+      "provider_rank": 95,
+      "snapshot_rank": 89
+    },
+    {
+      "group": "대형주",
+      "symbol": "MCK",
+      "name": "McKesson Corporation",
+      "unit": "USD",
+      "market_cap_usd": 127326763626,
+      "country": "United States",
+      "provider_rank": 96,
+      "snapshot_rank": 90
+    },
+    {
+      "group": "대형주",
+      "symbol": "SNDK",
+      "name": "Sandisk Corporation",
+      "unit": "USD",
+      "market_cap_usd": 125927510919,
+      "country": "United States",
+      "provider_rank": 97,
+      "snapshot_rank": 91
+    },
+    {
+      "group": "대형주",
+      "symbol": "PLD",
+      "name": "Prologis, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 124796636182,
+      "country": "United States",
+      "provider_rank": 100,
+      "snapshot_rank": 92
+    },
+    {
+      "group": "대형주",
+      "symbol": "ADP",
+      "name": "Automatic Data Processing, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 122347790760,
+      "country": "United States",
+      "provider_rank": 101,
+      "snapshot_rank": 93
+    },
+    {
+      "group": "대형주",
+      "symbol": "SBUX",
+      "name": "Starbucks Corporation",
+      "unit": "USD",
+      "market_cap_usd": 121352244000,
+      "country": "United States",
+      "provider_rank": 102,
+      "snapshot_rank": 94
+    },
+    {
+      "group": "대형주",
+      "symbol": "PH",
+      "name": "Parker-Hannifin Corporation",
+      "unit": "USD",
+      "market_cap_usd": 120508185046,
+      "country": "United States",
+      "provider_rank": 104,
+      "snapshot_rank": 95
+    },
+    {
+      "group": "대형주",
+      "symbol": "BKNG",
+      "name": "Booking Holdings Inc.",
+      "unit": "USD",
+      "market_cap_usd": 118679846592,
+      "country": "United States",
+      "provider_rank": 105,
+      "snapshot_rank": 96
+    },
+    {
+      "group": "대형주",
+      "symbol": "SYK",
+      "name": "Stryker Corporation",
+      "unit": "USD",
+      "market_cap_usd": 117877162479,
+      "country": "United States",
+      "provider_rank": 106,
+      "snapshot_rank": 97
+    },
+    {
+      "group": "대형주",
+      "symbol": "COF",
+      "name": "Capital One Financial Corporation",
+      "unit": "USD",
+      "market_cap_usd": 117347087487,
+      "country": "United States",
+      "provider_rank": 107,
+      "snapshot_rank": 98
+    },
+    {
+      "group": "대형주",
+      "symbol": "NEM",
+      "name": "Newmont Corporation",
+      "unit": "USD",
+      "market_cap_usd": 117284949747,
+      "country": "United States",
+      "provider_rank": 108,
+      "snapshot_rank": 99
+    },
+    {
+      "group": "대형주",
+      "symbol": "CVS",
+      "name": "CVS Health Corporation",
+      "unit": "USD",
+      "market_cap_usd": 114321018698,
+      "country": "United States",
+      "provider_rank": 109,
+      "snapshot_rank": 100
+    },
+    {
+      "group": "대형주",
+      "symbol": "CME",
+      "name": "CME Group Inc.",
+      "unit": "USD",
+      "market_cap_usd": 113812237095,
+      "country": "United States",
+      "provider_rank": 110,
+      "snapshot_rank": 101
+    },
+    {
+      "group": "대형주",
+      "symbol": "MPC",
+      "name": "Marathon Petroleum Corporation",
+      "unit": "USD",
+      "market_cap_usd": 112901847402,
+      "country": "United States",
+      "provider_rank": 111,
+      "snapshot_rank": 102
+    },
+    {
+      "group": "대형주",
+      "symbol": "WDC",
+      "name": "Western Digital Corporation",
+      "unit": "USD",
+      "market_cap_usd": 110668674480,
+      "country": "United States",
+      "provider_rank": 113,
+      "snapshot_rank": 103
+    },
+    {
+      "group": "대형주",
+      "symbol": "ABNB",
+      "name": "Airbnb, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 109741131556,
+      "country": "United States",
+      "provider_rank": 114,
+      "snapshot_rank": 104
+    },
+    {
+      "group": "대형주",
+      "symbol": "NET",
+      "name": "Cloudflare, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 109599935502,
+      "country": "United States",
+      "provider_rank": 115,
+      "snapshot_rank": 105
+    },
+    {
+      "group": "대형주",
+      "symbol": "MAR",
+      "name": "Marriott International, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 108965560635,
+      "country": "United States",
+      "provider_rank": 116,
+      "snapshot_rank": 106
+    },
+    {
+      "group": "대형주",
+      "symbol": "SO",
+      "name": "The Southern Company",
+      "unit": "USD",
+      "market_cap_usd": 108963189704,
+      "country": "United States",
+      "provider_rank": 117,
+      "snapshot_rank": 107
+    },
+    {
+      "group": "대형주",
+      "symbol": "NOW",
+      "name": "ServiceNow, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 106127013250,
+      "country": "United States",
+      "provider_rank": 118,
+      "snapshot_rank": 108
+    },
+    {
+      "group": "대형주",
+      "symbol": "VLO",
+      "name": "Valero Energy Corporation",
+      "unit": "USD",
+      "market_cap_usd": 105928661652,
+      "country": "United States",
+      "provider_rank": 119,
+      "snapshot_rank": 109
+    },
+    {
+      "group": "대형주",
+      "symbol": "EQIX",
+      "name": "Equinix, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 104312899625,
+      "country": "United States",
+      "provider_rank": 120,
+      "snapshot_rank": 110
+    },
+    {
+      "group": "대형주",
+      "symbol": "HCA",
+      "name": "HCA Healthcare, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 104247802125,
+      "country": "United States",
+      "provider_rank": 121,
+      "snapshot_rank": 111
+    },
+    {
+      "group": "대형주",
+      "symbol": "PSX",
+      "name": "Phillips 66",
+      "unit": "USD",
+      "market_cap_usd": 103330168694,
+      "country": "United States",
+      "provider_rank": 122,
+      "snapshot_rank": 112
+    },
+    {
+      "group": "대형주",
+      "symbol": "BNY",
+      "name": "The Bank of New York Mellon Corporation",
+      "unit": "USD",
+      "market_cap_usd": 103229357351,
+      "country": "United States",
+      "provider_rank": 123,
+      "snapshot_rank": 113
+    },
+    {
+      "group": "대형주",
+      "symbol": "SNOW",
+      "name": "Snowflake Inc.",
+      "unit": "USD",
+      "market_cap_usd": 102564405000,
+      "country": "United States",
+      "provider_rank": 124,
+      "snapshot_rank": 114
+    },
+    {
+      "group": "대형주",
+      "symbol": "DUK",
+      "name": "Duke Energy Corporation",
+      "unit": "USD",
+      "market_cap_usd": 100707123641,
+      "country": "United States",
+      "provider_rank": 125,
+      "snapshot_rank": 115
+    },
+    {
+      "group": "대형주",
+      "symbol": "ICE",
+      "name": "Intercontinental Exchange, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 99761815126,
+      "country": "United States",
+      "provider_rank": 126,
+      "snapshot_rank": 116
+    },
+    {
+      "group": "대형주",
+      "symbol": "MRSH",
+      "name": "Marsh & McLennan Companies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 98802366864,
+      "country": "United States",
+      "provider_rank": 127,
+      "snapshot_rank": 117
+    },
+    {
+      "group": "대형주",
+      "symbol": "CEG",
+      "name": "Constellation Energy Corporation",
+      "unit": "USD",
+      "market_cap_usd": 98520702821,
+      "country": "United States",
+      "provider_rank": 128,
+      "snapshot_rank": 118
+    },
+    {
+      "group": "대형주",
+      "symbol": "GLW",
+      "name": "Corning Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 98268638172,
+      "country": "United States",
+      "provider_rank": 129,
+      "snapshot_rank": 119
+    },
+    {
+      "group": "대형주",
+      "symbol": "GD",
+      "name": "General Dynamics Corporation",
+      "unit": "USD",
+      "market_cap_usd": 98067582870,
+      "country": "United States",
+      "provider_rank": 130,
+      "snapshot_rank": 120
+    },
+    {
+      "group": "대형주",
+      "symbol": "WM",
+      "name": "Waste Management, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 96955321568,
+      "country": "United States",
+      "provider_rank": 131,
+      "snapshot_rank": 121
+    },
+    {
+      "group": "대형주",
+      "symbol": "CSX",
+      "name": "CSX Corporation",
+      "unit": "USD",
+      "market_cap_usd": 95880472200,
+      "country": "United States",
+      "provider_rank": 132,
+      "snapshot_rank": 122
+    },
+    {
+      "group": "대형주",
+      "symbol": "REGN",
+      "name": "Regeneron Pharmaceuticals, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 95879368839,
+      "country": "United States",
+      "provider_rank": 133,
+      "snapshot_rank": 123
+    },
+    {
+      "group": "대형주",
+      "symbol": "UPS",
+      "name": "United Parcel Service, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 95705157413,
+      "country": "United States",
+      "provider_rank": 134,
+      "snapshot_rank": 124
+    },
+    {
+      "group": "대형주",
+      "symbol": "USB",
+      "name": "U.S. Bancorp",
+      "unit": "USD",
+      "market_cap_usd": 95035156237,
+      "country": "United States",
+      "provider_rank": 136,
+      "snapshot_rank": 125
+    },
+    {
+      "group": "대형주",
+      "symbol": "MMM",
+      "name": "3M Company",
+      "unit": "USD",
+      "market_cap_usd": 94902553561,
+      "country": "United States",
+      "provider_rank": 137,
+      "snapshot_rank": 126
+    },
+    {
+      "group": "대형주",
+      "symbol": "ADBE",
+      "name": "Adobe Inc.",
+      "unit": "USD",
+      "market_cap_usd": 94606736000,
+      "country": "United States",
+      "provider_rank": 138,
+      "snapshot_rank": 127
+    },
+    {
+      "group": "대형주",
+      "symbol": "FTNT",
+      "name": "Fortinet, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 93469773250,
+      "country": "United States",
+      "provider_rank": 139,
+      "snapshot_rank": 128
+    },
+    {
+      "group": "대형주",
+      "symbol": "ELV",
+      "name": "Elevance Health, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 92837055804,
+      "country": "United States",
+      "provider_rank": 140,
+      "snapshot_rank": 129
+    },
+    {
+      "group": "대형주",
+      "symbol": "PNC",
+      "name": "The PNC Financial Services Group, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 92167563711,
+      "country": "United States",
+      "provider_rank": 141,
+      "snapshot_rank": 130
+    },
+    {
+      "group": "대형주",
+      "symbol": "INTU",
+      "name": "Intuit Inc.",
+      "unit": "USD",
+      "market_cap_usd": 91314541200,
+      "country": "United States",
+      "provider_rank": 143,
+      "snapshot_rank": 131
+    },
+    {
+      "group": "대형주",
+      "symbol": "EMR",
+      "name": "Emerson Electric Co.",
+      "unit": "USD",
+      "market_cap_usd": 91276068000,
+      "country": "United States",
+      "provider_rank": 144,
+      "snapshot_rank": 132
+    },
+    {
+      "group": "대형주",
+      "symbol": "MNST",
+      "name": "Monster Beverage Corporation",
+      "unit": "USD",
+      "market_cap_usd": 90946003896,
+      "country": "United States",
+      "provider_rank": 145,
+      "snapshot_rank": 133
+    },
+    {
+      "group": "대형주",
+      "symbol": "PWR",
+      "name": "Quanta Services, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 90709148061,
+      "country": "United States",
+      "provider_rank": 146,
+      "snapshot_rank": 134
+    },
+    {
+      "group": "대형주",
+      "symbol": "MRNA",
+      "name": "Moderna, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 90380187186,
+      "country": "United States",
+      "provider_rank": 147,
+      "snapshot_rank": 135
+    },
+    {
+      "group": "대형주",
+      "symbol": "CTAS",
+      "name": "Cintas Corporation",
+      "unit": "USD",
+      "market_cap_usd": 89834269040,
+      "country": "United States",
+      "provider_rank": 149,
+      "snapshot_rank": 136
+    },
+    {
+      "group": "대형주",
+      "symbol": "CMCSA",
+      "name": "Comcast Corporation",
+      "unit": "USD",
+      "market_cap_usd": 89343319389,
+      "country": "United States",
+      "provider_rank": 150,
+      "snapshot_rank": 137
+    },
+    {
+      "group": "대형주",
+      "symbol": "AMT",
+      "name": "American Tower Corporation",
+      "unit": "USD",
+      "market_cap_usd": 88875647680,
+      "country": "United States",
+      "provider_rank": 151,
+      "snapshot_rank": 138
+    },
+    {
+      "group": "대형주",
+      "symbol": "CDNS",
+      "name": "Cadence Design Systems, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 88627160790,
+      "country": "United States",
+      "provider_rank": 152,
+      "snapshot_rank": 139
+    },
+    {
+      "group": "대형주",
+      "symbol": "SPG",
+      "name": "Simon Property Group, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 88115291185,
+      "country": "United States",
+      "provider_rank": 153,
+      "snapshot_rank": 140
+    },
+    {
+      "group": "대형주",
+      "symbol": "MSI",
+      "name": "Motorola Solutions, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 87825388928,
+      "country": "United States",
+      "provider_rank": 154,
+      "snapshot_rank": 141
+    },
+    {
+      "group": "대형주",
+      "symbol": "HWM",
+      "name": "Howmet Aerospace Inc.",
+      "unit": "USD",
+      "market_cap_usd": 87811389402,
+      "country": "United States",
+      "provider_rank": 155,
+      "snapshot_rank": 142
+    },
+    {
+      "group": "대형주",
+      "symbol": "MCO",
+      "name": "Moody's Corporation",
+      "unit": "USD",
+      "market_cap_usd": 87625918472,
+      "country": "United States",
+      "provider_rank": 156,
+      "snapshot_rank": 143
+    },
+    {
+      "group": "대형주",
+      "symbol": "KKR",
+      "name": "KKR & Co. Inc.",
+      "unit": "USD",
+      "market_cap_usd": 87474281309,
+      "country": "United States",
+      "provider_rank": 157,
+      "snapshot_rank": 144
+    },
+    {
+      "group": "대형주",
+      "symbol": "SNPS",
+      "name": "Synopsys, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 87233001259,
+      "country": "United States",
+      "provider_rank": 158,
+      "snapshot_rank": 145
+    },
+    {
+      "group": "대형주",
+      "symbol": "ECL",
+      "name": "Ecolab Inc.",
+      "unit": "USD",
+      "market_cap_usd": 86740271867,
+      "country": "United States",
+      "provider_rank": 159,
+      "snapshot_rank": 146
+    },
+    {
+      "group": "대형주",
+      "symbol": "RCL",
+      "name": "Royal Caribbean Cruises Ltd.",
+      "unit": "USD",
+      "market_cap_usd": 86465325925,
+      "country": "United States",
+      "provider_rank": 160,
+      "snapshot_rank": 147
+    },
+    {
+      "group": "대형주",
+      "symbol": "WMB",
+      "name": "The Williams Companies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 86376491830,
+      "country": "United States",
+      "provider_rank": 161,
+      "snapshot_rank": 148
+    },
+    {
+      "group": "대형주",
+      "symbol": "MDLZ",
+      "name": "Mondelez International, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 85494724118,
+      "country": "United States",
+      "provider_rank": 162,
+      "snapshot_rank": 149
+    },
+    {
+      "group": "대형주",
+      "symbol": "FCX",
+      "name": "Freeport-McMoRan Inc.",
+      "unit": "USD",
+      "market_cap_usd": 85005610654,
+      "country": "United States",
+      "provider_rank": 163,
+      "snapshot_rank": 150
+    },
+    {
+      "group": "대형주",
+      "symbol": "SHW",
+      "name": "The Sherwin-Williams Company",
+      "unit": "USD",
+      "market_cap_usd": 84029998419,
+      "country": "United States",
+      "provider_rank": 164,
+      "snapshot_rank": 151
+    },
+    {
+      "group": "대형주",
+      "symbol": "HLT",
+      "name": "Hilton Worldwide Holdings Inc.",
+      "unit": "USD",
+      "market_cap_usd": 83014149807,
+      "country": "United States",
+      "provider_rank": 166,
+      "snapshot_rank": 152
+    },
+    {
+      "group": "대형주",
+      "symbol": "TRV",
+      "name": "The Travelers Companies, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 82640515501,
+      "country": "United States",
+      "provider_rank": 167,
+      "snapshot_rank": 153
+    },
+    {
+      "group": "대형주",
+      "symbol": "EPD",
+      "name": "Enterprise Products Partners L.P.",
+      "unit": "USD",
+      "market_cap_usd": 82554833964,
+      "country": "United States",
+      "provider_rank": 168,
+      "snapshot_rank": 154
+    },
+    {
+      "group": "대형주",
+      "symbol": "EOG",
+      "name": "EOG Resources, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 82086422344,
+      "country": "United States",
+      "provider_rank": 169,
+      "snapshot_rank": 155
+    },
+    {
+      "group": "대형주",
+      "symbol": "ITW",
+      "name": "Illinois Tool Works Inc.",
+      "unit": "USD",
+      "market_cap_usd": 81713184000,
+      "country": "United States",
+      "provider_rank": 170,
+      "snapshot_rank": 156
+    },
+    {
+      "group": "대형주",
+      "symbol": "CVNA",
+      "name": "Carvana Co.",
+      "unit": "USD",
+      "market_cap_usd": 80754445528,
+      "country": "United States",
+      "provider_rank": 171,
+      "snapshot_rank": 157
+    },
+    {
+      "group": "대형주",
+      "symbol": "CL",
+      "name": "Colgate-Palmolive Company",
+      "unit": "USD",
+      "market_cap_usd": 79229727531,
+      "country": "United States",
+      "provider_rank": 172,
+      "snapshot_rank": 158
+    },
+    {
+      "group": "대형주",
+      "symbol": "CI",
+      "name": "The Cigna Group",
+      "unit": "USD",
+      "market_cap_usd": 78260260617,
+      "country": "United States",
+      "provider_rank": 173,
+      "snapshot_rank": 159
+    },
+    {
+      "group": "대형주",
+      "symbol": "NOC",
+      "name": "Northrop Grumman Corporation",
+      "unit": "USD",
+      "market_cap_usd": 78196556680,
+      "country": "United States",
+      "provider_rank": 174,
+      "snapshot_rank": 160
+    },
+    {
+      "group": "대형주",
+      "symbol": "VRT",
+      "name": "Vertiv Holdings Co",
+      "unit": "USD",
+      "market_cap_usd": 77809159271,
+      "country": "United States",
+      "provider_rank": 175,
+      "snapshot_rank": 161
+    },
+    {
+      "group": "대형주",
+      "symbol": "RSG",
+      "name": "Republic Services, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 77070785812,
+      "country": "United States",
+      "provider_rank": 176,
+      "snapshot_rank": 162
+    },
+    {
+      "group": "대형주",
+      "symbol": "SLB",
+      "name": "SLB N.V.",
+      "unit": "USD",
+      "market_cap_usd": 76266450104,
+      "country": "United States",
+      "provider_rank": 177,
+      "snapshot_rank": 163
+    },
+    {
+      "group": "대형주",
+      "symbol": "FDX",
+      "name": "FedEx Corporation",
+      "unit": "USD",
+      "market_cap_usd": 75913378281,
+      "country": "United States",
+      "provider_rank": 178,
+      "snapshot_rank": 164
+    },
+    {
+      "group": "대형주",
+      "symbol": "DASH",
+      "name": "DoorDash, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 74774300530,
+      "country": "United States",
+      "provider_rank": 180,
+      "snapshot_rank": 165
+    },
+    {
+      "group": "대형주",
+      "symbol": "ROST",
+      "name": "Ross Stores, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 74010896525,
+      "country": "United States",
+      "provider_rank": 181,
+      "snapshot_rank": 166
+    },
+    {
+      "group": "대형주",
+      "symbol": "ORLY",
+      "name": "O'Reilly Automotive, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 73940872695,
+      "country": "United States",
+      "provider_rank": 182,
+      "snapshot_rank": 167
+    },
+    {
+      "group": "대형주",
+      "symbol": "NSC",
+      "name": "Norfolk Southern Corporation",
+      "unit": "USD",
+      "market_cap_usd": 73647319006,
+      "country": "United States",
+      "provider_rank": 183,
+      "snapshot_rank": 168
+    },
+    {
+      "group": "대형주",
+      "symbol": "TGT",
+      "name": "Target Corporation",
+      "unit": "USD",
+      "market_cap_usd": 73346208027,
+      "country": "United States",
+      "provider_rank": 184,
+      "snapshot_rank": 169
+    },
+    {
+      "group": "대형주",
+      "symbol": "APO",
+      "name": "Apollo Global Management, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 72900711146,
+      "country": "United States",
+      "provider_rank": 185,
+      "snapshot_rank": 170
+    },
+    {
+      "group": "대형주",
+      "symbol": "AJG",
+      "name": "Arthur J. Gallagher & Co.",
+      "unit": "USD",
+      "market_cap_usd": 72550060100,
+      "country": "United States",
+      "provider_rank": 186,
+      "snapshot_rank": 171
+    },
+    {
+      "group": "대형주",
+      "symbol": "GM",
+      "name": "General Motors Company",
+      "unit": "USD",
+      "market_cap_usd": 72545250378,
+      "country": "United States",
+      "provider_rank": 187,
+      "snapshot_rank": 172
+    },
+    {
+      "group": "대형주",
+      "symbol": "KMI",
+      "name": "Kinder Morgan, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 71108670110,
+      "country": "United States",
+      "provider_rank": 189,
+      "snapshot_rank": 173
+    },
+    {
+      "group": "대형주",
+      "symbol": "HON",
+      "name": "Honeywell International Inc.",
+      "unit": "USD",
+      "market_cap_usd": 70599575914,
+      "country": "United States",
+      "provider_rank": 190,
+      "snapshot_rank": 174
+    },
+    {
+      "group": "대형주",
+      "symbol": "APD",
+      "name": "Air Products and Chemicals, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 70486650811,
+      "country": "United States",
+      "provider_rank": 191,
+      "snapshot_rank": 175
+    },
+    {
+      "group": "대형주",
+      "symbol": "AEP",
+      "name": "American Electric Power Company, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 70341911309,
+      "country": "United States",
+      "provider_rank": 192,
+      "snapshot_rank": 176
+    },
+    {
+      "group": "대형주",
+      "symbol": "HOOD",
+      "name": "Robinhood Markets, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 70112250827,
+      "country": "United States",
+      "provider_rank": 193,
+      "snapshot_rank": 177
+    },
+    {
+      "group": "대형주",
+      "symbol": "GWW",
+      "name": "W.W. Grainger, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 69720310616,
+      "country": "United States",
+      "provider_rank": 194,
+      "snapshot_rank": 178
+    },
+    {
+      "group": "대형주",
+      "symbol": "URI",
+      "name": "United Rentals, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 69628918201,
+      "country": "United States",
+      "provider_rank": 195,
+      "snapshot_rank": 179
+    },
+    {
+      "group": "대형주",
+      "symbol": "DLR",
+      "name": "Digital Realty Trust, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 69291629371,
+      "country": "United States",
+      "provider_rank": 196,
+      "snapshot_rank": 180
+    },
+    {
+      "group": "대형주",
+      "symbol": "COR",
+      "name": "Cencora, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 68512677050,
+      "country": "United States",
+      "provider_rank": 197,
+      "snapshot_rank": 181
+    },
+    {
+      "group": "대형주",
+      "symbol": "MPWR",
+      "name": "Monolithic Power Systems, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 67813854720,
+      "country": "United States",
+      "provider_rank": 198,
+      "snapshot_rank": 182
+    },
+    {
+      "group": "대형주",
+      "symbol": "KMB",
+      "name": "Kimberly-Clark Corporation",
+      "unit": "USD",
+      "market_cap_usd": 67154489611,
+      "country": "United States",
+      "provider_rank": 199,
+      "snapshot_rank": 183
+    },
+    {
+      "group": "대형주",
+      "symbol": "ET",
+      "name": "Energy Transfer LP",
+      "unit": "USD",
+      "market_cap_usd": 66818492447,
+      "country": "United States",
+      "provider_rank": 200,
+      "snapshot_rank": 184
+    },
+    {
+      "group": "대형주",
+      "symbol": "DDOG",
+      "name": "Datadog, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 66489595087,
+      "country": "United States",
+      "provider_rank": 202,
+      "snapshot_rank": 185
+    },
+    {
+      "group": "대형주",
+      "symbol": "TDG",
+      "name": "TransDigm Group Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 66451115566,
+      "country": "United States",
+      "provider_rank": 203,
+      "snapshot_rank": 186
+    },
+    {
+      "group": "대형주",
+      "symbol": "ALL",
+      "name": "The Allstate Corporation",
+      "unit": "USD",
+      "market_cap_usd": 66227383109,
+      "country": "United States",
+      "provider_rank": 204,
+      "snapshot_rank": 187
+    },
+    {
+      "group": "대형주",
+      "symbol": "CAH",
+      "name": "Cardinal Health, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 64972513721,
+      "country": "United States",
+      "provider_rank": 205,
+      "snapshot_rank": 188
+    },
+    {
+      "group": "대형주",
+      "symbol": "PSA",
+      "name": "Public Storage",
+      "unit": "USD",
+      "market_cap_usd": 64589301277,
+      "country": "United States",
+      "provider_rank": 206,
+      "snapshot_rank": 189
+    },
+    {
+      "group": "대형주",
+      "symbol": "MET",
+      "name": "MetLife, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 64509585979,
+      "country": "United States",
+      "provider_rank": 207,
+      "snapshot_rank": 190
+    },
+    {
+      "group": "대형주",
+      "symbol": "BSX",
+      "name": "Boston Scientific Corporation",
+      "unit": "USD",
+      "market_cap_usd": 64269642663,
+      "country": "United States",
+      "provider_rank": 208,
+      "snapshot_rank": 191
+    },
+    {
+      "group": "대형주",
+      "symbol": "HPE",
+      "name": "Hewlett Packard Enterprise Company",
+      "unit": "USD",
+      "market_cap_usd": 64103274178,
+      "country": "United States",
+      "provider_rank": 209,
+      "snapshot_rank": 192
+    },
+    {
+      "group": "대형주",
+      "symbol": "TRGP",
+      "name": "Targa Resources Corp.",
+      "unit": "USD",
+      "market_cap_usd": 63793344091,
+      "country": "United States",
+      "provider_rank": 211,
+      "snapshot_rank": 193
+    },
+    {
+      "group": "대형주",
+      "symbol": "FAST",
+      "name": "Fastenal Company",
+      "unit": "USD",
+      "market_cap_usd": 63319569123,
+      "country": "United States",
+      "provider_rank": 212,
+      "snapshot_rank": 194
+    },
+    {
+      "group": "대형주",
+      "symbol": "AFL",
+      "name": "Aflac Incorporated",
+      "unit": "USD",
+      "market_cap_usd": 63116806927,
+      "country": "United States",
+      "provider_rank": 213,
+      "snapshot_rank": 195
+    },
+    {
+      "group": "대형주",
+      "symbol": "LNG",
+      "name": "Cheniere Energy, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 63047958448,
+      "country": "United States",
+      "provider_rank": 214,
+      "snapshot_rank": 196
+    },
+    {
+      "group": "대형주",
+      "symbol": "CMI",
+      "name": "Cummins Inc.",
+      "unit": "USD",
+      "market_cap_usd": 61983880300,
+      "country": "United States",
+      "provider_rank": 216,
+      "snapshot_rank": 197
+    },
+    {
+      "group": "대형주",
+      "symbol": "EW",
+      "name": "Edwards Lifesciences Corporation",
+      "unit": "USD",
+      "market_cap_usd": 61611250000,
+      "country": "United States",
+      "provider_rank": 218,
+      "snapshot_rank": 198
+    },
+    {
+      "group": "대형주",
+      "symbol": "NDAQ",
+      "name": "Nasdaq, Inc.",
+      "unit": "USD",
+      "market_cap_usd": 60196809601,
+      "country": "United States",
+      "provider_rank": 219,
+      "snapshot_rank": 199
+    },
+    {
+      "group": "대형주",
+      "symbol": "TFC",
+      "name": "Truist Financial Corporation",
+      "unit": "USD",
+      "market_cap_usd": 59888465948,
+      "country": "United States",
+      "provider_rank": 220,
+      "snapshot_rank": 200
     }
-  ]
+  ],
+  "stock_limit": 200
 }
