@@ -40,3 +40,15 @@
 - [수동 실행](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
 - [결과 내려받기](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts)
 - [예산과 사용 차단](https://docs.github.com/en/billing/how-tos/set-up-budgets)
+
+## 첫 실행 검증 결과
+
+- 실행: [#1 미국 시장 20종목 수동 수집](https://github.com/mtljm/investment-monitor/actions/runs/43855707340)
+- 수집 시각: 2026-11-16 20:12:48 KST
+- 실행 결과: 성공, 전체 소요 시간 17초
+- 수집 범위: 대형주 20개를 포함한 31개 항목, 성공 31개·실패 0개
+- 결과 파일: market-monitor-20-1 ZIP, 화면 표시 크기 60.5 KB
+- 보관: 1일
+- 실제 휴대폰의 압축 해제와 HTML JavaScript 실행 검증은 사용자 기기에서 진행할 단계입니다.
+
+실행 성공과 시간·파일 크기는 확인했으며, 계정 전체 월간 무료 제공량의 잔여치나 청구 확정액을 의미하지 않습니다.
