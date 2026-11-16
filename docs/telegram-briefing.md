@@ -10,7 +10,7 @@ GitHub Actions에서 매일 **한국시간 오전 8시**를 목표로 데이터�
 - 휴장일: 최신 거래일 자료를 보내며 지수 봉 기준일을 표시
 - 실행: UTC 23:00, 한국시간 다음 날 08:00
 - GitHub 스케줄은 지연·누락될 수 있어 정각 도착을 보장하지 않음
-- 현재 상태: 코드 준비 완료, 연결정보 등록·시험 전송 전으로 **정기 전송 비활성**
+- 현재 상태: 2026-11-16 연결정보 등록과 실제 시험 전송 성공 후 **정기 전송 활성화 완료**
 - 활성화 조건: 저장소 변수 TELEGRAM_DELIVERY_ENABLED가 정확히 true일 때
 - 수동 시험은 활성화 변수와 무관하게 Run workflow로 실행 가능
 
@@ -80,3 +80,13 @@ GitHub Artifact의 1일 보관 설정은 Telegram 대화에 전송된 파일의 
 - [Telegram 파일 전송 API](https://core.telegram.org/bots/api#senddocument)
 - [GitHub 예약 실행](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
 - [GitHub Secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+
+## 운영 시작 기록
+
+- 2026-11-16: 봇 인증·개인 대화 연결 확인 및 Secrets 등록 완료
+- [첫 실제 전송 성공](https://github.com/mtljm/investment-monitor/actions/runs/43859521742): 데이터 수집·브리핑 ZIP 생성·Telegram 개인 대화 전송 모두 성공
+- 저장소 변수 TELEGRAM_DELIVERY_ENABLED=true를 GitHub 화면에서 확인
+- 첫 예약 실행 목표: 2026-11-17 08:00 KST (GitHub 예약 작업 지연 가능)
+- 대상: 대형주 20개 + ETF 4개 + 지수·지표 7개
+- 토큰과 개인 대화 ID 값은 이 문서에 기록하지 않음
+- 실제 휴대폰에서 받은 ZIP의 압축 해제 및 HTML 실행 여부는 사용자 기기에서 별도로 확인할 항목
