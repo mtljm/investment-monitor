@@ -1,3 +1,4 @@
+import {dashboardContext} from './dashboard-context.mjs';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -11,6 +12,7 @@ export function publicData(input){
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
+  ...(input.briefing?{briefing:{...Object.fromEntries(['tracked','rising','falling','uptrend','downtrend','hot','oversold','compared','event_count'].map(k=>[k,Number.isFinite(input.briefing[k])?input.briefing[k]:0])),events:(input.briefing.events||[]).slice(0,8).map(e=>({symbol:String(e.symbol),kind:String(e.kind),text:String(e.text)}))}}:{}),
   rows:input.rows.map(row=>{
    if(!['지수','시장지표','대형주','지수 ETF','섹터 ETF'].includes(row.group))throw new Error('시장 데이터 외 그룹은 공개할 수 없습니다.');
    const safe={};
@@ -25,7 +27,8 @@ export function publicData(input){
     safe.fibonacci={direction:f.direction==='up'?'up':'down',lookback:60,levels:(Array.isArray(f.levels)?f.levels:[]).slice(0,7).map(pick),support:pick(f.support),resistance:pick(f.resistance)};
     for(const k of ['high','low','high_time','low_time','position_pct'])safe.fibonacci[k]=Number.isFinite(f[k])?f[k]:null;
    }
-   safe.history=(row.history||[]).slice(-90).map(p=>({time:p.time,close:p.close}));
+   if(row.changes)safe.changes={available:row.changes.available===true,baseline_day:row.changes.baseline_day,current_day:row.changes.current_day,events:(row.changes.events||[]).slice(0,10).map(e=>({kind:String(e.kind),text:String(e.text)}))};
+   safe.history=(row.history||[]).slice(-90).map(p=>Object.fromEntries(['time','close','sma20','sma50','sma200','bb_middle','bb_upper','bb_lower'].filter(k=>p[k]!==undefined).map(k=>[k,Number.isFinite(p[k])?p[k]:null])));
    if(row.status!=='ok')safe.error='수집 실패';
    return safe;
   })
@@ -47,11 +50,27 @@ export function publicHtml(template,input){
 export async function main(){
  const input=JSON.parse(await readFile(resolve(root,'reports/latest.json'),'utf8'));
  const template=await readFile(resolve(root,'templates/dashboard.html'),'utf8');
+ let previous={version:1,days:[]};
+ if(process.env.PAGES_HISTORY_URL){
+  const url=new URL(process.env.PAGES_HISTORY_URL);
+  if(url.protocol!=='https:'||!url.hostname.endsWith('.github.io'))throw new Error('Pages 이력 주소를 확인하세요.');
+  url.searchParams.set('run',process.env.GITHUB_RUN_ID||Date.now().toString());
+  const response=await fetch(url,{signal:AbortSignal.timeout(20000),cache:'no-store'});
+  if(response.status!==404){
+   if(!response.ok)throw new Error('이전 비교 이력을 불러오지 못해 배포를 중단합니다. HTTP '+response.status);
+   const body=await response.text();if(body.length>2000000)throw new Error('비교 이력 크기 초과');previous=JSON.parse(body);
+  }
+ }else{
+  try{previous=JSON.parse(await readFile(resolve(root,'reports/history.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
+ }
+ const context=dashboardContext(input,previous);
  const out=resolve(root,'public-site');await mkdir(out,{recursive:true});
- await writeFile(resolve(out,'index.html'),publicHtml(template,input));
+ await writeFile(resolve(out,'index.html'),publicHtml(template,context.data));
  await writeFile(resolve(out,'.nojekyll'),'');
+ await writeFile(resolve(out,'history.json'),JSON.stringify(context.history));
  console.log('Pages 게시 파일 생성: public-site/index.html');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
 

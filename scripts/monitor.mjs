@@ -1,3 +1,4 @@
+import {indicatorHistory} from './chart-series.mjs';
 import {priceVolumeIndicators,assessTechnical} from './market-analysis.mjs';
 import {technicalIndicators} from './technical-indicators.mjs';
 import { writeDashboard } from './render-dashboard.mjs';
@@ -45,7 +46,7 @@ async function collect(item) {
   }));
   const stats = summarize(bars);
   return {...item,status:'ok',...stats,
-    history:bars.filter(b=>Number.isFinite(b.close)).slice(-90).map(b=>({time:b.time,close:Number(b.close.toFixed(4))})),
+    history:indicatorHistory(bars),
     currency:chart.meta?.currency,
     exchange_timezone:chart.meta?.exchangeTimezoneName,
     quote_time_utc: chart.meta?.regularMarketTime
@@ -146,4 +147,5 @@ export async function main() {
 if (process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   main().catch(e=>{ console.error(e.message); process.exitCode=1; });
 }
+
 
