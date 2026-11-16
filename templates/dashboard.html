@@ -15,6 +15,19 @@ main{padding:32px 40px 26px;max-width:1700px;width:100%;margin:auto}.topline{dis
 @media(max-width:1100px){.shell{grid-template-columns:180px minmax(0,1fr)}.sidebar{padding:28px 17px}main{padding:25px}.hero{align-items:start}.index-grid{grid-template-columns:repeat(2,1fr)}.macro{padding:15px}.macro .value{font-size:19px}.actions{max-width:220px}}
 @media(max-width:760px){.shell{display:block}.sidebar{height:auto;position:relative;padding:18px 20px;gap:16px}.brand{font-size:16px}.brand small,.side-note{display:none}.nav{display:flex;gap:4px}.nav button{font-size:11px;padding:8px 10px}.nav i{display:none}main{padding:20px 15px}.topline{padding-bottom:14px}.hero{display:block;margin-top:23px}h1{font-size:26px}.actions{margin-top:16px;max-width:none}.index-grid{gap:10px}.index-card{padding:16px}.value{font-size:23px}.macro-grid{grid-template-columns:1fr}.macro .value{font-size:22px}.notice{align-items:start;line-height:1.7}.panel-top{padding:18px 16px 0}.tools{width:100%;flex-wrap:wrap}input[type=search]{flex:1;min-width:130px}.tabs{padding-left:16px}.bottom-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:repeat(2,1fr)}footer{display:block}.table-foot{flex-direction:column;gap:6px}.live{font-size:10px}.eyebrow{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+dialog{max-height:92vh;overflow:auto} .indicator-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.indicator-card{min-width:0;background:#f7f9fa;border:1px solid var(--line);border-radius:8px;padding:17px}
+.indicator-card h3{margin:0 0 7px;font-size:14px}.indicator-card p{font-size:11px;color:#61727e;line-height:1.7;margin:7px 0}
+.indicator-card table{white-space:normal}.indicator-card th,.indicator-card td{padding:8px 4px!important;font-size:11px;background:transparent}
+.indicator-card tbody tr{cursor:default}.indicator-card tbody tr:hover{background:transparent}
+.indicator-card details{font-size:11px;color:#61727e;line-height:1.8;margin-top:10px}.indicator-card summary{cursor:pointer;color:#354d60}
+.indicator-card .reading{font-size:27px;font-weight:650;margin:10px 0}.indicator-card .meter{height:7px;border-radius:8px;background:linear-gradient(90deg,#dbeaf4 0 30%,#e4ebe8 30% 70%,#f2dfd4 70%);position:relative;margin:15px 0 4px}
+.indicator-card .meter i{position:absolute;top:-4px;width:3px;height:15px;background:var(--nav)}
+.indicator-card .meter-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}
+.indicator-note{grid-column:1/-1;font-size:11px;color:#73808c;line-height:1.8}
+@media(max-width:600px){.indicator-layout{grid-template-columns:1fr}dialog{padding:18px}.chart{height:180px}.indicator-card{padding:14px}}
+
 </style>
 </head>
 <body>
@@ -35,7 +48,7 @@ main{padding:32px 40px 26px;max-width:1700px;width:100%;margin:auto}.topline{dis
 <div class="bottom-grid" id="data-status" role="tabpanel" aria-labelledby="nav-data-status" tabindex="0" hidden><section class="info-box"><h3>수집 상태</h3><div id="status"></div></section><section class="info-box"><h3>읽기 전에</h3><p>최신 일봉은 장중에 변할 수 있습니다. 종목별 기준 시각은 상세 화면에서 확인하세요.</p><p>5일·20일은 거래 관측치 기준이며, 수익률에 배당 재투자는 포함하지 않습니다.</p><p>페이지를 다시 여는 것만으로 시세가 갱신되지는 않습니다. 수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.</p></section></div>
 <footer><div>INVESTMENT MONITOR · 개인 시장 관찰 도구<br>출처: Yahoo Finance · 시세 지연 및 수집 오류 가능</div><div><a id="universe-link" href="https://stockanalysis.com/list/largest-us-companies/" target="_blank" rel="noopener noreferrer">대형주 선정 출처 ↗</a> · <a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs" target="_blank" rel="noopener noreferrer">섹터 ETF 출처 ↗</a><br><span id="universe-date"></span></div></footer>
 </main></div>
-<dialog id="detail" aria-labelledby="detail-title"><div class="dialog-head"><div><div class="eyebrow" id="detail-symbol"></div><h2 class="dialog-title" id="detail-title"></h2><div id="detail-price"></div></div><button class="btn" id="close-dialog" aria-label="상세 화면 닫기">닫기 ✕</button></div><div id="detail-chart"></div><div class="detail-grid" id="detail-stats"></div><p class="dialog-meta" id="detail-meta"></p></dialog><div id="toast" role="status" hidden></div>
+<dialog id="detail" aria-labelledby="detail-title"><div class="dialog-head"><div><div class="eyebrow" id="detail-symbol"></div><h2 class="dialog-title" id="detail-title"></h2><div id="detail-price"></div></div><button class="btn" id="close-dialog" aria-label="상세 화면 닫기">닫기 ✕</button></div><div id="detail-chart"></div><div class="indicator-layout" id="detail-stats"></div><p class="dialog-meta" id="detail-meta"></p></dialog><div id="toast" role="status" hidden></div>
 <script id="monitor-data" type="application/json">__MONITOR_DATA__</script>
 <script>
 'use strict';
@@ -103,7 +116,22 @@ function showDetail(symbol){
  $('detail-title').textContent=r.name;
  $('detail-price').innerHTML='<strong style="font-size:26px">'+num(r.close)+'</strong> <span class="neutral">'+esc(r.unit)+'</span> <span class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</span>';
  $('detail-chart').innerHTML=chart(r,true);
- $('detail-stats').innerHTML=[['MA20',r.sma20],['MA50',r.sma50],['MA200',r.sma200],['MA20 대비',gap(r)]].map(([k,v])=>'<div><small>'+k+'</small><b>'+num(v)+(k==='MA20 대비'?'%':'')+'</b></div>').join('');
+ const maRows=[['MA20 · 단기',r.sma20],['MA50 · 중기',r.sma50],['MA200 · 장기',r.sma200]].map(([label,value])=>{
+  const distance=Number.isFinite(value)&&value!==0&&Number.isFinite(r.close)?(r.close/value-1)*100:null;
+  return '<tr><td>'+label+'</td><td>'+num(value)+'</td><td class="'+cls(distance)+'">'+pct(distance)+'</td></tr>';
+ }).join('');
+ const rsi=Number.isFinite(r.rsi14)?r.rsi14:null;
+ const rsiState=rsi===null?'미확인':rsi>=70?'과매수 참고 구간':rsi<=30?'과매도 참고 구간':'중간 구간';
+ const macdState=Number.isFinite(r.macd_histogram)?(r.macd_histogram>0?'MACD가 신호선 위':r.macd_histogram<0?'MACD가 신호선 아래':'MACD와 신호선 일치'):'이력 부족 또는 미수집';
+ $('detail-stats').innerHTML=
+ '<section class="indicator-card"><h3>이동평균 MA · 한눈에 보기</h3><p>최근 종가의 평균입니다. 단기·중기·장기 가격 흐름과 현재 가격의 위치를 비교합니다.</p><table><thead><tr><th>기간</th><th>평균값</th><th>현재가 대비 이격</th></tr></thead><tbody>'+maRows+'</tbody></table><details><summary>계산 방법과 뜻</summary>20·50·200개의 유효 일봉 종가를 단순 평균한 SMA입니다. 이격은 (현재가 ÷ 이동평균 − 1) × 100입니다. 양수면 현재가가 평균 위, 음수면 평균 아래입니다. 이동평균은 가격 변화를 뒤따르는 지표입니다.</details></section>'+
+ '<section class="indicator-card"><h3>RSI(14) · 상승·하락 강도</h3><p>최근 상승폭과 하락폭의 균형을 0~100으로 나타냅니다.</p><div class="reading">'+num(rsi)+' <span class="badge">'+rsiState+'</span></div>'+
+ (rsi===null?'':'<div class="meter" role="meter" aria-label="RSI 14" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+rsi.toFixed(2)+'"><i style="left:'+Math.max(0,Math.min(100,rsi))+'%"></i></div><div class="meter-labels"><span>0</span><span>30</span><span>70</span><span>100</span></div>')+
+ '<details><summary>계산 방법과 뜻</summary>14기간 Wilder 평활을 사용합니다. 보통 70 이상·30 이하를 과매수·과매도 참고 구간으로 봅니다. 강한 추세에서는 해당 구간에 오래 머무를 수 있습니다. 상승과 하락이 모두 0인 완전 횡보는 이 도구에서 50으로 표시합니다.</details></section>'+
+ '<section class="indicator-card"><h3>MACD(12,26,9) · 모멘텀</h3><p>빠른 지수이동평균과 느린 지수이동평균의 차이를 비교합니다.</p><table><tbody><tr><td>MACD</td><td>'+num(r.macd,4)+'</td></tr><tr><td>신호선</td><td>'+num(r.macd_signal,4)+'</td></tr><tr><td>히스토그램</td><td class="'+cls(r.macd_histogram)+'">'+num(r.macd_histogram,4)+'</td></tr></tbody></table><p>'+macdState+'</p><details><summary>계산 방법과 뜻</summary>MACD = EMA12 − EMA26, 신호선 = MACD의 EMA9, 히스토그램 = MACD − 신호선입니다. EMA는 같은 기간의 단순평균으로 초기화합니다. 현재 두 선의 위·아래 관계를 보여주며, 교차가 방금 발생했다는 뜻은 아닙니다. 값은 가격과 같은 단위여서 종목 간 크기를 직접 비교하지 않습니다.</details></section>'+
+ '<section class="indicator-card"><h3>볼린저 밴드(20,2) · 변동성</h3><p>20일 평균 주변의 가격 분산으로 최근 변동 범위를 보여줍니다.</p><table><tbody><tr><td>상단</td><td>'+num(r.bb_upper)+'</td></tr><tr><td>중심 · MA20</td><td>'+num(r.bb_middle)+'</td></tr><tr><td>하단</td><td>'+num(r.bb_lower)+'</td></tr><tr><td>밴드 내 위치 %B</td><td>'+num(r.bb_percent_b)+'%</td></tr><tr><td>밴드폭</td><td>'+num(r.bb_width_pct)+'%</td></tr></tbody></table><details><summary>계산 방법과 뜻</summary>상·하단 = MA20 ± 종가의 모집단 표준편차 × 2입니다. %B는 하단 0%, 상단 100%이며 밴드 밖에서는 범위를 벗어납니다. 밴드폭은 (상단 − 하단) ÷ 중심 × 100입니다. 밴드 접촉만으로 반전이 확정되지는 않습니다.</details></section>'+
+ '<p class="indicator-note">기준: 유효 일봉 Close. 장중 봉·배당·분할 처리에 따라 다른 서비스와 차이가 날 수 있습니다. 이력이 부족하거나 이전 보고서에 지표가 없으면 —로 표시합니다. 지표 하나만으로 매수·매도를 결정하지 않습니다. '+(['시장지표','지수'].includes(r.group)?'지수·금리·환율의 지표 값은 해당 원본 단위 기준입니다.':'')+'</p>';
+
  $('detail-meta').textContent='봉 기준: '+localTime(r.bar_time_utc)+' | 시세 기준: '+localTime(r.quote_time_utc)+' | 거래소 시간대: '+(r.exchange_timezone||'미확인')+' | '+(r.status==='ok'?'출처: Yahoo Finance':'수집 오류: '+(r.error||'미확인'))+' · 마지막 봉은 장중 값일 수 있습니다.';
  $('detail').showModal();
 }
@@ -126,7 +154,7 @@ $('import-file').addEventListener('change',async e=>{
  }catch(error){toast('불러오기 실패: '+error.message);}finally{e.target.value='';}
 });
 $('export-btn').addEventListener('click',()=>{
- const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','sma20','sma50','sma200','volume_ratio','status','bar_time_utc','quote_time_utc'];
+ const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram','bb_upper','bb_middle','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','status','bar_time_utc','quote_time_utc'];
  const safe=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
  const csv='\ufeff'+[cols,...visibleRows().map(r=>cols.map(c=>r[c]))].map(row=>row.map(safe).join(',')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='market-monitor.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);

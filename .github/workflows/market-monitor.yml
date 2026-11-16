@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: '24'
       - name: 종목 및 섹터 구성 검증
-        run: node --test tests/sector.test.mjs
+        run: node --test tests/sector.test.mjs tests/technical-indicators.test.mjs
       - name: 이전 결과 제거
         run: |
           node --input-type=module <<'NODE'
