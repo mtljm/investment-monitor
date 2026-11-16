@@ -1,3 +1,4 @@
+import { writeDashboard } from './render-dashboard.mjs';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -40,6 +41,7 @@ async function collect(item) {
   }));
   const stats = summarize(bars);
   return {...item,status:'ok',...stats,
+    history:bars.filter(b=>Number.isFinite(b.close)).slice(-90).map(b=>({time:b.time,close:Number(b.close.toFixed(4))})),
     currency:chart.meta?.currency,
     exchange_timezone:chart.meta?.exchangeTimezoneName,
     quote_time_utc: chart.meta?.regularMarketTime
@@ -96,6 +98,8 @@ export async function main() {
   await writeFile(resolve(out,stamp+'.json'),JSON.stringify(result,null,2)+'\n');
   await writeFile(resolve(out,stamp+'.md'),markdown);
   await writeFile(resolve(out,'latest.md'),markdown);
+  await writeFile(resolve(out,'latest.json'),JSON.stringify(result,null,2)+'\n');
+  await writeDashboard(result);
   console.log(markdown);
   if (rows.some(r=>r.status!=='ok')) process.exitCode=1;
 }

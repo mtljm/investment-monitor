@@ -83,11 +83,14 @@
 
 보유 자산 입력에 앞서 시장 모니터링부터 구현했습니다.
 
+- [HTML 대시보드](dashboard.html) — 파일을 내려받아 브라우저로 열기
 - [최신 실행 보고서](reports/latest.md)
 - [실행 방법과 지표 정의](docs/market-monitoring.md)
 - [관찰 대상 목록](config/monitor.json)
 
 Node.js 22 이상에서 `node scripts/monitor.mjs`로 수동 실행합니다.
+실행 시 `dashboard.html`과 `reports/latest.json`도 함께 갱신됩니다.
+HTML은 데이터를 포함한 단일 파일이어서 별도 서버 없이 열 수 있습니다. GitHub 파일 화면은 소스 보기이므로 파일을 내려받아 여세요.
 지수 4개, 주요 지표 3개, 지수 ETF 4개와 대형주 20개를 수집합니다.
 
 ## 단계별 진행
