@@ -97,6 +97,16 @@ HTML은 데이터를 포함한 단일 파일이어서 별도 서버 없이 열 �
 순위 목록 갱신: `node scripts/update-universe.mjs`
 수집 범위 지정 예시: `node scripts/monitor.mjs --limit 50` (20·50·100·200 지원)
 
+## 휴대폰에서 수동 실행
+
+[20종목 수동 실행 화면](https://github.com/mtljm/investment-monitor/actions/workflows/market-monitor.yml)에서 Run workflow를 누릅니다.
+완료 후 Artifacts의 ZIP을 내려받아 압축을 해제하고 dashboard.html을 엽니다.
+실제 휴대폰 브라우저의 HTML 실행 지원은 기기에서 확인해야 합니다.
+[사용 순서와 비용 관리](docs/mobile-execution.md)를 참고하세요.
+
+첫 단계는 20종목으로 고정하며, 수동 실행·최대 10분·동시 실행 1개·결과 1일 보관을 적용합니다.
+정기 실행과 외부 웹 호스팅은 설정하지 않았습니다.
+
 ## 단계별 진행
 
 - [x] 저장소 생성 및 README 구성
