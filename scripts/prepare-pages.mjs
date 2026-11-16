@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const allowed=['group','symbol','name','unit','snapshot_rank','status','bar_time_utc','quote_time_utc',
  'close','previous_close','change','change_1d_pct','change_5d_pct','change_20d_pct',
- 'sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
+ 'ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
  'bb_middle','bb_upper','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','exchange_timezone','stale_calendar_days'];
 export function publicData(input){
  if(!Array.isArray(input.rows)||input.rows.length>222)throw new Error('시장 보고서 형식을 확인하세요.');
@@ -15,6 +15,16 @@ export function publicData(input){
    if(!['지수','시장지표','대형주','지수 ETF','섹터 ETF'].includes(row.group))throw new Error('시장 데이터 외 그룹은 공개할 수 없습니다.');
    const safe={};
    for(const key of allowed)if(row[key]!==undefined)safe[key]=row[key];
+   if(row.analysis){
+    const a=row.analysis;
+    const text=v=>typeof v==='string'?v.slice(0,3000):'';
+    safe.analysis={verdict:text(a.verdict),summary:text(a.summary),cards:(Array.isArray(a.cards)?a.cards:[]).slice(0,5).map(c=>Object.fromEntries(['title','state','value','meaning'].map(k=>[k,text(c[k])])))};
+   }
+   if(row.fibonacci){
+    const f=row.fibonacci,pick=l=>l?{ratio:Number.isFinite(l.ratio)?l.ratio:null,price:Number.isFinite(l.price)?l.price:null}:null;
+    safe.fibonacci={direction:f.direction==='up'?'up':'down',lookback:60,levels:(Array.isArray(f.levels)?f.levels:[]).slice(0,7).map(pick),support:pick(f.support),resistance:pick(f.resistance)};
+    for(const k of ['high','low','high_time','low_time','position_pct'])safe.fibonacci[k]=Number.isFinite(f[k])?f[k]:null;
+   }
    safe.history=(row.history||[]).slice(-90).map(p=>({time:p.time,close:p.close}));
    if(row.status!=='ok')safe.error='수집 실패';
    return safe;
@@ -44,3 +54,4 @@ export async function main(){
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+

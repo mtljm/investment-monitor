@@ -1,3 +1,4 @@
+import {priceVolumeIndicators,assessTechnical} from './market-analysis.mjs';
 import {technicalIndicators} from './technical-indicators.mjs';
 import { writeDashboard } from './render-dashboard.mjs';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
@@ -17,6 +18,7 @@ export function summarize(bars) {
   const avgVolume = priorVolumes.length === 20 ? priorVolumes.reduce((a,b)=>a+b,0)/20 : null;
   return {
     ...technicalIndicators(valid.map(b=>b.close)),
+    ...priceVolumeIndicators(valid),
     bar_time_utc: new Date(last.time*1000).toISOString(),
     close:last.close, previous_close:previous.close,
     change:last.close-previous.close, change_1d_pct:change(1),
@@ -39,7 +41,7 @@ async function collect(item) {
   const quote = chart.indicators?.quote?.[0];
   if (!quote) throw new Error('일봉 없음');
   const bars = (chart.timestamp || []).map((time,i)=>({
-    time,close:quote.close?.[i],volume:quote.volume?.[i]
+    time,close:quote.close?.[i],volume:quote.volume?.[i],high:quote.high?.[i],low:quote.low?.[i]
   }));
   const stats = summarize(bars);
   return {...item,status:'ok',...stats,
@@ -121,6 +123,10 @@ export async function main() {
   if(flag>=0&&!requested)throw new Error('--limit 값이 필요합니다.');
   const items=selectInstruments(config,requested);
   const rows=await collectInstruments(items);
+  for(const row of rows){
+    const proxySymbol=row.symbol==='^GSPC'?'SPY':row.symbol==='^NDX'?'QQQ':null;
+    row.analysis=assessTechnical(row,proxySymbol?rows.find(r=>r.symbol===proxySymbol):null);
+  }
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',
@@ -140,3 +146,4 @@ export async function main() {
 if (process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   main().catch(e=>{ console.error(e.message); process.exitCode=1; });
 }
+

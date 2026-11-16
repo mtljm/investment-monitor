@@ -28,12 +28,13 @@ dialog{max-height:92vh;overflow:auto} .indicator-layout{display:grid;grid-templa
 .indicator-note{grid-column:1/-1;font-size:11px;color:#73808c;line-height:1.8}
 @media(max-width:600px){.indicator-layout{grid-template-columns:1fr}dialog{padding:18px}.chart{height:180px}.indicator-card{padding:14px}}
 
+.analysis-intro{margin-bottom:18px}.analysis-intro p,.analysis-method p{line-height:1.8;color:#697b75}.analysis-intro select{display:block;margin-top:10px;width:100%;max-width:440px}.analysis-head{background:#173f3a;color:white;padding:24px;border-radius:14px;margin-bottom:16px}.analysis-head h2{margin:8px 0}.analysis-head p{line-height:1.8;margin:10px 0 0}.analysis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}.analysis-grid .indicator-card{margin:0;min-width:0}.analysis-grid .indicator-card:last-child{grid-column:1/-1}.analysis-grid h3{margin-bottom:12px}.analysis-value{line-height:1.9;font-size:13px;overflow-wrap:anywhere}.analysis-state{display:inline-block;background:#eef4f1;color:#214e45;padding:5px 9px;border-radius:6px;font-size:12px;margin-bottom:10px}.analysis-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:22px}.analysis-pick{text-align:left;background:white;border:1px solid #dce5df;border-radius:10px;padding:16px;cursor:pointer;color:#243c35}.analysis-pick[aria-pressed="true"]{border-color:#267c64;background:#f0f8f4}.analysis-pick small,.analysis-pick span{display:block;margin-top:8px;line-height:1.6}.analysis-method{margin:16px 0}.fib-table{width:100%;font-size:12px}.fib-table td{padding:7px}.fib-current{background:#edf5f0}@media(max-width:700px){.analysis-grid,.analysis-summary{grid-template-columns:1fr}.analysis-grid .indicator-card:last-child{grid-column:auto}.analysis-head{padding:18px}.nav{flex-wrap:wrap}.nav button{flex:1 1 42%;white-space:nowrap}}
 </style>
 </head>
 <body>
 <div class="shell">
 <aside class="sidebar"><div class="brand">investment<b>.</b><br>monitor<small>PERSONAL MARKET DESK</small></div>
-<nav class="nav" role="tablist" aria-label="모니터링 화면" aria-orientation="vertical"><button id="nav-overview" class="active" role="tab" data-view="overview" aria-controls="overview" aria-selected="true" tabindex="0"><i>◈</i>시장 개요</button><button id="nav-watchlist" role="tab" data-view="watchlist" aria-controls="watchlist" aria-selected="false" tabindex="-1"><i>▤</i>관찰 종목</button><button id="nav-data-status" role="tab" data-view="data-status" aria-controls="data-status" aria-selected="false" tabindex="-1"><i>◷</i>데이터 상태</button></nav>
+<nav class="nav" role="tablist" aria-label="모니터링 화면" aria-orientation="vertical"><button id="nav-overview" class="active" role="tab" data-view="overview" aria-controls="overview" aria-selected="true" tabindex="0"><i>◈</i>시장 개요</button><button id="nav-watchlist" role="tab" data-view="watchlist" aria-controls="watchlist" aria-selected="false" tabindex="-1"><i>▤</i>관찰 종목</button><button id="nav-technical" role="tab" data-view="technical" aria-controls="technical" aria-selected="false" tabindex="-1"><i>⌁</i>기술적 분석</button><button id="nav-data-status" role="tab" data-view="data-status" aria-controls="data-status" aria-selected="false" tabindex="-1"><i>◷</i>데이터 상태</button></nav>
 <div class="side-note">PORTFOLIO DIRECTION<div class="allocation"><span></span></div><strong>80% 장기 · 20% 단기</strong><br>지수 중심 장기 운용과<br>기술적 매매를 위한 시장 점검<br><br>보유 자산은 추후 연결합니다.</div></aside>
 <main id="main">
 <header class="topline"><span class="eyebrow" id="view-eyebrow">MARKET OVERVIEW / UNITED STATES</span><span class="live"><span class="dot"></span>수동 수집 · 일봉 기준</span></header>
@@ -42,10 +43,15 @@ dialog{max-height:92vh;overflow:auto} .indicator-layout{display:grid;grid-templa
 <div class="notice"><strong>데이터 기준</strong><span id="data-notice"></span></div>
 <div id="overview" role="tabpanel" aria-labelledby="nav-overview" tabindex="0"><section class="index-grid" id="indices" aria-label="주요 시장지수"></section>
 <div class="section-heading"><h2>시장의 온도</h2><small>변동성 · 금리 · 환율</small></div><section class="macro-grid" id="macros" aria-label="주요 시장지표"></section><div class="section-heading"><h2>미국 11개 섹터</h2><small>Select Sector SPDR · 전일 대비</small></div><section class="sector-grid" id="sector-overview" aria-label="미국 섹터별 ETF"></section>
-</div><section class="panel" id="watchlist" role="tabpanel" aria-labelledby="nav-watchlist" tabindex="0" hidden><div class="panel-top"><div><h2>관찰 종목</h2><p class="toolbar-note">종목을 선택하면 가격 흐름과 세부 지표를 볼 수 있습니다.</p></div><div class="tools"><select id="stock-limit" aria-label="대형주 표시 범위"><option value="20">시가총액 상위 20개</option><option value="50">시가총액 상위 50개</option><option value="100">시가총액 상위 100개</option><option value="200">시가총액 상위 200개</option></select><input id="search" type="search" placeholder="티커 또는 기업명 검색" aria-label="종목 검색"><select id="trend" aria-label="추세 필터"><option value="all">모든 추세</option><option value="up">MA20 위</option><option value="down">MA20 아래</option><option value="error">수집 실패</option></select></div></div>
+</div><section class="panel" id="watchlist" role="tabpanel" aria-labelledby="nav-watchlist" tabindex="0" hidden><p id="scope-note" class="toolbar-note" style="padding:16px 20px 0"></p><div class="panel-top"><div><h2>관찰 종목</h2><p class="toolbar-note">종목을 선택하면 가격 흐름과 세부 지표를 볼 수 있습니다.</p></div><div class="tools"><select id="stock-limit" aria-label="대형주 표시 범위"><option value="20">시가총액 상위 20개</option><option value="50">시가총액 상위 50개</option><option value="100">시가총액 상위 100개</option><option value="200">시가총액 상위 200개</option></select><input id="search" type="search" placeholder="티커 또는 기업명 검색" aria-label="종목 검색"><select id="trend" aria-label="추세 필터"><option value="all">모든 추세</option><option value="up">MA20 위</option><option value="down">MA20 아래</option><option value="error">수집 실패</option></select></div></div>
 <div class="tabs" role="group" aria-label="관찰 대상 구분"><button class="tab active" data-group="대형주" aria-pressed="true">대형주</button><button class="tab" data-group="지수 ETF" aria-pressed="false">지수 ETF</button><button class="tab" data-group="섹터 ETF" aria-pressed="false">섹터 ETF</button><button class="tab" data-group="all" aria-pressed="false">전체</button></div>
 <div class="table-scroll"><table><thead><tr><th><button data-sort="symbol">종목 ↕</button></th><th><button data-sort="close">최신 값 ↕</button></th><th><button data-sort="change_1d_pct">1일 % ↕</button></th><th><button data-sort="change_5d_pct">5일 % ↕</button></th><th><button data-sort="change_20d_pct">20일 % ↕</button></th><th>90개 일봉</th><th><button data-sort="sma20_gap">MA20 대비 ↕</button></th><th><button data-sort="volume_ratio">거래량 배수 ↕</button></th><th>상태</th></tr></thead><tbody id="rows"></tbody></table></div><div class="table-foot"><span id="count"></span><span>초록: 상승 · 빨강: 하락 / 관찰 목록이며 매수 신호가 아닙니다.</span></div></section>
-<div class="bottom-grid" id="data-status" role="tabpanel" aria-labelledby="nav-data-status" tabindex="0" hidden><section class="info-box"><h3>수집 상태</h3><div id="status"></div></section><section class="info-box"><h3>읽기 전에</h3><p>최신 일봉은 장중에 변할 수 있습니다. 종목별 기준 시각은 상세 화면에서 확인하세요.</p><p>5일·20일은 거래 관측치 기준이며, 수익률에 배당 재투자는 포함하지 않습니다.</p><p>페이지를 다시 여는 것만으로 시세가 갱신되지는 않습니다. 수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.</p></section></div>
+<section id="technical" role="tabpanel" aria-labelledby="nav-technical" tabindex="0" hidden>
+<div class="info-box analysis-intro"><h2>가격의 현재 위치를 읽습니다.</h2><p>S&amp;P 500(SPX) · 나스닥100 · 시가총액 상위 20개. 일봉 규칙에 따른 해석이며 기업가치·적정 주가 평가가 아닙니다. 장중 봉은 바뀔 수 있습니다.</p><label for="analysis-select">분석 대상</label><select id="analysis-select" aria-label="기술적 분석 대상"></select></div>
+<div id="analysis-detail" aria-live="polite"></div>
+<details class="info-box analysis-method"><summary>계산 기준과 해석의 한계</summary><p>MA는 이동평균의 통칭입니다. SMA20·50·200과 EMA20을 사용합니다. RSI14는 Wilder 방식, 볼린저는 20일·2표준편차입니다. 지수 OBV는 SPY·QQQ 대용이며 지수 자체 거래량이 아닙니다. 피보나치는 최근 60개 일봉 고가·저가 극값을 자동 선정합니다.</p><p>종가 &gt; SMA20 &gt; SMA50 &gt; SMA200이면 상승 정렬, 반대면 하락 정렬, 나머지는 혼조입니다. RSI 70 이상 또는 밴드 상단 밖은 과열 주의, RSI 30 이하 또는 하단 밖은 약세·과매도 확인을 우선합니다. 양쪽 조건이 충돌하면 과열 주의를 우선하며 모든 개별 신호를 함께 확인하세요. 매수·매도 지시나 수익 확률 점수가 아닙니다. 부족한 지표는 분석 자료 부족으로 표시합니다.</p><p><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/overview" target="_blank" rel="noopener">지표 정의 · Fidelity</a> · 50%는 관행적으로 포함하는 되돌림선입니다. 이 도구의 60일·20/80 근접 기준·종합 문구는 자체 규칙입니다.</p></details>
+<div class="section-heading"><h2>대상별 현재 구간</h2><small>선택하면 5가지 지표를 펼칩니다.</small></div><div id="analysis-summary" class="analysis-summary"></div>
+</section><div class="bottom-grid" id="data-status" role="tabpanel" aria-labelledby="nav-data-status" tabindex="0" hidden><section class="info-box"><h3>수집 상태</h3><div id="status"></div></section><section class="info-box"><h3>읽기 전에</h3><p>최신 일봉은 장중에 변할 수 있습니다. 종목별 기준 시각은 상세 화면에서 확인하세요.</p><p>5일·20일은 거래 관측치 기준이며, 수익률에 배당 재투자는 포함하지 않습니다.</p><p>페이지를 다시 여는 것만으로 시세가 갱신되지는 않습니다. 수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.</p></section></div>
 <footer><div>INVESTMENT MONITOR · 개인 시장 관찰 도구<br>출처: Yahoo Finance · 시세 지연 및 수집 오류 가능</div><div><a id="universe-link" href="https://stockanalysis.com/list/largest-us-companies/" target="_blank" rel="noopener noreferrer">대형주 선정 출처 ↗</a> · <a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs" target="_blank" rel="noopener noreferrer">섹터 ETF 출처 ↗</a><br><span id="universe-date"></span></div></footer>
 </main></div>
 <dialog id="detail" aria-labelledby="detail-title"><div class="dialog-head"><div><div class="eyebrow" id="detail-symbol"></div><h2 class="dialog-title" id="detail-title"></h2><div id="detail-price"></div></div><button class="btn" id="close-dialog" aria-label="상세 화면 닫기">닫기 ✕</button></div><div id="detail-chart"></div><div class="indicator-layout" id="detail-stats"></div><p class="dialog-meta" id="detail-meta"></p></dialog><div id="toast" role="status" hidden></div>
@@ -80,11 +86,12 @@ function render(){
  const available=data.rows.filter(r=>r.group==='대형주').length;
  if(stockLimit>available)stockLimit=[200,100,50,20].find(n=>n<=available)||20;
  $('stock-limit').value=String(stockLimit);
+ $('scope-note').textContent=available<200?'현재 배포는 상위 '+available+'개 데이터입니다. 50·100·200 메뉴는 유지하며, 해당 범위 JSON을 불러오면 사용할 수 있습니다.':'최대 200개 데이터가 포함되어 있습니다.';
  [...$('stock-limit').options].forEach(o=>o.disabled=Number(o.value)>available);
 
  const rows=data.rows;
  $('data-notice').textContent='수집 '+localTime(data.collected_at_utc)+' · 항목별 거래일과 시세 시각이 다릅니다.';
- $('universe-date').textContent='대형주 목록 기준일 '+(data.universe_date||'미확인')+' · 미국 기업 시가총액 상위 '+available+'개 스냅샷';
+ $('universe-date').textContent='대형주 목록 기준일 '+(data.universe_date||'미확인')+' · 미국 기업 시가총액 상위 '+available+'개 수집 · 순위 목록은 최대 200개';
  $('indices').innerHTML=rows.filter(r=>r.group==='지수').map(r=>'<article class="index-card" data-symbol="'+esc(r.symbol)+'" tabindex="0" role="button" aria-label="'+esc(r.name)+' 상세"><div class="card-title">'+esc(r.name)+'<span>'+esc(r.symbol)+'</span></div><div class="value">'+num(r.close)+'</div><div class="change '+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+' <span class="neutral">전일 대비</span></div>'+chart(r)+'<div class="stamp">'+esc((r.bar_time_utc||'미확인').slice(0,10))+' · '+(r.status==='ok'?'일봉': '수집 실패')+'</div></article>').join('');
  $('macros').innerHTML=rows.filter(r=>r.group==='시장지표').map(r=>{
   const v=r.symbol==='^TNX'?r.change*100:r.symbol==='^VIX'?r.change:r.change_1d_pct;
@@ -95,6 +102,7 @@ function render(){
  const ok=rows.filter(r=>r.status==='ok').length,old=rows.filter(r=>stale(r)).length;
  $('status').innerHTML='<div class="progress-row"><span>전체 수집</span><span class="status">'+ok+' / '+rows.length+'</span></div><div class="progress-row"><span>수집 실패 / 오래된 봉</span><span>'+ (rows.length-ok)+' / '+old+'</span></div><div class="progress-row"><span>갱신 방식</span><span>스크립트 수동 실행</span></div>';
  renderTable();
+ renderAnalysis();
 }
 function visibleRows(){
  const q=$('search').value.trim().toLowerCase(),trend=$('trend').value;
@@ -163,6 +171,7 @@ $('export-btn').addEventListener('click',()=>{
 const views={
  overview:['미국 시장, 한눈에.','시장 흐름과 주요 지표의 변화를 확인하세요.','MARKET OVERVIEW / UNITED STATES'],
  watchlist:['관찰 종목, 더 넓게.','시가총액 상위 20·50·100·200개를 선택해 흐름을 비교하세요.','WATCHLIST / US LARGE CAPS'],
+ technical:['기술적 분석, 현재 구간.','다섯 가지 지표로 가격 위치와 신호의 일치·충돌을 확인하세요.','TECHNICAL ANALYSIS / DAILY'],
  'data-status':['데이터를 확인하세요.','수집 시각과 성공 여부, 데이터 갱신 방법을 확인하세요.','DATA STATUS / COLLECTION']
 };
 function activateView(view,focus=false){
@@ -190,8 +199,27 @@ $('stock-limit').addEventListener('change',()=>{
  try{localStorage.setItem('investment-monitor-stock-limit',String(stockLimit));}catch{}
  renderTable();
 });
+let analysisSymbol='^GSPC';
+function analysisTargets(){return data.rows.filter(r=>['^GSPC','^NDX'].includes(r.symbol)||(r.group==='대형주'&&r.snapshot_rank<=20)).sort((a,b)=>(a.group==='지수'?0:1)-(b.group==='지수'?0:1)||(a.snapshot_rank||0)-(b.snapshot_rank||0));}
+function analysisName(r){return r.symbol==='^GSPC'?'S&P 500 · SPX':r.symbol==='^NDX'?'나스닥100':r.name;}
+function renderAnalysis(){
+ const targets=analysisTargets();if(!targets.some(r=>r.symbol===analysisSymbol))analysisSymbol=targets[0]?.symbol;
+ $('analysis-select').innerHTML=targets.map(r=>'<option value="'+esc(r.symbol)+'">'+esc(analysisName(r))+' · '+esc(r.symbol)+'</option>').join('');
+ $('analysis-select').value=analysisSymbol||'';
+ $('analysis-summary').innerHTML=targets.map(r=>'<button class="analysis-pick" data-analysis-symbol="'+esc(r.symbol)+'" aria-pressed="'+(r.symbol===analysisSymbol)+'"><strong>'+esc(analysisName(r))+'</strong><small>'+esc(r.symbol)+' · '+num(r.close)+' '+esc(r.unit)+'</small><span>'+esc(r.analysis?.verdict||'분석 자료 부족')+'</span><small>RSI '+num(r.rsi14)+' · '+esc(r.analysis?.cards?.[0]?.state||'미확인')+'</small></button>').join('');
+ const r=targets.find(r=>r.symbol===analysisSymbol);if(!r){$('analysis-detail').textContent='분석 대상 데이터가 없습니다.';return;}
+ const a=r.analysis;
+ const f=r.fibonacci;
+ const date=t=>Number.isFinite(t)?new Date(t*1000).toISOString().slice(0,10):'—';
+ const fib=f&&Array.isArray(f.levels)?'<p>기준 '+(f.direction==='up'?'저점 → 고점 상승':'고점 → 저점 하락')+' · 저점 '+num(f.low)+' ('+date(f.low_time)+') / 고점 '+num(f.high)+' ('+date(f.high_time)+')</p><table class="fib-table"><thead><tr><th>되돌림 비율</th><th>가격</th><th>현재가와 관계</th></tr></thead><tbody>'+f.levels.map(l=>'<tr class="'+(l.price===f.support?.price||l.price===f.resistance?.price?'fib-current':'')+'"><td>'+num(l.ratio*100,1)+'%</td><td>'+num(l.price)+'</td><td>'+(l.price===f.support?.price?'가장 가까운 아래 기준선':l.price===f.resistance?.price?'가장 가까운 위 기준선':l.price<=r.close?'현재가 아래':'현재가 위')+'</td></tr>').join('')+'</tbody></table>':'';
+ $('analysis-detail').innerHTML='<article class="analysis-head"><small>'+esc(r.symbol)+' · 봉 '+esc((r.bar_time_utc||'미확인').slice(0,10))+(stale(r)?' · 오래된 봉 확인':'')+'</small><h2>'+esc(analysisName(r))+' <span style="font-size:18px">'+num(r.close)+' '+esc(r.unit)+'</span></h2><strong>'+esc(a?.verdict||'분석 자료 부족')+'</strong><p>'+esc(a?.summary||'이 보고서에는 확장 지표가 없습니다. 최신 수집 결과를 사용하세요.')+'</p></article><div class="analysis-grid">'+(Array.isArray(a?.cards)?a.cards:[]).map((card,i)=>'<section class="indicator-card"><h3>'+esc(card.title)+'</h3><span class="analysis-state">'+esc(card.state)+'</span><div class="analysis-value">'+esc(card.value)+'</div><p>'+esc(card.meaning)+'</p>'+(i===4?fib:'')+'</section>').join('')+'</div>';
+}
+$('analysis-select').addEventListener('change',e=>{analysisSymbol=e.target.value;renderAnalysis();});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-analysis-symbol]');if(b){analysisSymbol=b.dataset.analysisSymbol;renderAnalysis();$('analysis-select').focus();$('analysis-detail').scrollIntoView({behavior:'smooth',block:'start'});}});
+
 activateView('overview');
 
 render();
 </script>
 </body></html>
+
