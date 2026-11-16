@@ -25,7 +25,10 @@ export function publicHtml(template,input){
  const data=publicData(input);
  const cleaned=template.replace(/<div class="side-note">[\s\S]*?<\/div><\/aside>/,'</aside>')
   .replaceAll('PERSONAL MARKET DESK','US MARKET OVERVIEW')
-  .replaceAll('수동 수집 · 일봉 기준','수집 데이터 · 일봉 기준');
+  .replaceAll('수동 수집 · 일봉 기준','수집 데이터 · 일봉 기준')
+  .replaceAll('스크립트 수동 실행','매일 오전 8시 목표 · Actions')
+  .replaceAll('수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.','매일 오전 자동 갱신됩니다. 수동 갱신은 GitHub Actions의 Pages 시장 대시보드에서 실행하세요.')
+  .replaceAll('새 JSON 불러오기가 필요합니다.','자동 갱신 시각 또는 GitHub Actions 실행 결과를 확인하세요.');
  if(cleaned.includes('80% 장기')||cleaned.includes('보유 자산은 추후'))throw new Error('개인 운용 안내가 남아 있습니다.');
  const json=JSON.stringify(data).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
  if(!cleaned.includes('__MONITOR_DATA__'))throw new Error('화면 템플릿의 데이터 위치가 없습니다.');
@@ -37,7 +40,7 @@ export async function main(){
  const out=resolve(root,'public-site');await mkdir(out,{recursive:true});
  await writeFile(resolve(out,'index.html'),publicHtml(template,input));
  await writeFile(resolve(out,'.nojekyll'),'');
- console.log('Pages 게시 후보: public-site/index.html (아직 게시하지 않음)');
+ console.log('Pages 게시 파일 생성: public-site/index.html');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
