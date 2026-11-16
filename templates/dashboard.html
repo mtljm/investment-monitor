@@ -275,7 +275,8 @@ function renderBriefing(){
  for(const id of ['overview-briefing','technical-briefing'])$(id).innerHTML=html;
 }
 function detailChart(r){
- const h=history(r),w=720,height=310,left=10,right=105,top=22,bottom=30,pw=w-left-right,ph=height-top-bottom;
+ const mobile=matchMedia('(max-width:600px)').matches;
+ const h=history(r),w=mobile?420:720,height=mobile?320:310,left=10,right=mobile?90:105,top=22,bottom=30,pw=w-left-right,ph=height-top-bottom,axisFont=mobile?12:9,labelFont=mobile?12:9;
  if(h.length<2)return '<p class="neutral">가격 이력이 없습니다.</p>';
  const keys=chartLayers.sma?['sma20','sma50','sma200']:[];
  if(chartLayers.bb)keys.push('bb_upper','bb_lower');
@@ -284,15 +285,15 @@ function detailChart(r){
  const min=Math.min(...values),max=Math.max(...values),pad=(max-min||max*.01||1)*.07,lo=min-pad,hi=max+pad;
  const x=i=>left+i/(h.length-1)*pw,y=v=>top+(hi-v)/(hi-lo)*ph;
  const line=key=>{let active=false;return h.map((p,i)=>{if(!Number.isFinite(p[key])){active=false;return '';}const command=active?'L':'M';active=true;return command+x(i).toFixed(2)+','+y(p[key]).toFixed(2);}).join(' ');};
- let svg='';for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,yy=y(v);svg+='<line x1="'+left+'" x2="'+(w-right)+'" y1="'+yy+'" y2="'+yy+'" stroke="#e5e9ee"/><text x="'+(w-right+8)+'" y="'+(yy+3)+'" fill="#73808c" font-size="9">'+num(v)+'</text>';}
+ let svg='';const ticks=mobile?3:4;for(let i=0;i<=ticks;i++){const v=lo+(hi-lo)*i/ticks,yy=y(v);svg+='<line x1="'+left+'" x2="'+(w-right)+'" y1="'+yy+'" y2="'+yy+'" stroke="#e5e9ee"/><text x="'+(w-right+8)+'" y="'+(yy+3)+'" fill="#73808c" font-size="'+axisFont+'">'+num(v)+'</text>';}
  const band=h.map((p,i)=>({p,i})).filter(({p})=>Number.isFinite(p.bb_upper)&&Number.isFinite(p.bb_lower));
  if(chartLayers.bb&&band.length>1){const coords=band.map(({p,i})=>x(i)+','+y(p.bb_upper)).concat([...band].reverse().map(({p,i})=>x(i)+','+y(p.bb_lower))).join(' ');svg+='<polygon points="'+coords+'" fill="#719ac5" opacity=".12"/>';for(const k of ['bb_upper','bb_lower'])svg+='<path d="'+line(k)+'" fill="none" stroke="#719ac5" stroke-width="1" stroke-dasharray="4 3"/>';}
  const colors={sma20:'#bc6c25',sma50:'#8757b4',sma200:'#326d88'};
  if(chartLayers.sma)for(const key of ['sma20','sma50','sma200'])svg+='<path d="'+line(key)+'" fill="none" stroke="'+colors[key]+'" stroke-width="1.5"/>';
- for(const l of fib){if(!Number.isFinite(l.price))continue;const near=l.price===r.fibonacci?.support?.price||l.price===r.fibonacci?.resistance?.price;svg+='<line x1="'+x(Math.max(0,h.length-60))+'" x2="'+(w-right)+'" y1="'+y(l.price)+'" y2="'+y(l.price)+'" stroke="#8e7853" stroke-width="'+(near?1.4:.7)+'" stroke-dasharray="5 4" opacity="'+(near?.8:.35)+'"/>';if(near)svg+='<text x="'+(left+5)+'" y="'+(y(l.price)-4)+'" fill="#806744" font-size="9">Fib '+num(l.ratio*100,1)+'% · '+num(l.price)+'</text>';}
+ for(const l of fib){if(!Number.isFinite(l.price))continue;const near=l.price===r.fibonacci?.support?.price||l.price===r.fibonacci?.resistance?.price;svg+='<line x1="'+x(Math.max(0,h.length-60))+'" x2="'+(w-right)+'" y1="'+y(l.price)+'" y2="'+y(l.price)+'" stroke="#8e7853" stroke-width="'+(near?1.4:.7)+'" stroke-dasharray="5 4" opacity="'+(near?.8:.35)+'"/>';if(near)svg+='<text x="'+(left+5)+'" y="'+(y(l.price)-4)+'" fill="#806744" font-size="'+labelFont+'">Fib '+num(l.ratio*100,1)+'% · '+num(l.price)+'</text>';}
  const color=h.at(-1).close>=h[0].close?'#c63d45':'#2867bd';
  svg+='<path d="'+line('close')+'" fill="none" stroke="'+color+'" stroke-width="2.1"/>';
- const last=h.at(-1);svg+='<circle cx="'+x(h.length-1)+'" cy="'+y(last.close)+'" r="3" fill="'+color+'"/><text x="'+(w-right+8)+'" y="'+(y(last.close)-7)+'" fill="'+color+'" font-size="10" font-weight="700">현재 '+num(last.close)+'</text>';
+ const last=h.at(-1);svg+='<circle cx="'+x(h.length-1)+'" cy="'+y(last.close)+'" r="3" fill="'+color+'"/><text x="'+(w-right+8)+'" y="'+(y(last.close)-7)+'" fill="'+color+'" font-size="'+(mobile?13:10)+'" font-weight="700">현재 '+num(last.close)+'</text>';
  const hasOverlay=h.some(p=>Number.isFinite(p.sma20));
  return '<div class="chart-controls" role="group" aria-label="차트 지표 표시">'+[['sma','SMA 20·50·200'],['bb','볼린저 밴드'],['fib','피보나치']].map(([key,label])=>'<label><input type="checkbox" data-chart-layer="'+key+'" '+(chartLayers[key]?'checked':'')+'> '+label+'</label>').join('')+'</div><svg class="chart overlay-chart" viewBox="0 0 '+w+' '+height+'" role="img" aria-label="'+esc(r.name)+' 가격과 이동평균·볼린저·피보나치 비교 차트">'+svg+'</svg><div class="chart-legend"><span>━ 종가</span><span style="color:#bc6c25">━ SMA20</span><span style="color:#8757b4">━ SMA50</span><span style="color:#326d88">━ SMA200</span><span style="color:#719ac5">┄ 볼린저</span><span style="color:#8e7853">┄ 피보나치 60일</span></div><p class="toolbar-note">'+esc(new Date(h[0].time*1000).toISOString().slice(0,10))+' ~ '+esc(new Date(last.time*1000).toISOString().slice(0,10))+' · '+esc(r.unit)+' · 종가 기준'+(!hasOverlay?' · 이전 보고서에는 차트 지표 이력이 없습니다.':'')+'</p>';
 }
