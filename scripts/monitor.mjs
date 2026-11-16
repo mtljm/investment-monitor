@@ -1,3 +1,4 @@
+import {technicalIndicators} from './technical-indicators.mjs';
 import { writeDashboard } from './render-dashboard.mjs';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
@@ -15,6 +16,7 @@ export function summarize(bars) {
   const priorVolumes = valid.slice(-21,-1).map(b=>b.volume).filter(v=>Number.isFinite(v)&&v>0);
   const avgVolume = priorVolumes.length === 20 ? priorVolumes.reduce((a,b)=>a+b,0)/20 : null;
   return {
+    ...technicalIndicators(valid.map(b=>b.close)),
     bar_time_utc: new Date(last.time*1000).toISOString(),
     close:last.close, previous_close:previous.close,
     change:last.close-previous.close, change_1d_pct:change(1),
