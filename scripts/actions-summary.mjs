@@ -1,5 +1,6 @@
 import {readFileSync,appendFileSync} from 'node:fs';
-const lines=['# 미국 시장 모니터 · 20종목 수동 실행',''];
+const isTelegram=process.env.DELIVERY_MODE==='telegram';
+const lines=[isTelegram?'# 미국 시장 모니터 · Telegram 오전 브리핑':'# 미국 시장 모니터 · 20종목 수동 실행',''];
 try {
   const data=JSON.parse(readFileSync('reports/latest.json','utf8'));
   const stocks=data.rows.filter(r=>r.group==='대형주').length;
@@ -15,8 +16,8 @@ try {
     '2. ZIP 압축을 해제하고 dashboard.html을 JavaScript 실행을 지원하는 브라우저로 엽니다.',
     '3. 휴대폰 파일 미리보기에서 버튼이나 차트가 동작하지 않으면 브라우저 실행 지원을 확인하세요.',
     '',
-    '결과 보관: 1일. 웹사이트 배포나 자동 정기 실행은 설정하지 않았습니다.',
-    '이 작업은 수동 실행, 일반 Linux 러너, 최대 10분이며 별도 캐시를 저장하지 않습니다.',
+    isTelegram?'결과 보관: 1일. 매일 오전 8시 목표의 정기 전송은 TELEGRAM_DELIVERY_ENABLED=true일 때만 실행됩니다.':'결과 보관: 1일. 이 워크플로는 수동 실행만 지원합니다.',
+    '이 작업은 일반 Linux 러너, 최대 10분이며 별도 캐시를 저장하지 않습니다.',
     '계정 전체 무료 제공량은 다른 저장소와도 공유되므로 Billing에서 함께 확인하세요.'
   );
   if(failures.length)lines.push('','## 수집 오류',...failures.map(r=>'- '+r.symbol+': '+r.error));

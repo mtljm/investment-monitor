@@ -1,0 +1,76 @@
+name: Telegram 오전 브리핑
+run-name: 미국 시장 오전 브리핑 Telegram 전송
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 23 * * *' # UTC 23:00 = 다음 날 한국시간 08:00
+
+permissions:
+  contents: read
+
+concurrency:
+  group: market-monitor-manual
+  cancel-in-progress: false
+
+jobs:
+  brief:
+    if: github.event_name == 'workflow_dispatch' || vars.TELEGRAM_DELIVERY_ENABLED == 'true'
+    name: 오전 브리핑 수집 및 개인 대화 전송
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 연결정보 등록 확인
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "TELEGRAM_BOT_TOKEN과 TELEGRAM_CHAT_ID Secrets를 먼저 등록하세요."
+            exit 1
+          fi
+      - name: 저장소 가져오기
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Node.js 준비
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - name: 전송 로직 검증
+        run: node --test tests/telegram.test.mjs
+      - name: 이전 결과 제거
+        run: |
+          node --input-type=module <<'NODE'
+          import {rmSync} from 'node:fs';
+          for (const path of ['dashboard.html','reports/latest.json','reports/latest.md']) rmSync(path,{force:true});
+          rmSync('delivery',{force:true,recursive:true});
+          NODE
+      - name: 20종목과 시장지표 수집
+        timeout-minutes: 6
+        run: node scripts/monitor.mjs --limit 20
+      - name: 브리핑과 ZIP 생성
+        id: bundle
+        if: ${{ !cancelled() && hashFiles('reports/latest.json') != '' }}
+        run: node scripts/prepare-telegram.mjs
+      - name: Telegram 개인 대화로 전송
+        if: ${{ !cancelled() && steps.bundle.outcome == 'success' }}
+        timeout-minutes: 2
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/send-telegram.mjs
+      - name: 실행 요약 작성
+        env:
+          DELIVERY_MODE: telegram
+        if: ${{ !cancelled() && hashFiles('reports/latest.json') != '' }}
+        run: node scripts/actions-summary.mjs
+      - name: 다운로드용 ZIP 보관
+        if: ${{ !cancelled() && steps.bundle.outcome == 'success' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: telegram-brief-${{ github.run_number }}
+          path: delivery/*.zip
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
