@@ -5,7 +5,7 @@ try {
   const data=JSON.parse(readFileSync('reports/latest.json','utf8'));
   const stocks=data.rows.filter(r=>r.group==='대형주').length;
   const sectors=data.rows.filter(r=>r.group==='섹터 ETF').length;
-  if(stocks!==20||sectors!==11||data.rows.length!==42)throw new Error('예상 범위(대형주 20개, 섹터 ETF 11개, 전체 42개)와 다릅니다.');
+  if(stocks!==20||sectors!==11||data.rows.length!==43)throw new Error('예상 범위(대형주 20개, 섹터 ETF 11개, 전체 43개)와 다릅니다.');
   const failures=data.rows.filter(r=>r.status!=='ok');
   lines.push(
     '- 수집 시각: '+data.collected_at_kst,

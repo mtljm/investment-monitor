@@ -52,3 +52,9 @@ test('public page wires safety helpers and shows the current schedule',()=>{
  const code=html.match(/<script>\s*([\s\S]*?)<\/script>/)?.[1];
  assert.ok(code);assert.doesNotThrow(()=>new vm.Script(code));
 });
+
+test('BTC daily freshness uses a 36-hour clock even on US weekends and holidays',()=>{
+ const row={group:'시장지표',symbol:'BTC-USD',status:'ok',bar_time_utc:'2026-11-14T00:00:00Z'};
+ assert.equal(invoke('priceHealth',row,ms('2026-11-15T11:59:00Z')),'current');
+ assert.equal(invoke('priceHealth',row,ms('2026-11-15T12:01:00Z')),'stale');
+});

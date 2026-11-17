@@ -7,7 +7,7 @@ test('대형주 범위와 별개로 섹터 11개를 수집한다',()=>{
   for(const n of [20,50,100,200]){
     const rows=selectInstruments(config,n);
     assert.equal(rows.filter(r=>r.group==='섹터 ETF').length,11);
-    assert.equal(rows.length,n+22);
+    assert.equal(rows.length,n+23);
     assert.equal(new Set(rows.map(r=>r.symbol)).size,rows.length);
   }
 });
@@ -15,4 +15,15 @@ test('섹터 초과와 잘못된 그룹은 거부한다',()=>{
   const extra={group:'섹터 ETF',symbol:'TEST',name:'test',unit:'USD'};
   assert.throws(()=>selectInstruments({...config,instruments:[...config.instruments,extra]},20));
   assert.throws(()=>selectInstruments({...config,instruments:config.instruments.map((r,i)=>i? r:{...r,group:'unknown'})},20));
+});
+
+test('BTC is included exactly once in every stock range and the macro cap stays enforced',()=>{
+ for(const limit of [20,50,100,200]){
+  const rows=selectInstruments(config,limit);
+  assert.equal(rows.filter(r=>r.symbol==='BTC-USD').length,1);
+  assert.equal(rows.filter(r=>r.group==='시장지표').length,4);
+  assert.equal(rows.find(r=>r.symbol==='BTC-USD').unit,'USD');
+ }
+ const extra={group:'시장지표',symbol:'EXTRA',name:'extra',unit:'USD'};
+ assert.throws(()=>selectInstruments({...config,instruments:[...config.instruments,extra]},20));
 });

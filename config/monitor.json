@@ -46,6 +46,12 @@
       "unit": "KRW/USD"
     },
     {
+      "group": "시장지표",
+      "symbol": "BTC-USD",
+      "name": "비트코인",
+      "unit": "USD"
+    },
+    {
       "group": "지수 ETF",
       "symbol": "SPY",
       "name": "SPY",

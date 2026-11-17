@@ -44,7 +44,7 @@ jobs:
           for(const path of ['reports/latest.json','reports/latest.md','dashboard.html']) rmSync(path,{force:true});
           rmSync('public-site',{recursive:true,force:true});
           NODE
-      - name: 대형주 20개와 지수·지표·ETF 22개 수집
+      - name: 대형주 20개와 지수·지표·ETF 23개 수집
         timeout-minutes: 6
         run: node scripts/monitor.mjs --limit 20
       - name: 공개 화면과 90일 비교 이력 생성

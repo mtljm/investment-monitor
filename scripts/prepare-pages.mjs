@@ -8,7 +8,7 @@ const allowed=['group','symbol','name','unit','snapshot_rank','status','bar_time
  'ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
  'bb_middle','bb_upper','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','exchange_timezone','stale_calendar_days'];
 export function publicData(input){
- if(!Array.isArray(input.rows)||input.rows.length>222)throw new Error('시장 보고서 형식을 확인하세요.');
+ if(!Array.isArray(input.rows)||input.rows.length>223)throw new Error('시장 보고서 형식을 확인하세요.');
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
