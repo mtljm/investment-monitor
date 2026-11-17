@@ -3,7 +3,7 @@ run-name: 미국 시장 20종목 수집 및 Pages 갱신
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 23 * * *' # 다음 날 한국시간 08:00 목표
+    - cron: '15 22 * * *' # 다음 날 한국시간 07:15 목표
   push:
     branches: [main]
     paths:
