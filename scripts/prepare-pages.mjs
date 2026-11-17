@@ -1,3 +1,4 @@
+import {readDashboardTemplate} from './dashboard-template.mjs';
 import {dashboardContext} from './dashboard-context.mjs';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
@@ -49,7 +50,7 @@ export function publicHtml(template,input){
 }
 export async function main(){
  const input=JSON.parse(await readFile(resolve(root,'reports/latest.json'),'utf8'));
- const template=await readFile(resolve(root,'templates/dashboard.html'),'utf8');
+ const template=await readDashboardTemplate();
  let previous={version:1,days:[]};
  if(process.env.PAGES_HISTORY_URL){
   const url=new URL(process.env.PAGES_HISTORY_URL);

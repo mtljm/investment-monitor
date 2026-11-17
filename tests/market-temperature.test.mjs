@@ -1,8 +1,9 @@
+import {readFile} from 'node:fs/promises';
+import {readDashboardTemplate} from '../scripts/dashboard-template.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-const template=readFileSync(new URL('../templates/dashboard.html',import.meta.url),'utf8');
+const template=await readDashboardTemplate();
 const source=template.split('// TEMPERATURE_MODEL_START')[1].split('// TEMPERATURE_MODEL_END')[0];
 const calculate=vm.runInNewContext(source+';calculateTemperature');
 function rows({vix=12,close=120,ma=100,btc=110,down=0}={}){
@@ -33,10 +34,11 @@ test('금리·환율의 방향은 점수에 직접 반영하지 않는다',()=>{
  const r=rows();r.push({symbol:'^TNX',status:'ok',close:8},{symbol:'KRW=X',status:'ok',close:1800});assert.equal(calculate(r).score,0);
 });
 
-test('수집 지연 시 정상 계산값이 있어도 온도 숫자를 표시하지 않는다',()=>{
+test('수집 지연 시 정상 계산값이 있어도 온도 숫자를 표시하지 않는다',async()=>{
  const el={innerHTML:'',dataset:{},querySelector:()=>null};
- const renderSource=template.split('function renderTemperature(){')[1].split('\nfunction render(){')[0];
+ const renderSource=(await readFile(new URL('../templates/market-temperature.js',import.meta.url),'utf8')).split('function renderTemperature(){')[1];
  const context={calculateTemperature:calculate,data:{rows:rows(),collected_at_utc:'2026-11-17T08:00:00Z'},collectionHealth:()=>({late:true,invalid:false,expectedDay:'2026-11-16'}),priceHealth:()=> 'current',$:()=>el,esc:String,num:v=>String(v??'—'),localTime:String};
  vm.runInNewContext('function renderTemperature(){'+renderSource+';renderTemperature();',context);
  assert.match(el.innerHTML,/갱신 확인 필요/);assert.ok(!el.innerHTML.includes('aria-valuenow='));
 });
+

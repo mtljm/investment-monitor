@@ -1,9 +1,9 @@
+import {readDashboardTemplate} from '../scripts/dashboard-template.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {publicHtml} from '../scripts/prepare-pages.mjs';
-const template=await readFile(new URL('../templates/dashboard.html',import.meta.url),'utf8');
+const template=await readDashboardTemplate();
 const helpers=template.split('// BEGIN DASHBOARD SAFETY HELPERS')[1]?.split('// END DASHBOARD SAFETY HELPERS')[0];
 assert.ok(helpers,'browser safety helpers must exist');
 const ctx=vm.createContext({});
@@ -58,3 +58,4 @@ test('BTC daily freshness uses a 36-hour clock even on US weekends and holidays'
  assert.equal(invoke('priceHealth',row,ms('2026-11-15T11:59:00Z')),'current');
  assert.equal(invoke('priceHealth',row,ms('2026-11-15T12:01:00Z')),'stale');
 });
+
