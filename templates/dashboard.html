@@ -146,6 +146,10 @@ body{line-height:1.6;-webkit-font-smoothing:antialiased}h1,h2,h3{letter-spacing:
 .detail-changes{border-radius:9px;background:var(--surface)}.analysis-grid{gap:16px}.detail-metrics thead th{background:#edf2f7!important}.indicator-card .detail-metrics td{font-weight:500}.dialog-meta{border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
 .chart-controls{gap:10px}.chart-controls label{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}.chart-legend{gap:12px}.progress-row{font-size:12px}footer{padding-top:20px;border-top:1px solid var(--line);margin-top:28px}
 @media(max-width:760px){.hero{margin:22px 0}.hero h1{font-size:25px}.subtitle{font-size:12px}.notice{grid-template-columns:minmax(0,1fr);gap:5px;padding:12px 14px;font-size:11px}.daily-briefing{padding:17px}.brief-grid p{font-size:12px}.section-heading{gap:8px}.section-heading h2{font-size:15px}.section-heading small{font-size:10px}.sector-tile{padding:12px}.live{font-size:10px}.table-foot{font-size:10px}footer{font-size:10px}.chart-controls label{padding:4px 6px}}
+/* Macro history and technical quick view */
+.macro{cursor:pointer;transition:border-color .15s,box-shadow .15s}.macro:hover{border-color:#8da4b6;box-shadow:0 4px 14px #1730470d}.macro:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.macro-history{width:100%;min-width:0}.macro-history .spark{height:62px;margin:4px 0 12px}.macro-metrics{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;font-size:11px;color:var(--muted)}.macro-metrics span{display:flex;justify-content:space-between;gap:8px}.macro-metrics b{font-weight:600;white-space:nowrap}.macro-open{display:block;font-size:10px;color:#365f77;margin-top:12px;line-height:1.7}.macro-stamp{font-size:9px}.chart-controls select{min-height:28px;border:1px solid var(--line);background:white;border-radius:4px;font:inherit;padding:3px 6px}
+@media(max-width:760px){.macro-metrics{font-size:10px}.macro-open{font-size:9px}.macro-history .spark{height:52px}}
 </style>
 </head>
 <body>
@@ -270,7 +274,7 @@ function render(){
  $('macros').innerHTML=rows.filter(r=>r.group==='시장지표').map(r=>{
   const v=r.symbol==='^TNX'?r.change*100:r.symbol==='^VIX'?r.change:r.change_1d_pct;
   const unit=r.symbol==='^TNX'?' bp':r.symbol==='^VIX'?' pt':'%';
-  return '<article class="macro" data-macro-symbol="'+esc(r.symbol)+'"><div><span class="label">'+esc(r.name)+(r.symbol==='BTC-USD'?' · BTC/USD':'')+'</span><div class="value">'+num(r.close)+'<span class="unit">'+esc(r.unit)+'</span></div></div><div class="change '+cls(v)+'">'+(Number.isFinite(v)?(v>0?'+':'')+num(v)+unit:'—')+'<span class="macro-basis">'+(r.symbol==='BTC-USD'?'UTC 일봉 대비 · 수집 시점 가격':'전일 대비')+'</span></div><small class="macro-stamp">'+(r.status==='ok'?'시세 '+esc(localTime(r.quote_time_utc||r.bar_time_utc)):'수집 실패')+'</small></article>';
+  return '<article class="macro" data-symbol="'+esc(r.symbol)+'" tabindex="0" role="button" aria-label="'+esc(r.name)+' 시계열과 지표 상세" data-macro-symbol="'+esc(r.symbol)+'"><div><span class="label">'+esc(r.name)+(r.symbol==='BTC-USD'?' · BTC/USD':'')+'</span><div class="value">'+num(r.close)+'<span class="unit">'+esc(r.unit)+'</span></div></div><div class="change '+cls(v)+'">'+(Number.isFinite(v)?(v>0?'+':'')+num(v)+unit:'—')+'<span class="macro-basis">'+(r.symbol==='BTC-USD'?'UTC 일봉 대비 · 수집 시점 가격':'전일 대비')+'</span></div><div class="macro-history">'+chart(r)+'<div class="macro-metrics"><span>RSI 14 <b>'+num(r.rsi14)+'</b></span><span>SMA 20 이격 <b class="'+cls(gap(r))+'">'+pct(gap(r))+'</b></span></div><span class="macro-open">최근 '+history(r).length+'개 일봉 · 그래프·지표 확대 ↗</span></div><small class="macro-stamp">'+(r.status==='ok'?'시세 '+esc(localTime(r.quote_time_utc||r.bar_time_utc)):'수집 실패')+'</small></article>';
  }).join('');
  $('sector-overview').innerHTML=rows.filter(r=>r.group==='섹터 ETF').map(r=>'<button class="sector-tile" data-symbol="'+esc(r.symbol)+'" aria-label="'+esc(r.name)+' '+esc(r.symbol)+' 상세"><strong>'+esc(r.name)+'</strong><small>'+esc(r.symbol)+' · '+num(r.close)+' USD</small><span class="sector-change '+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</span></button>').join('');
  const ok=rows.filter(r=>r.status==='ok').length,old=rows.filter(r=>stale(r)).length;
@@ -434,6 +438,7 @@ $('analysis-search').addEventListener('input',renderAnalysis);
 document.querySelectorAll('[data-analysis-sort]').forEach(b=>b.addEventListener('click',()=>{analysisAscending=analysisSortKey===b.dataset.analysisSort?!analysisAscending:true;analysisSortKey=b.dataset.analysisSort;renderAnalysis();}));
 
 const chartLayers={sma:true,bb:true,fib:true};
+let detailRange=90;
 let detailSymbol=null;
 function signalMeta(value){
  const t=String(value||'');
@@ -459,7 +464,7 @@ function renderBriefing(){
 }
 function detailChart(r){
  const mobile=matchMedia('(max-width:600px)').matches;
- const h=history(r),w=mobile?420:720,height=mobile?320:310,left=10,right=mobile?90:105,top=22,bottom=30,pw=w-left-right,ph=height-top-bottom,axisFont=mobile?12:9,labelFont=mobile?12:9;
+ const h=history(r).slice(-detailRange),w=mobile?420:720,height=mobile?320:310,left=10,right=mobile?90:105,top=22,bottom=30,pw=w-left-right,ph=height-top-bottom,axisFont=mobile?12:9,labelFont=mobile?12:9;
  if(h.length<2)return '<p class="neutral">가격 이력이 없습니다.</p>';
  const keys=chartLayers.sma?['sma20','sma50','sma200']:[];
  if(chartLayers.bb)keys.push('bb_upper','bb_lower');
@@ -478,9 +483,9 @@ function detailChart(r){
  svg+='<path d="'+line('close')+'" fill="none" stroke="'+color+'" stroke-width="2.1"/>';
  const last=h.at(-1);svg+='<circle cx="'+x(h.length-1)+'" cy="'+y(last.close)+'" r="3" fill="'+color+'"/><text x="'+(w-right+8)+'" y="'+(y(last.close)-7)+'" fill="'+color+'" font-size="'+(mobile?13:10)+'" font-weight="700">현재 '+num(last.close)+'</text>';
  const hasOverlay=h.some(p=>Number.isFinite(p.sma20));
- return '<div class="chart-controls" role="group" aria-label="차트 지표 표시">'+[['sma','SMA 20 / 50 / 200'],['bb','볼린저 밴드'],['fib','피보나치']].map(([key,label])=>'<label><input type="checkbox" data-chart-layer="'+key+'" '+(chartLayers[key]?'checked':'')+'> '+label+'</label>').join('')+'</div><svg class="chart overlay-chart" viewBox="0 0 '+w+' '+height+'" role="img" aria-label="'+esc(r.name)+' 가격과 이동평균·볼린저·피보나치 비교 차트">'+svg+'</svg><div class="chart-legend"><span>━ 종가</span><span style="color:#bc6c25">━ SMA 20</span><span style="color:#8757b4">━ SMA 50</span><span style="color:#326d88">━ SMA 200</span><span style="color:#719ac5">┄ 볼린저</span><span style="color:#8e7853">┄ 피보나치 60일</span></div><p class="toolbar-note">'+esc(new Date(h[0].time*1000).toISOString().slice(0,10))+' ~ '+esc(new Date(last.time*1000).toISOString().slice(0,10))+' · '+esc(r.unit)+' · 종가 기준'+(!hasOverlay?' · 이전 보고서에는 차트 지표 이력이 없습니다.':'')+'</p>';
+ return '<div class="chart-controls" role="group" aria-label="차트 지표 표시"><label>표시 범위 <select id="detail-range" aria-label="차트 일봉 표시 범위">'+[30,60,90].map(n=>'<option value="'+n+'" '+(n===detailRange?'selected':'')+'>'+n+'개 일봉</option>').join('')+'</select></label>'+[['sma','SMA 20 / 50 / 200'],['bb','볼린저 밴드'],['fib','피보나치']].map(([key,label])=>'<label><input type="checkbox" data-chart-layer="'+key+'" '+(chartLayers[key]?'checked':'')+'> '+label+'</label>').join('')+'</div><svg class="chart overlay-chart" viewBox="0 0 '+w+' '+height+'" role="img" aria-label="'+esc(r.name)+' 가격과 이동평균·볼린저·피보나치 비교 차트">'+svg+'</svg><div class="chart-legend"><span>━ 종가</span><span style="color:#bc6c25">━ SMA 20</span><span style="color:#8757b4">━ SMA 50</span><span style="color:#326d88">━ SMA 200</span><span style="color:#719ac5">┄ 볼린저</span><span style="color:#8e7853">┄ 피보나치 60일</span></div><p class="toolbar-note">'+esc(new Date(h[0].time*1000).toISOString().slice(0,10))+' ~ '+esc(new Date(last.time*1000).toISOString().slice(0,10))+' · '+esc(r.unit)+' · 종가 기준 · 기간은 표시 범위이며 지표 계산 기간과 다릅니다.'+(!hasOverlay?' · 이전 보고서에는 차트 지표 이력이 없습니다.':'')+'</p>';
 }
-document.addEventListener('change',e=>{const key=e.target.dataset?.chartLayer;if(key&&Object.hasOwn(chartLayers,key)){chartLayers[key]=e.target.checked;const r=data.rows.find(r=>r.symbol===detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}});
+document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const range=Number(e.target.value);if([30,60,90].includes(range)){detailRange=range;const r=data.rows.find(r=>r.symbol===detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}return;}const key=e.target.dataset?.chartLayer;if(key&&Object.hasOwn(chartLayers,key)){chartLayers[key]=e.target.checked;const r=data.rows.find(r=>r.symbol===detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}});
 
 activateView('overview');
 
