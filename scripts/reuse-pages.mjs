@@ -27,10 +27,11 @@ export async function readPublishedSnapshot(base,fetcher=fetch){
  // The first deployment after migration can recover the old embedded snapshot.
  // Network/format errors stop deployment; they never trigger a fresh quote fetch.
  const snapshot=await get('latest.json',4000000);
- let data;
+ let data,history;
  if(snapshot===null)data=embeddedData(await get('index.html',5000000));
- else{const envelope=JSON.parse(snapshot);if(envelope.version!==1)throw Error('지원하지 않는 시장 데이터 버전');data=envelope.data;}
- const history=JSON.parse(await get('history.json',2000000));
+ else{const envelope=JSON.parse(snapshot);if(envelope.version!==1)throw Error('지원하지 않는 시장 데이터 버전');data=envelope.data;history=envelope.history;}
+ // New snapshots contain both from one deployment; old snapshots migrate once.
+ if(history===undefined)history=JSON.parse(await get('history.json',2000000));
  return validateSnapshot(data,history);
 }
 export async function main(){

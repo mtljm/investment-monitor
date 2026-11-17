@@ -28,8 +28,16 @@ test('게시 JSON과 이력을 재사용하고 수집 시각·신호를 유지�
   await writePublicSite('<script id="monitor-data" type="application/json">__MONITOR_DATA__</script>',result.data,result.history,out);
   const stored=JSON.parse(await readFile(join(out,'latest.json'),'utf8'));
   assert.equal(stored.data.collected_at_utc,data.collected_at_utc);
+  assert.deepEqual(stored.history,history);
   assert.deepEqual(JSON.parse(await readFile(join(out,'history.json'),'utf8')),history);
  }finally{await rm(out,{recursive:true,force:true});}
+});
+test('결합 스냅샷은 같은 배포의 이력만 사용하고 별도 이력을 요청하지 않는다',async()=>{
+ const mock=server({'latest.json':JSON.stringify({version:1,data,history}),'history.json':'잘못된 별도 이력'});
+ const result=await readPublishedSnapshot('https://example.github.io/monitor/',mock.fetch);
+ assert.deepEqual(result.history,history);assert.deepEqual(mock.calls,['/monitor/latest.json']);
+ const bad=server({'latest.json':JSON.stringify({version:1,data,history:null}),'history.json':JSON.stringify(history)});
+ await assert.rejects(readPublishedSnapshot('https://example.github.io/monitor/',bad.fetch),/비교 이력/);
 });
 test('전환 첫 배포는 기존 HTML에서 복구하고 오류 시 재수집 없이 중단한다',async()=>{
  const mock=server({'index.html':'<script id="monitor-data" type="application/json">'+JSON.stringify(data)+'</script>','history.json':JSON.stringify(history)});

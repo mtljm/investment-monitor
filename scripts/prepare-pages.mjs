@@ -53,7 +53,7 @@ export async function writePublicSite(template,data,history,output=resolve(root,
  await writeFile(resolve(output,'index.html'),publicHtml(template,data));
  await writeFile(resolve(output,'.nojekyll'),'');
  await writeFile(resolve(output,'history.json'),JSON.stringify(history));
- await writeFile(resolve(output,'latest.json'),JSON.stringify({version:1,data:publicData(data)}));
+ await writeFile(resolve(output,'latest.json'),JSON.stringify({version:1,data:publicData(data),history}));
 }
 export async function main(){
  const input=JSON.parse(await readFile(resolve(root,'reports/latest.json'),'utf8'));
