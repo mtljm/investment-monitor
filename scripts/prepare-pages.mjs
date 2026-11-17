@@ -48,6 +48,13 @@ export function publicHtml(template,input){
  if(!cleaned.includes('__MONITOR_DATA__'))throw new Error('화면 템플릿의 데이터 위치가 없습니다.');
  return cleaned.replace('__MONITOR_DATA__',()=>json);
 }
+export async function writePublicSite(template,data,history,output=resolve(root,'public-site')){
+ await mkdir(output,{recursive:true});
+ await writeFile(resolve(output,'index.html'),publicHtml(template,data));
+ await writeFile(resolve(output,'.nojekyll'),'');
+ await writeFile(resolve(output,'history.json'),JSON.stringify(history));
+ await writeFile(resolve(output,'latest.json'),JSON.stringify({version:1,data:publicData(data)}));
+}
 export async function main(){
  const input=JSON.parse(await readFile(resolve(root,'reports/latest.json'),'utf8'));
  const template=await readDashboardTemplate();
@@ -65,14 +72,12 @@ export async function main(){
   try{previous=JSON.parse(await readFile(resolve(root,'reports/history.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
  }
  const context=dashboardContext(input,previous);
- const out=resolve(root,'public-site');await mkdir(out,{recursive:true});
- await writeFile(resolve(out,'index.html'),publicHtml(template,context.data));
- await writeFile(resolve(out,'.nojekyll'),'');
- await writeFile(resolve(out,'history.json'),JSON.stringify(context.history));
+ await writePublicSite(template,context.data,context.history);
  console.log('Pages 게시 파일 생성: public-site/index.html');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
 
 
 

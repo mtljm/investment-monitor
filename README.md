@@ -33,6 +33,8 @@ node scripts/render-dashboard.mjs  # 기존 JSON으로 HTML 재생성
 
 페이지 새로고침은 시세를 수집하지 않습니다. 수집 스크립트를 실행하거나 새 JSON을 불러오세요.
 
+화면 소스(HTML·CSS·화면 JS) 수정은 기존 게시 데이터를 재사용해 배포합니다. 정기 실행과 수동 실행 기본값은 새 시세를 수집하며, 수동 실행에서 `refresh_data`를 해제하면 화면만 갱신합니다. 자세한 구조는 [Pages 운영](docs/github-pages.md)을 참고하세요.
+
 ## 안내
 
 | 문서 | 내용 |
@@ -46,4 +48,5 @@ node scripts/render-dashboard.mjs  # 기존 JSON으로 HTML 재생성
 
 관찰 대상은 [설정 파일](config/monitor.json), 최근 저장된 결과는 [보고서](reports/latest.md)에서 확인합니다.
 계좌번호·비밀번호·토큰은 저장소에 기록하지 않습니다.
+
 

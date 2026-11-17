@@ -13,7 +13,22 @@
 
 ## 배포와 실패 처리
 
-`.github/workflows/daily-pages.yml`은 검증 → 새 데이터 수집 → 공개 HTML 생성 → 배포 순서로 실행합니다.
+`.github/workflows/daily-pages.yml`은 변경 종류에 따라 수집 여부를 결정합니다.
+
+| 실행 | 처리 |
+| --- | --- |
+| 매일 07:15 KST 예약 | 새 시세 수집 → 지표·비교 이력 계산 → 배포 |
+| 수동 실행 기본값 | 새 시세 수집 후 배포 |
+| 수동 실행에서 `refresh_data` 해제 | 게시 데이터를 재사용해 화면만 배포 |
+| HTML·CSS·화면 JS 수정 | 게시 데이터를 재사용해 화면만 배포 |
+| 수집 설정·지표 계산 코드 수정 | 새 시세 수집 후 배포 |
+
+화면 배포는 Pages의 `latest.json`과 `history.json`을 읽습니다. 수집 시각·기술적 분석·전일 비교 신호·90일 이력은 유지하며, 비교 이력을 새로 계산하지 않습니다. 전환 첫 실행에서 `latest.json`이 없으면 기존 `index.html`의 내장 데이터를 사용합니다. 네트워크 오류나 데이터 버전 오류가 있으면 배포를 중단하며 자동으로 시세를 재수집하지 않습니다.
+
+`latest.json`은 공개 시장 필드만 포함하는 버전 1 스냅샷입니다. 개인 계좌·보유량은 넣지 않습니다. 작업 전체를 같은 concurrency 그룹으로 직렬화해 화면 배포와 정기 수집의 충돌을 막습니다.
+
+화면 소스는 `templates/dashboard.html`(구조), `dashboard.css`(스타일), `dashboard.js`(화면·공통 상세), `dashboard-safety.js`(갱신 상태·CSV), `market-temperature.js`(온도계), `sector-heatmap.js`(섹터 히트맵)로 나눕니다. `scripts/dashboard-template.mjs`가 배포 시 하나로 합치므로 다운로드한 HTML도 단독으로 열 수 있습니다.
+
 수집에 실패하면 배포하지 않고 기존 사이트를 유지합니다. 화면의 수집 시각과 Actions 결과를 확인하세요.
 결과를 Git에 자동 커밋하지 않으므로 저장소의 `reports/latest.json`과 실제 사이트 수집 시각은 다를 수 있습니다.
 
@@ -41,3 +56,4 @@
 - CSV의 음수 수익률은 숫자로 저장합니다. 텍스트의 수식 시작 문자만 보호하며 쉼표·따옴표·줄바꿈은 CSV 규칙으로 처리합니다.
 
 휴장일 출처: https://www.nyse.com/markets/hours-calendars
+
