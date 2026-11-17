@@ -163,6 +163,8 @@ body{line-height:1.6;-webkit-font-smoothing:antialiased}h1,h2,h3{letter-spacing:
  .analysis-table .analysis-band,.analysis-table .analysis-volume{min-width:0}
 }
 @media(min-width:1024px) and (max-width:1360px){.analysis-table th,.analysis-table td{font-size:10px;padding:9px 4px}.analysis-table .company,.analysis-table .badge,.analysis-table .event-chip{font-size:9px}.analysis-table .sma-group small{font-size:9px}}
+.market-temperature{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-bottom:16px}.temperature-top{display:flex;justify-content:space-between;gap:20px;align-items:center}.temperature-top h3{font-size:20px;margin:10px 0}.temperature-top h3 strong{color:#b24d33}.temperature-top p{font-size:12px;color:var(--muted);margin:0;line-height:1.8}.temperature-number{font-size:48px;line-height:1;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums;color:#263e4a}.temperature-number small{font-size:14px;margin-left:6px;color:var(--muted);font-weight:500}.temperature-scale{position:relative;margin:32px 8px 0}.temperature-track{display:flex;height:18px;border-radius:20px;overflow:hidden}.temp-zone{width:20%}.temp-zone-0{background:#62a6b0}.temp-zone-1{background:#90b6a0}.temp-zone-2{background:#d5bd71}.temp-zone-3{background:#d98a58}.temp-zone-4{background:#bc5559}.temperature-pin{position:absolute;top:-24px;transform:translateX(-50%);color:var(--ink);font-size:20px;line-height:1}.temperature-labels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));font-size:11px;text-align:center;margin-top:9px;color:#526471}.temperature-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;margin-top:16px}.temperature-disclaimer{font-size:11px;color:#6d7983;line-height:1.8;margin:12px 0}.temperature-method{border-top:1px solid var(--line);padding-top:13px;font-size:11px;line-height:1.9;color:#61727e}.temperature-method summary{cursor:pointer;color:var(--ink);font-weight:600}.temperature-method p{font-size:11px}.temperature-components{padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.temperature-components li{min-width:0;padding:12px;background:var(--bg);border-radius:6px}.temperature-components li>div:first-child{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.temperature-components small{display:block;line-height:1.7;margin-top:5px}.temperature-mini{height:4px;background:#e1e7ea;border-radius:5px;margin-top:9px;overflow:hidden}.temperature-mini span{display:block;height:100%;background:#ad7351}@media(max-width:600px){.market-temperature{padding:18px 16px}.temperature-top{align-items:start;gap:10px}.temperature-top h3{font-size:18px}.temperature-number{font-size:36px}.temperature-number small{font-size:11px}.temperature-components{grid-template-columns:1fr}.temperature-meta{font-size:10px}.temperature-labels{font-size:10px}}
+.market-temperature[data-level="0"] h3 strong{color:#286d79}.market-temperature[data-level="1"] h3 strong{color:#426c58}.market-temperature[data-level="2"] h3 strong{color:#8d6f1c}.market-temperature[data-level="3"] h3 strong{color:#b2592a}.market-temperature[data-level="4"] h3 strong{color:#a43842}.market-temperature[data-level="unknown"] h3 strong{color:#687985}
 </style>
 </head>
 <body>
@@ -176,7 +178,7 @@ body{line-height:1.6;-webkit-font-smoothing:antialiased}h1,h2,h3{letter-spacing:
 <div class="actions"><button class="btn" id="import-btn">데이터 불러오기</button><button class="btn primary" id="export-btn">종목 CSV 저장 ↗</button><input id="import-file" type="file" accept=".json,application/json" hidden></div></section>
 <div class="notice"><strong>데이터 기준</strong><span id="data-notice"></span></div>
 <div id="overview" role="tabpanel" aria-labelledby="nav-overview" tabindex="0"><div id="overview-briefing"></div><section class="index-grid" id="indices" aria-label="주요 시장지수"></section>
-<div class="section-heading"><h2>시장의 온도</h2><small>변동성 · 금리 · 환율 · 비트코인</small></div><section class="macro-grid" id="macros" aria-label="주요 시장지표"></section><div class="section-heading"><h2>미국 11개 섹터</h2><small>Select Sector SPDR · 전일 대비</small></div><section class="sector-grid" id="sector-overview" aria-label="미국 섹터별 ETF"></section>
+<div class="section-heading"><h2>시장의 온도</h2><small>변동성 · 금리 · 환율 · 비트코인</small></div><section id="market-temperature" class="market-temperature" aria-label="시장 위험온도계" aria-live="polite"></section><section class="macro-grid" id="macros" aria-label="주요 시장지표"></section><div class="section-heading"><h2>미국 11개 섹터</h2><small>Select Sector SPDR · 전일 대비</small></div><section class="sector-grid" id="sector-overview" aria-label="미국 섹터별 ETF"></section>
 </div><section class="panel" id="watchlist" role="tabpanel" aria-labelledby="nav-watchlist" tabindex="0" hidden><p id="scope-note" class="toolbar-note" style="padding:16px 20px 0"></p><div class="panel-top"><div><h2>관찰 종목</h2><p class="toolbar-note">종목을 선택하면 가격 흐름과 세부 지표를 볼 수 있습니다.</p></div><div class="tools"><select id="stock-limit" aria-label="대형주 표시 범위"><option value="20">시가총액 상위 20개</option><option value="50">시가총액 상위 50개</option><option value="100">시가총액 상위 100개</option><option value="200">시가총액 상위 200개</option></select><input id="search" type="search" placeholder="티커 또는 기업명 검색" aria-label="종목 검색"><select id="trend" aria-label="추세 필터"><option value="all">모든 추세</option><option value="up">MA20 위</option><option value="down">MA20 아래</option><option value="error">수집 실패</option></select></div></div>
 <div class="tabs" role="group" aria-label="관찰 대상 구분"><button class="tab active" data-group="대형주" aria-pressed="true">대형주</button><button class="tab" data-group="지수 ETF" aria-pressed="false">지수 ETF</button><button class="tab" data-group="섹터 ETF" aria-pressed="false">섹터 ETF</button><button class="tab" data-group="all" aria-pressed="false">전체</button></div>
 <div class="table-scroll" tabindex="0" aria-label="관찰 종목 표 · 좌우 스크롤"><table><thead><tr><th><button data-sort="symbol">종목 ↕</button></th><th><button data-sort="close">최신 값 ↕</button></th><th><button data-sort="change_1d_pct">1일 % ↕</button></th><th><button data-sort="change_5d_pct">5일 % ↕</button></th><th><button data-sort="change_20d_pct">20일 % ↕</button></th><th>90개 일봉</th><th><button data-sort="sma20_gap">MA20 대비 ↕</button></th><th><button data-sort="volume_ratio">거래량 배수 ↕</button></th><th>상태</th></tr></thead><tbody id="rows"></tbody></table></div><div class="table-foot"><span id="count"></span><span>빨강: 상승 · 파랑: 하락 / 관찰 목록이며 매수 신호가 아닙니다.</span></div></section>
@@ -273,6 +275,58 @@ function csvCell(value){
 function stale(r){return ['stale','unknown'].includes(priceHealth(r));}
 function badge(r){return r.status!=='ok'?'<span class="badge down">수집 실패</span>':stale(r)?'<span class="badge down">거래일 확인</span>':'<span class="badge">수집됨</span>';}
 function localTime(s){if(!s)return '미확인';const d=new Date(s);return Number.isFinite(d.getTime())?d.toLocaleString('ko-KR',{timeZone:'Asia/Seoul',hour12:false})+' KST':'미확인';}
+// TEMPERATURE_MODEL_START
+function calculateTemperature(rows){
+ const finite=Number.isFinite;
+ const interpolate=(value,points)=>{
+  if(value<=points[0][0])return points[0][1];
+  for(let i=1;i<points.length;i++){const [x,y]=points[i],[px,py]=points[i-1];if(value<=x)return py+(y-py)*(value-px)/(x-px);}
+  return points.at(-1)[1];
+ };
+ const find=symbol=>rows.find(r=>r.symbol===symbol&&r.status==='ok');
+ const vix=find('^VIX'),spx=find('^GSPC'),ndx=find('^NDX'),btc=find('BTC-USD');
+ const stocks=rows.filter(r=>r.group==='대형주'&&r.status==='ok'&&Number.isInteger(r.snapshot_rank)&&r.snapshot_rank<=20&&r.snapshot_rank>=1&&finite(r.change_1d_pct));
+ const validIndex=r=>r&&['close','sma20','sma50','sma200'].every(k=>finite(r[k])&&r[k]>0);
+ const missing=[];
+ if(!vix||!finite(vix.close)||vix.close<=0)missing.push('VIX');
+ if(!validIndex(spx))missing.push('S&P 500 추세');if(!validIndex(ndx))missing.push('나스닥100 추세');
+ if(stocks.length<15)missing.push('상위 20개 표본(최소 15개)');
+ if(!btc||!finite(btc.close)||!finite(btc.sma20)||btc.close<=0||btc.sma20<=0)missing.push('비트코인');
+ if(missing.length)return {score:null,label:'자료 부족',missing,components:[],sample:stocks.length};
+ const vixStress=interpolate(vix.close,[[12,0],[15,20],[20,40],[25,60],[30,80],[40,100]]);
+ const indexStress=r=>(r.close<r.sma20?30:0)+(r.close<r.sma50?30:0)+(r.close<r.sma200?40:0);
+ const down=stocks.filter(r=>r.change_1d_pct<0).length;
+ const btcGap=(btc.close/btc.sma20-1)*100;
+ const components=[
+  {name:'VIX · 변동성',weight:45,stress:vixStress,detail:'VIX '+vix.close.toFixed(2)+' · 향후 30일 예상 변동성'},
+  {name:'대표 지수 추세',weight:25,stress:(indexStress(spx)+indexStress(ndx))/2,detail:'S&P 500·나스닥100의 SMA20·50·200 아래 여부'},
+  {name:'대형주 하락 확산',weight:20,stress:down/stocks.length*100,detail:stocks.length+'개 유효 표본 중 '+down+'개 하락 · 시장 전체 표본은 아님'},
+  {name:'비트코인 약세',weight:10,stress:interpolate(btcGap,[[-15,100],[-10,80],[-5,60],[0,40],[5,20],[10,0]]),detail:'SMA20 대비 '+btcGap.toFixed(2)+'% · 보조 위험선호 지표'}
+ ];
+ const score=Math.round(components.reduce((sum,c)=>sum+c.stress*c.weight/100,0));
+ const level=Math.min(4,Math.floor(score/20));
+ const labels=['안정','관심','경계','불안','공포'];
+ const messages=['변동성과 매도 압력이 낮은 구간입니다.','일부 지표에 긴장이 생긴 구간입니다.','추세 약화와 위험 회피를 점검할 구간입니다.','매도 확산과 변동성 부담이 겹친 구간입니다.','여러 지표의 위험 회피 압력이 강한 구간입니다.'];
+ return {score,level,label:labels[level],message:messages[level],components,sample:stocks.length,missing:[]};
+}
+// TEMPERATURE_MODEL_END
+function renderTemperature(){
+ const wasOpen=$('market-temperature').querySelector('details')?.open===true;
+ const now=Date.now(),health=collectionHealth(data,now);
+ const current=data.rows.filter(r=>priceHealth(r,now)==='current');
+ const result=calculateTemperature(current);
+ const blocked=health.invalid||health.late||!health.expectedDay;
+ const score=blocked?null:result.score;
+ const label=blocked?'갱신 확인 필요':result.label;
+ const descriptions=blocked?'수집 시각·예약 갱신·거래일을 확인한 뒤 온도를 표시합니다.':score===null?'빠졌거나 오래된 핵심 지표: '+result.missing.join(', '):result.message;
+ $('market-temperature').dataset.level=score===null?'unknown':String(result.level);
+ const stages=['안정','관심','경계','불안','공포'];
+ const componentHtml=result.components.map(c=>'<li><div><strong>'+esc(c.name)+'</strong><span>'+num(c.stress,0)+' / 100 · 가중치 '+c.weight+'%</span></div><small>'+esc(c.detail)+'</small><div class="temperature-mini" aria-hidden="true"><span style="width:'+Math.max(0,Math.min(100,c.stress))+'%"></span></div></li>').join('');
+ const rates=data.rows.find(r=>r.symbol==='^TNX'),fx=data.rows.find(r=>r.symbol==='KRW=X');
+ $('market-temperature').innerHTML='<div class="temperature-top"><div><span class="eyebrow">MARKET STRESS · 자체 위험온도</span><h3>현재 시장은 <strong>'+esc(label)+'</strong></h3><p>'+esc(descriptions)+'</p></div><div class="temperature-number">'+(score===null?'—':score)+'<small>/ 100</small></div></div><div class="temperature-scale">'+(score===null?'':'<div class="temperature-pin" style="left:'+score+'%" aria-hidden="true"><span>▼</span></div>')+'<div class="temperature-track" '+(score===null?'aria-label="위험온도 산출 보류"':'role="meter" aria-label="자체 시장 위험온도 · 높을수록 위험 회피" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+score+'" aria-valuetext="'+score+'점 · '+label+'"')+'>'+stages.map((s,i)=>'<span class="temp-zone temp-zone-'+i+'"></span>').join('')+'</div><div class="temperature-labels">'+stages.map(s=>'<span>'+s+'</span>').join('')+'</div></div><div class="temperature-meta"><span>낮음: 안정 ← → 높음: 위험 회피</span><span>수집 '+esc(localTime(data.collected_at_utc))+'</span></div><p class="temperature-disclaimer">CNN 공포·탐욕 지수나 공식 VIX 점수가 아닌 자체 규칙 지표입니다. 점수는 하락 확률·예상 손실·매매 신호가 아닙니다.</p><details class="temperature-method"><summary>온도 산출 근거와 기준 보기</summary>'+(score===null?'<p>자료가 부족하거나 갱신이 늦으면 점수를 0으로 대체하지 않습니다.</p>':'<ul class="temperature-components">'+componentHtml+'</ul>')+'<p>가중치: VIX 45% + 대표 지수 추세 25% + 상위 20개 하락 비율 20% + 비트코인 SMA20 이격 10%. 유효 대형주 표본은 최소 15개가 필요합니다.</p><p>VIX 12/15/20/25/30/40을 긴장도 0/20/40/60/80/100에 선형 대응합니다. 지수는 각 SMA20·50·200 아래일 때 30·30·40점을 부여해 두 지수를 평균합니다. 비트코인 이격 −15/−10/−5/0/+5/+10%를 100/80/60/40/20/0점에 대응합니다. 범위 밖은 0~100으로 제한합니다.</p><p>표시 구간: 0~19 안정, 20~39 관심, 40~59 경계, 60~79 불안, 80~100 공포. 구간·가중치는 자체 설정이며 과거 수익률로 검증된 모형이 아닙니다. 주식 추세와 하락 확산은 서로 겹치는 신호입니다.</p><p>금리 '+num(rates?.close)+'% · 달러/원 '+num(fx?.close)+'원은 맥락 지표로만 봅니다. 금리·환율 상승을 일률적인 공포로 점수화하지 않습니다. 비트코인은 보조 지표이며 미국 주식과 다르게 거래됩니다.</p><a href="https://www.cboe.com/tradable_products/vix/faqs" target="_blank" rel="noopener">VIX 정의 · Cboe</a></details>';
+ if(wasOpen)$('market-temperature').querySelector('details').open=true;
+}
+
 function render(){
  const available=data.rows.filter(r=>r.group==='대형주').length;
  if(stockLimit>available)stockLimit=[200,100,50,20].find(n=>n<=available)||20;
@@ -297,6 +351,7 @@ function render(){
  renderBriefing();
 }
 function updateFreshness(){
+ renderTemperature();
  const health=collectionHealth(data),now=Date.now();
  const staleCount=data.rows.filter(r=>priceHealth(r,now)==='stale').length;
  const unknown=data.rows.filter(r=>priceHealth(r,now)==='unknown').length;
@@ -507,6 +562,7 @@ setInterval(updateFreshness,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFreshness();});
 </script>
 </body></html>
+
 
 
 

@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: '24'
       - name: 구성 및 지표 검증
-        run: node --test tests/sector.test.mjs tests/technical-indicators.test.mjs tests/pages.test.mjs tests/market-analysis.test.mjs tests/dashboard-context.test.mjs tests/dashboard-safety.test.mjs
+        run: node --test tests/sector.test.mjs tests/technical-indicators.test.mjs tests/pages.test.mjs tests/market-analysis.test.mjs tests/dashboard-context.test.mjs tests/dashboard-safety.test.mjs tests/market-temperature.test.mjs
       - name: 이전 결과 제거
         run: |
           node --input-type=module <<'NODE'
@@ -72,5 +72,6 @@ jobs:
       - name: Pages 게시
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
+
 
 
