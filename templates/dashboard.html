@@ -126,6 +126,26 @@ footer>div{min-width:0;overflow-wrap:anywhere}footer{line-height:1.9}
  .analysis-grid{grid-template-columns:minmax(0,1fr);align-items:stretch}
  .analysis-grid>.indicator-card{grid-column:1/-1}
 }
+/* Interface foundations: shared type, surfaces, controls and spacing. */
+:root{--bg:#f5f7fa;--panel:#fff;--ink:#1d2e3b;--muted:#657586;--line:#e2e8ef;--surface:#f7f9fc;--radius:12px;--shadow:0 2px 8px #17304705}
+body{line-height:1.6;-webkit-font-smoothing:antialiased}h1,h2,h3{letter-spacing:-.025em}h2{font-size:16px}h3{font-size:14px}button,input,select{line-height:1.5}
+.sidebar{border-right:1px solid #29404b}.nav{gap:6px}.nav button{min-height:44px;border:1px solid transparent;border-radius:8px;align-items:center}.nav button.active{background:#2b4552;border-color:#3b5866;font-weight:650}.nav i{width:18px;text-align:center}
+.topline{padding-bottom:18px}.live{padding:6px 10px;border-radius:99px;background:#eaf0f4;line-height:1.6}.eyebrow{letter-spacing:1.5px}
+.hero{margin:28px 0 24px}.hero h1{line-height:1.35;margin:8px 0 12px}.subtitle{font-size:13px;color:var(--muted)}
+.btn{min-height:40px;padding:10px 15px;border-radius:8px;font-weight:550;box-shadow:var(--shadow)}.btn:hover{border-color:#9fb0be;background:#f1f5f8}.btn.primary:hover{background:#284552;border-color:#284552}
+.tools input,.tools select{min-height:40px;border-radius:8px;background:var(--surface);font-size:12px}.tools input:focus,.tools select:focus{background:white;border-color:#849cae}
+.index-card,.macro,.sector-tile,.panel,.daily-briefing,.info-box{border-radius:var(--radius);box-shadow:var(--shadow)}
+.index-card{padding-top:20px}.index-card:hover,.sector-tile:hover{border-color:#8da4b6;background:#fcfdff}.value{font-weight:650;font-variant-numeric:tabular-nums}
+.card-title,.macro .label{font-size:12px;color:#526677}.stamp{font-size:10px;line-height:1.7}.macro-stamp{padding-top:7px;border-top:1px solid var(--line);width:100%;margin-top:auto}
+.sector-tile{padding:15px;gap:8px}.sector-tile small{color:var(--muted)}.section-heading{margin-top:28px;margin-bottom:14px}.section-heading small{font-size:11px}
+.notice{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px 16px;border-radius:9px;line-height:1.9;font-size:12px;align-items:start}.notice strong{padding-top:1px}.notice span{min-width:0;overflow-wrap:anywhere}.notice.collection-warning{border-color:#edc1c6;background:#fff6f6;color:#8f3540}
+.daily-briefing{padding:22px}.brief-grid{gap:22px}.brief-grid article{padding-left:14px}.brief-grid p{font-size:13px}.brief-title small{font-size:11px}
+.tabs{border-bottom:1px solid var(--line)}.tab{font-size:12px}.tab.active{border-bottom-color:#355e73;color:#203f52}.badge,.analysis-state{border-radius:6px}
+.table-scroll thead th{color:#617386;font-size:11px;font-weight:550}.table-scroll tbody tr:hover{background:#f4f8fc}.table-scroll td{font-variant-numeric:tabular-nums}.table-foot{background:#fcfdff;color:var(--muted);font-size:11px}.company{color:var(--muted)}
+.indicator-card{border-radius:10px;background:var(--surface)}.indicator-card h3{color:#203d50}.analysis-head{border-radius:12px;background:#173b39}.analysis-head p{color:#e2efed;line-height:1.9}.analysis-head .analysis-verdict-title{border-radius:7px}
+.detail-changes{border-radius:9px;background:var(--surface)}.analysis-grid{gap:16px}.detail-metrics thead th{background:#edf2f7!important}.indicator-card .detail-metrics td{font-weight:500}.dialog-meta{border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+.chart-controls{gap:10px}.chart-controls label{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}.chart-legend{gap:12px}.progress-row{font-size:12px}footer{padding-top:20px;border-top:1px solid var(--line);margin-top:28px}
+@media(max-width:760px){.hero{margin:22px 0}.hero h1{font-size:25px}.subtitle{font-size:12px}.notice{grid-template-columns:minmax(0,1fr);gap:5px;padding:12px 14px;font-size:11px}.daily-briefing{padding:17px}.brief-grid p{font-size:12px}.section-heading{gap:8px}.section-heading h2{font-size:15px}.section-heading small{font-size:10px}.sector-tile{padding:12px}.live{font-size:10px}.table-foot{font-size:10px}footer{font-size:10px}.chart-controls label{padding:4px 6px}}
 </style>
 </head>
 <body>
