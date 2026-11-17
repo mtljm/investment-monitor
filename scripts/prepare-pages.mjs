@@ -4,7 +4,7 @@ import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const allowed=['group','symbol','name','unit','snapshot_rank','status','bar_time_utc','quote_time_utc',
- 'close','previous_close','change','change_1d_pct','change_5d_pct','change_20d_pct',
+ 'high_52w','high_52w_time_utc','drawdown_52w_pct','high_52w_complete','close','previous_close','change','change_1d_pct','change_5d_pct','change_20d_pct',
  'ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
  'bb_middle','bb_upper','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','exchange_timezone','stale_calendar_days'];
 export function publicData(input){
@@ -72,5 +72,6 @@ export async function main(){
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
 
 

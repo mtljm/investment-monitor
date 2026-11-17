@@ -1,3 +1,4 @@
+import {high52} from './high52.mjs';
 import {indicatorHistory} from './chart-series.mjs';
 import {priceVolumeIndicators,assessTechnical} from './market-analysis.mjs';
 import {technicalIndicators} from './technical-indicators.mjs';
@@ -19,6 +20,7 @@ export function summarize(bars) {
   const avgVolume = priorVolumes.length === 20 ? priorVolumes.reduce((a,b)=>a+b,0)/20 : null;
   return {
     ...technicalIndicators(valid.map(b=>b.close)),
+    ...high52(bars),
     ...priceVolumeIndicators(valid),
     bar_time_utc: new Date(last.time*1000).toISOString(),
     close:last.close, previous_close:previous.close,
@@ -147,5 +149,6 @@ export async function main() {
 if (process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   main().catch(e=>{ console.error(e.message); process.exitCode=1; });
 }
+
 
 
