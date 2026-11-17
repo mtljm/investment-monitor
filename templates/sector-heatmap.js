@@ -1,6 +1,4 @@
-const sectorWeights={asOf:'2026-11-13',source:'https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy',items:[
- ['XLK','정보기술',35.68],['XLF','금융',12.65],['XLV','헬스케어',10.48],['XLY','경기소비재',9.53],['XLC','통신서비스',8.94],['XLI','산업재',8.22],['XLP','필수소비재',5.17],['XLE','에너지',3.62],['XLU','유틸리티',2.12],['XLRE','부동산',1.85],['XLB','소재',1.74]
-]};
+const sectorWeights=__SECTOR_WEIGHTS__;
 // Balanced binary treemap: every rectangle's area follows its normalized index weight.
 function sectorRects(items,x,y,w,h){
  if(items.length===1)return [{item:items[0],x,y,w,h}];
@@ -11,6 +9,10 @@ function sectorRects(items,x,y,w,h){
 }
 function renderSectors(){
  const el=$('sector-overview');if(!el)return;
+ $('sector-weight-date').textContent=sectorWeights.asOf;
+ $('sector-weight-source').href=sectorWeights.source;
+ const age=Math.floor((Date.now()-Date.parse(sectorWeights.asOf+'T00:00:00Z'))/86400000);
+ $('sector-weight-status').textContent=age>45?' · 비중 기준일 '+age+'일 경과 · 갱신 확인 필요':'';
  const width=el.clientWidth||900,height=width<600?640:420;
  const rects=sectorRects(sectorWeights.items,0,0,width,height);
  el.style.height=height+'px';
@@ -21,7 +23,7 @@ function renderSectors(){
   const text=valid&&level>.5?'#fff':'#24364b',change=valid?(v>0?'▲ ':v<0?'▼ ':'')+pct(v):'시세 미확인';
   const info=label+' · S&P 500 비중 '+weight.toFixed(2)+'% · '+symbol+' '+change+' · '+(r?.bar_time_utc||'').slice(0,10);
   const compact=w<110||h<80;
-  return '<button class="sector-heat-tile'+(compact?' heat-compact':'')+'" data-symbol="'+symbol+'" style="left:'+x/width*100+'%;top:'+y/height*100+'%;width:'+w/width*100+'%;height:'+h/height*100+'%;--heat:'+color+';--heat-ink:'+text+'" title="'+esc(info)+'" aria-label="'+esc(info+' 상세')+'"><strong>'+label+'</strong><span class="heat-change">'+esc(compact&&valid?pct(v):change)+'</span><small>'+weight.toFixed(2)+'%'+(compact?'':' · '+symbol)+'</small></button>';
+  return '<button class="sector-heat-tile'+(compact?' heat-compact':'')+'" data-symbol="'+symbol+'" style="left:'+x/width*100+'%;top:'+y/height*100+'%;width:'+w/width*100+'%;height:'+h/height*100+'%;--heat:'+color+';--heat-ink:'+text+'" title="'+esc(info)+'" aria-label="'+esc(info+' 상세')+'"><strong>'+esc(label)+'</strong><span class="heat-change">'+esc(compact&&valid?pct(v):change)+'</span><small>'+weight.toFixed(2)+'%'+(compact?'':' · '+symbol)+'</small></button>';
  }).join('');
 }
 
