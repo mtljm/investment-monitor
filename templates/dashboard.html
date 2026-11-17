@@ -110,6 +110,22 @@ footer>div{min-width:0;overflow-wrap:anywhere}footer{line-height:1.9}
 .detail-metrics tbody tr:last-child th,.detail-metrics tbody tr:last-child td{border-bottom:0}
 .analysis-grid>.indicator-card h3{min-height:24px;margin-bottom:10px}.analysis-state{display:inline-flex;align-items:center;min-height:30px;margin-bottom:0}
 @media(max-width:600px){.indicator-card .detail-metrics th,.indicator-card .detail-metrics td{padding:10px 5px!important;font-size:11px}.detail-metrics th b{font-size:12px}.ma-metrics th small{font-size:9px}.indicator-card .detail-metrics thead th{font-size:10px}.analysis-grid>.moving-average-card{grid-column:auto}}
+/* Desktop indicator row: momentum, volatility and volume share one aligned row. */
+@media(min-width:901px){
+ dialog{width:min(1100px,calc(100% - 48px));max-width:calc(100% - 48px)}
+ .analysis-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:16px}
+ .analysis-grid>.indicator-card{display:flex;flex-direction:column;min-width:0;height:100%;box-sizing:border-box}
+ .analysis-grid>.moving-average-card,.analysis-grid>.indicator-card:nth-child(5),.analysis-grid>.indicator-card:last-child{grid-column:1/-1}
+ .analysis-grid>.indicator-card h3{min-height:28px;line-height:1.7;margin:0 0 10px}
+ .analysis-grid>.indicator-card .analysis-state{align-self:flex-start;min-height:32px;box-sizing:border-box}
+ .analysis-grid>.indicator-card>.detail-metrics{margin:16px 0 0}
+ .analysis-grid>.indicator-card>p{margin:14px 0 0;line-height:1.9}
+ .analysis-grid>.indicator-card:nth-child(2) .detail-metrics tr,.analysis-grid>.indicator-card:nth-child(3) .detail-metrics tr,.analysis-grid>.indicator-card:nth-child(4) .detail-metrics tr{height:44px}
+}
+@media(min-width:601px) and (max-width:900px){
+ .analysis-grid{grid-template-columns:minmax(0,1fr);align-items:stretch}
+ .analysis-grid>.indicator-card{grid-column:1/-1}
+}
 </style>
 </head>
 <body>
