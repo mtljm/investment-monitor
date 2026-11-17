@@ -3,7 +3,7 @@ import {appendFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const collectionFiles=new Set(['config/monitor.json','scripts/monitor.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs','scripts/dashboard-context.mjs']);
+const collectionFiles=new Set(['config/monitor.json','scripts/monitor.mjs','scripts/fetch-market.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs','scripts/dashboard-context.mjs']);
 export function pagesMode(event,files=[],refresh=true){
  if(event==='schedule')return 'collect';
  if(event==='workflow_dispatch')return refresh?'collect':'reuse';

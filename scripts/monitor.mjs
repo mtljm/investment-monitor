@@ -1,3 +1,4 @@
+import {fetchMarketJson} from './fetch-market.mjs';
 import {high52} from './high52.mjs';
 import {indicatorHistory} from './chart-series.mjs';
 import {priceVolumeIndicators,assessTechnical} from './market-analysis.mjs';
@@ -33,12 +34,7 @@ export function summarize(bars) {
 async function collect(item) {
   const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' +
     encodeURIComponent(item.symbol) + '?range=2y&interval=1d';
-  const response = await fetch(url, {
-    headers:{'User-Agent':'investment-monitor/0.1'},
-    signal:AbortSignal.timeout(20000)
-  });
-  if (!response.ok) throw new Error('HTTP '+response.status);
-  const body = await response.json();
+  const body=await fetchMarketJson(url,{onRetry:({nextAttempt,delay})=>console.warn(item.symbol+': '+delay+'ms 후 재시도 '+nextAttempt+'/3')});
   const chart = body.chart?.result?.[0];
   if (!chart || body.chart?.error) throw new Error('시세 응답 없음');
   const quote = chart.indicators?.quote?.[0];
@@ -149,6 +145,7 @@ export async function main() {
 if (process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   main().catch(e=>{ console.error(e.message); process.exitCode=1; });
 }
+
 
 
 
