@@ -35,6 +35,7 @@ dialog{max-height:92vh;overflow:auto} .indicator-layout{display:grid;grid-templa
 .signal-up{color:#c63d45!important}.signal-down{color:#2867bd!important}.signal-neutral{color:#687985}.badge.signal-up,.analysis-state.signal-up{background:#fff0f1}.badge.signal-down,.analysis-state.signal-down{background:#edf4ff}.analysis-verdict-title{display:inline-block;background:#fff;border-radius:5px;padding:7px 10px}
 .analysis-table{table-layout:fixed;min-width:1590px;width:100%}.analysis-table th,.analysis-table td{padding:12px 10px;vertical-align:middle}.analysis-table th{white-space:normal;line-height:1.5}.analysis-table td{white-space:normal;overflow-wrap:anywhere}.analysis-table .company{max-width:none;line-height:1.65}.analysis-table th:first-child,.analysis-table td:first-child{min-width:0;max-width:none;padding-left:16px}.analysis-table .analysis-verdict,.analysis-table .analysis-band,.analysis-table .analysis-volume{min-width:0}.analysis-table .analysis-verdict .badge{display:inline-block;line-height:1.7}.analysis-trend{text-align:left}.sma-group>span{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:baseline;gap:6px;line-height:1.8;white-space:nowrap}.sma-group small{color:var(--muted);font-size:10px;text-align:left}.sma-group b{font-weight:500;text-align:right}.analysis-table strong{font-weight:600}.analysis-table .analysis-band .company,.analysis-table .analysis-volume .company{font-size:10px}@media(max-width:600px){.analysis-table col:first-child{width:125px!important}.analysis-table th:first-child,.analysis-table td:first-child{padding-left:12px;min-width:0;max-width:none}.analysis-table td:first-child .company{max-width:105px}}
 .daily-briefing{background:#fff;border:1px solid var(--line);border-radius:9px;padding:20px 22px;margin:0 0 20px}.brief-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.brief-title small{color:var(--muted);font-size:10px}.brief-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}.brief-grid article{border-left:2px solid #e5e9ee;padding-left:12px}.brief-grid p{font-size:12px;line-height:1.9;margin:7px 0 0}.brief-grid small{font-size:10px;color:var(--muted)}.brief-events{display:flex;gap:6px;flex-wrap:wrap;margin-top:15px}.event-chip{display:inline-block;font-size:10px;line-height:1.6;padding:4px 6px;border:1px solid currentColor;border-radius:5px;margin:2px 3px 2px 0}.signal-key{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;margin:16px 0}.analysis-changes{text-align:left}.detail-changes{margin:16px 0;padding:14px;background:#f7f9fa;border:1px solid var(--line);border-radius:7px}.detail-changes h3{font-size:13px;margin:0 0 7px}.analysis-table{min-width:1765px}.chart-controls,.chart-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;margin-top:16px}.chart-controls label{display:flex;gap:5px;align-items:center;cursor:pointer}.chart-controls input{accent-color:#365f77}.overlay-chart{height:auto!important;width:100%;min-height:190px;max-height:340px}.chart-legend{font-size:10px;margin:7px 0}.analysis-table .badge span{white-space:normal}@media(max-width:700px){.brief-grid{grid-template-columns:1fr;gap:13px}.daily-briefing{padding:17px}.brief-title{align-items:start;flex-direction:column;gap:6px}.chart-controls{gap:8px}.chart-controls label{font-size:10px}.signal-key{gap:9px}}
+.notice.collection-warning{border-color:#c65352;background:#fff0f1;color:#8c2831}
 </style>
 </head>
 <body>
@@ -92,8 +93,57 @@ function chart(r,large=false){
  return '<svg class="'+(large?'chart':'spark')+'" viewBox="0 0 '+w+' '+height+'" role="img" aria-label="'+esc(r.name)+' 최근 '+h.length+'개 일봉 가격 흐름" preserveAspectRatio="none">'+grid+'<path d="'+area+'" fill="'+color+'" opacity=".055"/><path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="'+(large?2:1.6)+'" vector-effect="non-scaling-stroke"/></svg>'+(large?'<div class="table-foot"><span>'+new Date(h[0].time*1000).toISOString().slice(0,10)+'</span><span>범위 '+num(lo)+' – '+num(hi)+' / Close 기준</span><span>'+new Date(h.at(-1).time*1000).toISOString().slice(0,10)+'</span></div>':'');
 }
 function gap(r){return Number.isFinite(r.close)&&Number.isFinite(r.sma20)&&r.sma20!==0?(r.close/r.sma20-1)*100:null;}
-function stale(r){const t=Date.parse(r.bar_time_utc);return Number.isFinite(t)&&Date.now()-t>4*86400000;}
-function badge(r){return r.status!=='ok'?'<span class="badge down">수집 실패</span>':stale(r)?'<span class="badge down">시각 확인</span>':'<span class="badge">수집됨</span>';}
+// BEGIN DASHBOARD SAFETY HELPERS
+// NYSE published full-day holidays, 2026–2028. Exceptional closures require a calendar update.
+const marketHolidays={
+ 2026:['01-01','01-19','02-16','04-03','05-25','06-19','07-03','09-07','11-26','12-25'],
+ 2027:['01-01','01-18','02-15','03-26','05-31','06-18','07-05','09-06','11-25','12-24'],
+ 2028:['01-17','02-21','04-14','05-29','06-19','07-04','09-04','11-23','12-25']
+};
+function dateParts(time,zone){return Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(time)).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));}
+function expectedMarketDay(now=Date.now()){
+ const p=dateParts(now,'America/New_York');
+ let d=new Date(Date.UTC(+p.year,+p.month-1,+p.day));
+ // Wait until 17:00 ET to allow the regular-session daily bar to settle.
+ if(+p.hour<17)d.setUTCDate(d.getUTCDate()-1);
+ for(let i=0;i<14;i++,d.setUTCDate(d.getUTCDate()-1)){
+  const year=d.getUTCFullYear(),key=d.toISOString().slice(0,10);
+  if(!marketHolidays[year])return null;
+  if(![0,6].includes(d.getUTCDay())&&!marketHolidays[year].includes(key.slice(5)))return key;
+ }
+ return null;
+}
+function collectionHealth(input,now=Date.now()){
+ const p=dateParts(now,'Asia/Seoul');
+ let due=Date.UTC(+p.year,+p.month-1,+p.day,7-9,15);
+ if(now<due)due-=86400000;
+ const collected=Date.parse(input.collected_at_utc);
+ const valid=Number.isFinite(collected)&&collected<=now+300000;
+ const behind=valid&&collected<due;
+ return {invalid:!valid,late:behind&&now>=due+3600000,pending:behind&&now<due+3600000,due,expectedDay:expectedMarketDay(now)};
+}
+function priceHealth(row,now=Date.now()){
+ if(row.status!=='ok')return 'error';
+ const time=Date.parse(row.bar_time_utc);
+ if(!Number.isFinite(time)||time>now+300000)return 'unknown';
+ if(['지수','대형주','지수 ETF','섹터 ETF'].includes(row.group)){
+  const expected=expectedMarketDay(now);
+  if(!expected)return 'unknown';
+  const p=dateParts(time,'America/New_York');
+  return [p.year,p.month,p.day].join('-')<expected?'stale':'current';
+ }
+ // Rates, FX and volatility series have distinct calendars; use an age warning only.
+ return now-time>4*86400000?'stale':'current';
+}
+function csvCell(value){
+ if(typeof value==='number')return Number.isFinite(value)?String(value):'';
+ let text=String(value??'');
+ if(/^[\s\uFEFF]*[=+@-]|^[\t\r\n]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+// END DASHBOARD SAFETY HELPERS
+function stale(r){return ['stale','unknown'].includes(priceHealth(r));}
+function badge(r){return r.status!=='ok'?'<span class="badge down">수집 실패</span>':stale(r)?'<span class="badge down">거래일 확인</span>':'<span class="badge">수집됨</span>';}
 function localTime(s){if(!s)return '미확인';const d=new Date(s);return Number.isFinite(d.getTime())?d.toLocaleString('ko-KR',{timeZone:'Asia/Seoul',hour12:false})+' KST':'미확인';}
 function render(){
  const available=data.rows.filter(r=>r.group==='대형주').length;
@@ -103,7 +153,7 @@ function render(){
  [...$('stock-limit').options].forEach(o=>o.disabled=Number(o.value)>available);
 
  const rows=data.rows;
- $('data-notice').textContent='수집 '+localTime(data.collected_at_utc)+' · 항목별 거래일과 시세 시각이 다릅니다.';
+ updateFreshness();
  $('universe-date').textContent='대형주 목록 기준일 '+(data.universe_date||'미확인')+' · 미국 기업 시가총액 상위 '+available+'개 수집 · 순위 목록은 최대 200개';
  $('indices').innerHTML=rows.filter(r=>r.group==='지수').map(r=>'<article class="index-card" data-symbol="'+esc(r.symbol)+'" tabindex="0" role="button" aria-label="'+esc(r.name)+' 상세"><div class="card-title">'+esc(r.name)+'<span>'+esc(r.symbol)+'</span></div><div class="value">'+num(r.close)+'</div><div class="change '+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+' <span class="neutral">전일 대비</span></div>'+chart(r)+'<div class="stamp">'+esc((r.bar_time_utc||'미확인').slice(0,10))+' · '+(r.status==='ok'?'일봉': '수집 실패')+'</div></article>').join('');
  $('macros').innerHTML=rows.filter(r=>r.group==='시장지표').map(r=>{
@@ -113,10 +163,22 @@ function render(){
  }).join('');
  $('sector-overview').innerHTML=rows.filter(r=>r.group==='섹터 ETF').map(r=>'<button class="sector-tile" data-symbol="'+esc(r.symbol)+'" aria-label="'+esc(r.name)+' '+esc(r.symbol)+' 상세"><strong>'+esc(r.name)+'</strong><small>'+esc(r.symbol)+' · '+num(r.close)+' USD</small><span class="sector-change '+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</span></button>').join('');
  const ok=rows.filter(r=>r.status==='ok').length,old=rows.filter(r=>stale(r)).length;
- $('status').innerHTML='<div class="progress-row"><span>전체 수집</span><span class="status">'+ok+' / '+rows.length+'</span></div><div class="progress-row"><span>수집 실패 / 오래된 봉</span><span>'+ (rows.length-ok)+' / '+old+'</span></div><div class="progress-row"><span>갱신 방식</span><span>스크립트 수동 실행</span></div>';
+ $('status').innerHTML='<div class="progress-row"><span>전체 수집</span><span>'+ok+' / '+rows.length+'</span></div><div class="progress-row"><span>수집 실패 / 거래일 확인 필요</span><span>'+ (rows.length-ok)+' / '+old+'</span></div><div class="progress-row"><span>갱신 방식</span><span>스크립트 수동 실행</span></div>';
  renderTable();
  renderAnalysis();
  renderBriefing();
+}
+function updateFreshness(){
+ const health=collectionHealth(data),now=Date.now();
+ const staleCount=data.rows.filter(r=>priceHealth(r,now)==='stale').length;
+ const unknown=data.rows.filter(r=>priceHealth(r,now)==='unknown').length;
+ const failed=data.rows.filter(r=>r.status!=='ok').length;
+ const problems=[health.invalid?'수집 시각 확인 필요':health.late?'자동 갱신 지연 · 예정 시각 이후 새 수집이 없습니다.':health.pending?'예약 갱신 대기 중':null,staleCount?staleCount+'개 항목의 최신 거래일 확인 필요':null,unknown?unknown+'개 항목의 거래일 판단 불가':null,failed?failed+'개 항목 수집 실패':null,!health.expectedDay?'미국 거래일 달력 갱신 필요':null].filter(Boolean);
+ const warning=health.invalid||health.late||staleCount>0||unknown>0||failed>0||!health.expectedDay;
+ const notice=$('data-notice');
+ notice.textContent='수집 '+localTime(data.collected_at_utc)+' · '+(problems.join(' / ')||'수집 일정·거래일 확인됨')+' · 미국 주식 최근 마감 거래일 '+(health.expectedDay||'미확인')+' · 항목별 거래일·시세 시각이 다릅니다.';
+ notice.parentElement.setAttribute('role',warning?'alert':'status');
+ notice.parentElement.classList.toggle('collection-warning',!!warning);
 }
 function visibleRows(){
  const q=$('search').value.trim().toLowerCase(),trend=$('trend').value;
@@ -182,8 +244,7 @@ $('import-file').addEventListener('change',async e=>{
 });
 $('export-btn').addEventListener('click',()=>{
  const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram','bb_upper','bb_middle','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','status','bar_time_utc','quote_time_utc'];
- const safe=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
- const csv='\ufeff'+[cols,...visibleRows().map(r=>cols.map(c=>r[c]))].map(row=>row.map(safe).join(',')).join('\r\n');
+ const csv='\ufeff'+[cols,...visibleRows().map(r=>cols.map(c=>r[c]))].map(row=>row.map(csvCell).join(',')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='market-monitor.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 
@@ -303,6 +364,8 @@ document.addEventListener('change',e=>{const key=e.target.dataset?.chartLayer;if
 activateView('overview');
 
 render();
+setInterval(updateFreshness,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFreshness();});
 </script>
 </body></html>
 
