@@ -19,7 +19,9 @@ on:
       - 'scripts/dashboard-template.mjs'
       - 'scripts/render-dashboard.mjs'
       - 'templates/**'
-      - 'config/monitor.json'
+      - 'config/**'
+      - 'tests/**'
+      - 'scripts/fetch-market.mjs'
       - 'scripts/market-analysis.mjs'
       - 'scripts/monitor.mjs'
       - 'scripts/high52.mjs'
@@ -48,7 +50,7 @@ jobs:
         with:
           node-version: '24'
       - name: 구성 및 지표 검증
-        run: node --test tests/sector.test.mjs tests/technical-indicators.test.mjs tests/pages.test.mjs tests/market-analysis.test.mjs tests/dashboard-context.test.mjs tests/dashboard-safety.test.mjs tests/market-temperature.test.mjs tests/high52.test.mjs tests/pages-reuse.test.mjs tests/dashboard-template.test.mjs
+        run: node --test tests/*.test.mjs
       - name: 수집 여부 결정
         id: plan
         env:
