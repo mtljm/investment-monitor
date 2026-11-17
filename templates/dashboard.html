@@ -49,6 +49,53 @@ main,#overview,.index-grid,.macro-grid,.sector-grid{min-width:0}
 .macro-basis,.macro-stamp{display:block;margin-top:5px;font-size:10px;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
 @media(max-width:760px){.macro-grid,.sector-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.macro{padding:14px}.macro .value{font-size:20px}.macro .unit{font-size:10px}.sector-tile{padding:12px;gap:6px}.sector-tile strong,.sector-tile .sector-change{font-size:11px}}
 @media(max-width:360px){.macro-grid{grid-template-columns:minmax(0,1fr)}}
+/* Unified screen alignment */
+main>*{min-width:0}.topline,.hero,.section-heading,.table-foot,footer{flex-wrap:wrap}
+.hero>div:first-child{min-width:0}.hero h1{overflow-wrap:anywhere}.subtitle{line-height:1.8}
+.actions{align-items:center}.actions .btn{white-space:nowrap}
+.panel{min-width:0;margin-top:0}.panel-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:16px;padding:20px 22px}
+.panel-top>div{min-width:0}.panel-top p{margin:8px 0 0;line-height:1.8}
+.tools{min-width:0;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.tools input,.tools select{min-width:0;max-width:100%;min-height:38px}
+.tools input[type=search]{width:200px}.tabs{margin-top:0;padding-top:0;gap:20px;overflow-x:auto;white-space:nowrap}
+.tabs .tab{flex:0 0 auto;min-height:36px}.toolbar-note{line-height:1.8}
+#scope-note{margin:0;padding:18px 22px 0!important}
+.table-scroll{width:100%;max-width:100%;max-height:68vh;overscroll-behavior-x:contain}
+#watchlist table{table-layout:fixed;min-width:1110px}
+#watchlist th,#watchlist td{padding:14px 12px;vertical-align:middle}
+#watchlist th:first-child,#watchlist td:first-child{width:190px;position:sticky;left:0;background:white;z-index:1;padding-left:22px}
+#watchlist th:nth-child(2){width:115px}#watchlist th:nth-child(6){width:120px}#watchlist th:last-child{width:110px}
+#watchlist .company{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+.table-scroll thead th{position:sticky;top:0;z-index:2;background:#fafbfc}
+#watchlist thead th:first-child,.analysis-table thead th:first-child{z-index:3;background:#fafbfc}
+#watchlist tbody tr:hover td:first-child{background:#f8fafb}
+.table-foot{align-items:flex-start;padding:14px 22px;line-height:1.8}
+.table-foot>span{min-width:0;overflow-wrap:anywhere}
+.analysis-intro{padding:20px 22px}.analysis-intro p{margin-bottom:0}
+.analysis-panel .panel-top{padding-bottom:20px}.analysis-table th,.analysis-table td{vertical-align:top;line-height:1.7}
+.analysis-table .symbol{display:block;line-height:1.7}.analysis-table .badge{max-width:100%}
+.analysis-table .analysis-changes,.analysis-table .analysis-verdict{text-align:left}
+.analysis-table .company{margin-top:6px}.analysis-table .event-chip{max-width:100%;box-sizing:border-box}
+.analysis-method{padding:20px 22px}.analysis-method summary{cursor:pointer;font-weight:600;line-height:1.8}
+#data-status{margin-top:0;align-items:start;grid-template-columns:repeat(2,minmax(0,1fr))}
+.info-box{min-width:0}.info-box h3{line-height:1.7}.info-box p{font-size:12px;line-height:1.9}
+.progress-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;padding:12px 0;margin:0;border-bottom:1px solid var(--line);line-height:1.8}
+.progress-row:last-child{border-bottom:0}.progress-row>span:last-child{text-align:right;overflow-wrap:anywhere}
+dialog{width:min(860px,calc(100% - 32px));max-width:calc(100% - 32px);box-sizing:border-box;padding:24px}
+.dialog-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px}.dialog-head>div{min-width:0}
+.dialog-head .btn{white-space:nowrap;align-self:start}.dialog-title{font-size:23px;line-height:1.5;overflow-wrap:anywhere}
+#detail-symbol{overflow-wrap:anywhere;line-height:1.7}#detail-price{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;line-height:1.6}
+#detail-chart,#detail-stats,.shared-analysis,.analysis-grid,.indicator-layout{min-width:0}
+.indicator-layout,.analysis-grid{align-items:start;grid-template-columns:repeat(2,minmax(0,1fr))}
+.indicator-card h3{line-height:1.7}.indicator-card p{font-size:12px;line-height:1.9}.indicator-card .analysis-value{font-variant-numeric:tabular-nums}
+.indicator-card td,.indicator-card th{overflow-wrap:anywhere;vertical-align:top;line-height:1.7}
+.analysis-head h3{max-width:100%;box-sizing:border-box;line-height:1.7}.analysis-head p{font-size:12px}
+.analysis-state{max-width:100%;box-sizing:border-box;line-height:1.7;overflow-wrap:anywhere}
+.dialog-meta{line-height:1.9;overflow-wrap:anywhere}.chart-controls{align-items:center}.chart-legend{line-height:1.8}
+footer>div{min-width:0;overflow-wrap:anywhere}footer{line-height:1.9}
+@media(max-width:1100px){.panel-top{grid-template-columns:minmax(0,1fr)}.tools{justify-content:flex-start}.tools input[type=search]{flex:1;min-width:160px}.actions{max-width:none}}
+@media(max-width:760px){.panel-top{padding:18px 16px}.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.tools input[type=search]{width:100%;min-width:0;grid-column:1/-1;grid-row:2}.tools select{width:100%}.tabs{padding-left:16px;padding-right:16px;gap:18px}#scope-note{padding:16px 16px 0!important}.table-foot{padding:13px 16px}#watchlist th:first-child,#watchlist td:first-child{width:145px;padding-left:16px}.analysis-intro,.analysis-method{padding:18px 16px}#data-status{grid-template-columns:minmax(0,1fr)}.info-box{padding:18px 16px}.topline{align-items:flex-start}.topline .live{line-height:1.7}.hero h1{font-size:26px}.signal-key{line-height:1.8}}
+@media(max-width:600px){dialog{padding:18px;width:calc(100% - 20px);max-width:calc(100% - 20px);max-height:92vh}.dialog-head{gap:10px}.dialog-head .btn{padding:9px 10px}.dialog-title{font-size:20px}.indicator-layout,.analysis-grid{grid-template-columns:minmax(0,1fr)}.analysis-head{padding:16px}.analysis-head h3{font-size:16px!important}.indicator-card{padding:14px}.analysis-grid .indicator-card:nth-child(5){grid-column:auto}.chart-controls label{min-height:30px}}
 </style>
 </head>
 <body>
@@ -65,7 +112,7 @@ main,#overview,.index-grid,.macro-grid,.sector-grid{min-width:0}
 <div class="section-heading"><h2>시장의 온도</h2><small>변동성 · 금리 · 환율 · 비트코인</small></div><section class="macro-grid" id="macros" aria-label="주요 시장지표"></section><div class="section-heading"><h2>미국 11개 섹터</h2><small>Select Sector SPDR · 전일 대비</small></div><section class="sector-grid" id="sector-overview" aria-label="미국 섹터별 ETF"></section>
 </div><section class="panel" id="watchlist" role="tabpanel" aria-labelledby="nav-watchlist" tabindex="0" hidden><p id="scope-note" class="toolbar-note" style="padding:16px 20px 0"></p><div class="panel-top"><div><h2>관찰 종목</h2><p class="toolbar-note">종목을 선택하면 가격 흐름과 세부 지표를 볼 수 있습니다.</p></div><div class="tools"><select id="stock-limit" aria-label="대형주 표시 범위"><option value="20">시가총액 상위 20개</option><option value="50">시가총액 상위 50개</option><option value="100">시가총액 상위 100개</option><option value="200">시가총액 상위 200개</option></select><input id="search" type="search" placeholder="티커 또는 기업명 검색" aria-label="종목 검색"><select id="trend" aria-label="추세 필터"><option value="all">모든 추세</option><option value="up">MA20 위</option><option value="down">MA20 아래</option><option value="error">수집 실패</option></select></div></div>
 <div class="tabs" role="group" aria-label="관찰 대상 구분"><button class="tab active" data-group="대형주" aria-pressed="true">대형주</button><button class="tab" data-group="지수 ETF" aria-pressed="false">지수 ETF</button><button class="tab" data-group="섹터 ETF" aria-pressed="false">섹터 ETF</button><button class="tab" data-group="all" aria-pressed="false">전체</button></div>
-<div class="table-scroll"><table><thead><tr><th><button data-sort="symbol">종목 ↕</button></th><th><button data-sort="close">최신 값 ↕</button></th><th><button data-sort="change_1d_pct">1일 % ↕</button></th><th><button data-sort="change_5d_pct">5일 % ↕</button></th><th><button data-sort="change_20d_pct">20일 % ↕</button></th><th>90개 일봉</th><th><button data-sort="sma20_gap">MA20 대비 ↕</button></th><th><button data-sort="volume_ratio">거래량 배수 ↕</button></th><th>상태</th></tr></thead><tbody id="rows"></tbody></table></div><div class="table-foot"><span id="count"></span><span>빨강: 상승 · 파랑: 하락 / 관찰 목록이며 매수 신호가 아닙니다.</span></div></section>
+<div class="table-scroll" tabindex="0" aria-label="관찰 종목 표 · 좌우 스크롤"><table><thead><tr><th><button data-sort="symbol">종목 ↕</button></th><th><button data-sort="close">최신 값 ↕</button></th><th><button data-sort="change_1d_pct">1일 % ↕</button></th><th><button data-sort="change_5d_pct">5일 % ↕</button></th><th><button data-sort="change_20d_pct">20일 % ↕</button></th><th>90개 일봉</th><th><button data-sort="sma20_gap">MA20 대비 ↕</button></th><th><button data-sort="volume_ratio">거래량 배수 ↕</button></th><th>상태</th></tr></thead><tbody id="rows"></tbody></table></div><div class="table-foot"><span id="count"></span><span>빨강: 상승 · 파랑: 하락 / 관찰 목록이며 매수 신호가 아닙니다.</span></div></section>
 <section id="technical" role="tabpanel" aria-labelledby="nav-technical" tabindex="0" hidden>
 <div id="technical-briefing"></div><div class="info-box analysis-intro"><h2>가격의 현재 위치를 읽습니다.</h2><p>S&amp;P 500(SPX) · 나스닥100 · 시가총액 상위 20개. 일봉 규칙에 따른 해석이며 기업가치·적정 주가 평가가 아닙니다. 장중 봉은 바뀔 수 있습니다.</p></div>
 
@@ -382,6 +429,7 @@ setInterval(updateFreshness,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFreshness();});
 </script>
 </body></html>
+
 
 
 
