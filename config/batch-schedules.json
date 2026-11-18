@@ -1,0 +1,13 @@
+{
+  "timezone": "Asia/Seoul",
+  "us": {
+    "time": "07:15",
+    "cron": "15 22 * * *",
+    "days": "daily"
+  },
+  "asia": {
+    "time": "17:30",
+    "cron": "30 8 * * 1-5",
+    "days": "weekdays"
+  }
+}

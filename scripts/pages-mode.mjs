@@ -19,7 +19,9 @@ export async function main(){
   files=execFileSync('git',['diff','--name-only',before,'HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
  }
  const mode=pagesMode(event,files,process.env.REFRESH_DATA!=='false');
- if(process.env.GITHUB_OUTPUT)await appendFile(process.env.GITHUB_OUTPUT,'mode='+mode+'\n');
- console.log(mode==='collect'?'새 시세 수집 후 배포':'게시된 데이터와 비교 이력을 재사용해 화면만 배포');
+ const market=event==='workflow_dispatch'?(process.env.PUBLISH_MARKET||'us'):mode==='collect'?'us':'reuse';
+ if(!['us','asia','all','reuse'].includes(market))throw Error('지원하지 않는 업데이트 대상');
+ if(process.env.GITHUB_OUTPUT)await appendFile(process.env.GITHUB_OUTPUT,'mode='+mode+'\nmarket='+market+'\n');
+ console.log('업데이트 범위: '+market);
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e.message);process.exitCode=1;});

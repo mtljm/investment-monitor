@@ -48,7 +48,7 @@ export function publicHtml(template,input){
  const cleaned=template.replace(/<div class="side-note">[\s\S]*?<\/div><\/aside>/,'</aside>')
   .replaceAll('PERSONAL MARKET DESK','GLOBAL MARKET OVERVIEW')
   .replaceAll('수동 수집 · 일봉 기준','수집 데이터 · 일봉 기준')
-  .replaceAll('스크립트 수동 실행','매일 오전 7시 15분 목표 · Actions')
+  .replaceAll('스크립트 수동 실행','미국 매일 오전 7시 15분 목표 · 아시아 평일 17:30 목표 · Actions')
   .replaceAll('수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.','매일 오전 자동 갱신됩니다. 수동 갱신은 GitHub Actions의 Pages 시장 대시보드에서 실행하세요.')
   .replaceAll('새 JSON 불러오기가 필요합니다.','자동 갱신 시각 또는 GitHub Actions 실행 결과를 확인하세요.');
  if(cleaned.includes('80% 장기')||cleaned.includes('보유 자산은 추후'))throw new Error('개인 운용 안내가 남아 있습니다.');

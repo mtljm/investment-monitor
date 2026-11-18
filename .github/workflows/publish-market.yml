@@ -1,0 +1,75 @@
+name: 시장별 공통 게시
+on:
+  workflow_call:
+    inputs:
+      market:
+        required: true
+        type: string
+permissions:
+  contents: read
+# Lock covers collection, reading the latest snapshot, deployment and public verification.
+# Callers deliberately have no copy of this lock (avoids reusable-workflow deadlocks).
+concurrency:
+  group: market-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      snapshot_hash: ${{  steps.site.outputs.snapshot_hash  }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: 전체 검증
+        run: node --test tests/*.test.mjs
+      - name: 미국장만 수집
+        if: inputs.market == 'us' || inputs.market == 'all'
+        timeout-minutes: 6
+        run: node scripts/monitor.mjs --limit 20
+      - name: 아시아장만 수집
+        if: inputs.market == 'asia' || inputs.market == 'all'
+        timeout-minutes: 3
+        run: node scripts/collect-asia.mjs
+      - name: 선택 시장만 병합하고 나머지는 최신 게시 자료 유지
+        id: site
+        env:
+          PUBLISH_MARKET: ${{  inputs.market  }}
+          PAGES_BASE_URL: https://mtljm.github.io/investment-monitor/
+        run: node scripts/build-market-site.mjs
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
+        with:
+          path: public-site
+          retention-days: 1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{  steps.deployment.outputs.page_url  }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - id: deployment
+        name: Pages 게시
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
+      - name: 게시 스냅샷 확인 후 잠금 해제
+        env:
+          EXPECTED_SNAPSHOT_HASH: ${{  needs.build.outputs.snapshot_hash  }}
+          PAGES_BASE_URL: https://mtljm.github.io/investment-monitor/
+        run: node scripts/verify-public-site.mjs

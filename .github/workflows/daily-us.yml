@@ -1,0 +1,15 @@
+name: 미국장 업데이트
+run-name: 미국장만 갱신 · ${{  github.event_name  }}
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 22 * * *' # 매일 07:15 KST
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-market.yml
+    with:
+      market: us

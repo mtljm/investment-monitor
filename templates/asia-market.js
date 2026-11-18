@@ -2,7 +2,7 @@
 function findInstrument(symbol){return data.rows.find(r=>r.symbol===symbol)||(data.asia?.rows||[]).find(r=>r.symbol===symbol);}
 function asiaNotice(){
  const a=data.asia,rows=a?.rows||[],failed=rows.filter(r=>r.status!=='ok').length;
- const notice=$('data-notice');notice.textContent=a?'아시아 수집 '+localTime(a.collected_at_utc)+' · '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+'개 성공 · 각 시장 거래일·시세 시각을 확인하세요.':'아시아 데이터가 아직 수집되지 않았습니다.';
+ const notice=$('data-notice');notice.textContent=a?'아시아 수집 '+localTime(a.collected_at_utc)+' · 평일 17:30 KST 갱신 목표 · '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+'개 성공 · 각 시장 거래일·시세 시각을 확인하세요.':'아시아 데이터가 아직 수집되지 않았습니다.';
  notice.parentElement.setAttribute('role',failed?'alert':'status');notice.parentElement.classList.toggle('collection-warning',failed>0||!a);
 }
 function renderAsia(){
