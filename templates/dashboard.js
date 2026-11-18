@@ -49,8 +49,10 @@ function render(){
  renderAnalysis();
  renderBriefing();
  renderAsia();
+ renderGurus();
 }
 function updateFreshness(){
+ if(!$('gurus').hidden){gurusNotice();return;}
  if(!$('asia').hidden){asiaNotice();return;}
  renderSectors();
  renderTemperature();
@@ -135,6 +137,7 @@ $('export-btn').addEventListener('click',()=>{
 });
 
 const views={
+ gurus:['13F, 기관 포트폴리오.','분기말 공개 보유종목을 참고하고 기관별 공시 원문을 확인하세요.','GURU PORTFOLIOS / FORM 13F'],
  asia:['아시아 시장, 한눈에.','주요 아시아 지수의 가격·추세·기준 시각을 확인하세요.','MARKET OVERVIEW / ASIA'],
  overview:['미국 시장, 한눈에.','시장 흐름과 주요 지표의 변화를 확인하세요.','MARKET OVERVIEW / UNITED STATES'],
  watchlist:['관찰 종목, 더 넓게.','시가총액 상위 20·50·100·200개를 선택해 흐름을 비교하세요.','WATCHLIST / US LARGE CAPS'],
@@ -152,6 +155,7 @@ function activateView(view,focus=false){
  const [title,description,eyebrow]=views[view];
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
+ if(view==='gurus')renderGurus();
  updateFreshness();
 }
 document.querySelectorAll('[data-view]').forEach((b,i)=>{b.addEventListener('click',()=>activateView(b.dataset.view));b.addEventListener('keydown',e=>{
@@ -264,6 +268,7 @@ document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const ra
 const sectorResize=new ResizeObserver(()=>renderSectors());
 for(const id of ['sector-overview','nasdaq-overview'])sectorResize.observe($(id));
 activateView('overview');
+initGurus();
 
 render();
 setInterval(updateFreshness,60000);

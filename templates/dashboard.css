@@ -1,4 +1,24 @@
 /* Shared dashboard styles. Responsive overrides follow their base rules. */
+.guru-intro {margin-bottom:18px;}
+.guru-intro p {font-size:12px;line-height:1.85;}
+.guru-managers {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px;}
+.guru-manager {display:flex;flex-direction:column;gap:9px;text-align:left;padding:17px 15px;background:white;color:var(--ink);border:1px solid var(--line);border-radius:9px;min-width:0;}
+.guru-manager strong {font-size:14px;line-height:1.5;}
+.guru-manager small {font-size:10px;line-height:1.6;color:var(--muted);}
+.guru-manager span {font-size:11px;font-variant-numeric:tabular-nums;}
+.guru-manager.selected {border-color:#315b77;box-shadow:inset 0 0 0 1px #315b77;background:#f5f9fc;}
+.guru-table {min-width:760px;table-layout:fixed;}
+.guru-table th:first-child,.guru-table td:first-child {width:55px;padding:14px 10px;white-space:nowrap;}
+.guru-table th:nth-child(2),.guru-table td:nth-child(2) {width:220px;text-align:left;}
+.guru-table td,.guru-table th {padding:14px 12px;white-space:normal;overflow-wrap:anywhere;}
+.guru-table tbody tr {cursor:default;}
+.guru-table .company {max-width:none;white-space:normal;line-height:1.6;}
+.guru-symbol {border:0;padding:0;background:none;color:#315b77;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+.guru-weight {height:4px;background:#edf1f5;border-radius:4px;overflow:hidden;margin-top:7px;}
+.guru-weight i {display:block;height:100%;background:#6f8fa7;}
+.guru-notes {padding:4px 22px 14px;color:var(--muted);font-size:11px;line-height:1.8;}
+@media(max-width:1100px){.guru-managers{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:450px){.guru-manager{padding:13px;gap:7px;}.guru-manager strong{font-size:12px;}.guru-manager span{font-size:10px;}.guru-intro p{font-size:11px;}}
 :root {
   color-scheme:light;
   --green:#168363;
@@ -3082,3 +3102,4 @@ footer {
 @media(max-width:1100px){.asia-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.asia-index-grid{grid-template-columns:minmax(0,1fr)}.asia-tools select{min-width:140px}.asia-card .value{font-size:26px}}
 
 main:has(#asia:not([hidden])) footer>div:last-child{display:none}
+

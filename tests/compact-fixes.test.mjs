@@ -39,6 +39,6 @@ test('주기적 갱신 검사에서 히트맵 상태도 갱신한다',async()=>{
  const js=await readFile(new URL('../templates/dashboard.js',import.meta.url),'utf8');
  const fn='function updateFreshness(){'+js.split('function updateFreshness(){')[1].split('function visibleRows(){')[0];
  let refreshed=0;const notice={parentElement:{setAttribute(){},classList:{toggle(){}}}};
- const ctx={$:id=>id==='asia'?{hidden:true}:notice,data:{rows:[]},renderSectors:()=>refreshed++,renderTemperature(){},collectionHealth:()=>({expectedDay:'2026-11-17'}),priceHealth(){},localTime:()=>''};
+ const ctx={$:id=>['asia','gurus'].includes(id)?{hidden:true}:notice,data:{rows:[]},renderSectors:()=>refreshed++,renderTemperature(){},collectionHealth:()=>({expectedDay:'2026-11-17'}),priceHealth(){},localTime:()=>''};
  vm.runInNewContext(fn+';updateFreshness();',ctx);assert.equal(refreshed,1);
 });
