@@ -16,6 +16,7 @@ on:
       - 'scripts/prepare-pages.mjs'
       - 'scripts/reuse-pages.mjs'
       - 'scripts/pages-mode.mjs'
+      - 'scripts/collect-asia.mjs'
       - 'scripts/dashboard-template.mjs'
       - 'scripts/render-dashboard.mjs'
       - 'templates/**'
@@ -64,6 +65,10 @@ jobs:
           for(const path of ['reports/latest.json','reports/latest.md','dashboard.html']) rmSync(path,{force:true});
           rmSync('public-site',{recursive:true,force:true});
           NODE
+      - name: 아시아 지수 별도 수집
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/collect-asia.mjs
       - name: 대형주 20개와 지수·지표·ETF 23개 수집
         if: steps.plan.outputs.mode == 'collect'
         timeout-minutes: 6

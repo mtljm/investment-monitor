@@ -1,3 +1,4 @@
+import {readAsiaReport} from './collect-asia.mjs';
 import {readDashboardTemplate} from './dashboard-template.mjs';
 import {publicData,writePublicSite} from './prepare-pages.mjs';
 import {resolve} from 'node:path';
@@ -36,7 +37,7 @@ export async function readPublishedSnapshot(base,fetcher=fetch){
 }
 export async function main(){
  const {data,history}=await readPublishedSnapshot(process.env.PAGES_BASE_URL);
- await writePublicSite(await readDashboardTemplate(),data,history);
+ await writePublicSite(await readDashboardTemplate(),{...data,asia:await readAsiaReport(data.asia)},history);
  console.log('화면만 배포 · 기존 수집 시각 유지: '+data.collected_at_utc);
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e.message);process.exitCode=1;});

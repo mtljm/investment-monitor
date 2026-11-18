@@ -3074,3 +3074,9 @@ footer {
   line-height:1.3;
   white-space:nowrap;
 }
+
+/* Asia index overview */
+.asia-intro{margin-bottom:18px}.asia-intro p{margin-bottom:0}.asia-tools{justify-content:flex-start;align-items:center;margin-bottom:16px;display:flex}.asia-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.asia-card{min-width:0}.asia-card h3{font-size:16px;margin:14px 0 0}.asia-card .value small{font-size:12px;color:var(--muted)}.asia-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;margin:14px 0;padding-top:12px;border-top:1px solid var(--line)}.asia-metrics span{display:flex;justify-content:space-between;gap:6px}.asia-metrics b{white-space:nowrap}.asia-card .stamp{line-height:1.9;padding-top:10px;border-top:1px solid var(--line)}
+@media(max-width:1100px){.asia-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.asia-index-grid{grid-template-columns:minmax(0,1fr)}.asia-tools select{min-width:140px}.asia-card .value{font-size:26px}}
+
+main:has(#asia:not([hidden])) footer>div:last-child{display:none}

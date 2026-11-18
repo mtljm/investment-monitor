@@ -19,7 +19,7 @@ export function validateSectorWeights(input,now=Date.now()){
 }
 // Source files stay separate; all delivery formats remain self-contained HTML.
 export async function readDashboardTemplate(){
- const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','sector-heatmap.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
+ const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','sector-heatmap.js','asia-market.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
  const weights=validateSectorWeights(JSON.parse(await readFile(new URL('../config/sector-weights.json',import.meta.url),'utf8')));
  const json=JSON.stringify(weights).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
  const js=scripts.join('\n').replace('__SECTOR_WEIGHTS__',()=>json);

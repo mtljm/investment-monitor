@@ -31,6 +31,7 @@ function priceHealth(row,now=Date.now()){
  if(row.status!=='ok')return 'error';
  const time=Date.parse(row.bar_time_utc);
  if(!Number.isFinite(time)||time>now+300000)return 'unknown';
+ if(row.market_region==='ASIA')return now-time>4*86400000?'stale':'current';
  if(row.symbol==='BTC-USD')return now-time>36*3600000?'stale':'current';
  if(['지수','대형주','지수 ETF','섹터 ETF'].includes(row.group)){
   const expected=expectedMarketDay(now);

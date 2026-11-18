@@ -1,10 +1,11 @@
+import {readAsiaReport} from './collect-asia.mjs';
 import {readDashboardTemplate} from './dashboard-template.mjs';
 import {dashboardContext} from './dashboard-context.mjs';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const allowed=['group','symbol','name','unit','snapshot_rank','status','bar_time_utc','quote_time_utc',
+const allowed=['market','market_region','group','symbol','name','unit','snapshot_rank','status','bar_time_utc','quote_time_utc',
  'high_52w','high_52w_time_utc','drawdown_52w_pct','high_52w_complete','close','previous_close','change','change_1d_pct','change_5d_pct','change_20d_pct',
  'ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
  'bb_middle','bb_upper','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','exchange_timezone','stale_calendar_days'];
@@ -13,6 +14,7 @@ export function publicData(input){
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
+  ...(input.asia?{asia:publicAsiaData(input.asia)}:{}),
   ...(input.briefing?{briefing:{...Object.fromEntries(['tracked','rising','falling','uptrend','downtrend','hot','oversold','compared','event_count'].map(k=>[k,Number.isFinite(input.briefing[k])?input.briefing[k]:0])),events:(input.briefing.events||[]).slice(0,8).map(e=>({symbol:String(e.symbol),kind:String(e.kind),text:String(e.text)}))}}:{}),
   rows:input.rows.map(row=>{
    if(!['지수','시장지표','대형주','지수 ETF','섹터 ETF'].includes(row.group))throw new Error('시장 데이터 외 그룹은 공개할 수 없습니다.');
@@ -35,10 +37,16 @@ export function publicData(input){
   })
  };
 }
+export function publicAsiaData(input){
+ if(!Array.isArray(input?.rows)||input.rows.length>12||!Number.isFinite(Date.parse(input.collected_at_utc)))throw Error('아시아 보고서 형식 오류');
+ const symbols=new Set();
+ for(const r of input.rows){if(r.group!=='지수'||r.market_region!=='ASIA'||typeof r.symbol!=='string'||symbols.has(r.symbol)||typeof r.market!=='string')throw Error('아시아 지수 형식 오류');symbols.add(r.symbol);}
+ return publicData({rows:input.rows,collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst});
+}
 export function publicHtml(template,input){
  const data=publicData(input);
  const cleaned=template.replace(/<div class="side-note">[\s\S]*?<\/div><\/aside>/,'</aside>')
-  .replaceAll('PERSONAL MARKET DESK','US MARKET OVERVIEW')
+  .replaceAll('PERSONAL MARKET DESK','GLOBAL MARKET OVERVIEW')
   .replaceAll('수동 수집 · 일봉 기준','수집 데이터 · 일봉 기준')
   .replaceAll('스크립트 수동 실행','매일 오전 7시 15분 목표 · Actions')
   .replaceAll('수집 스크립트 실행 또는 새 JSON 불러오기가 필요합니다.','매일 오전 자동 갱신됩니다. 수동 갱신은 GitHub Actions의 Pages 시장 대시보드에서 실행하세요.')
@@ -72,7 +80,7 @@ export async function main(){
   try{previous=JSON.parse(await readFile(resolve(root,'reports/history.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
  }
  const context=dashboardContext(input,previous);
- await writePublicSite(template,context.data,context.history);
+ await writePublicSite(template,{...context.data,asia:await readAsiaReport(input.asia)},context.history);
  console.log('Pages 게시 파일 생성: public-site/index.html');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))

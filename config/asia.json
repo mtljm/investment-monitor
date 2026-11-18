@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "instruments": [
+    {
+      "group": "지수",
+      "symbol": "^KS11",
+      "name": "KOSPI",
+      "unit": "pt",
+      "market": "한국",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Seoul"
+    },
+    {
+      "group": "지수",
+      "symbol": "^KQ11",
+      "name": "KOSDAQ",
+      "unit": "pt",
+      "market": "한국",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Seoul"
+    },
+    {
+      "group": "지수",
+      "symbol": "^N225",
+      "name": "닛케이 225",
+      "unit": "pt",
+      "market": "일본",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Tokyo"
+    },
+    {
+      "group": "지수",
+      "symbol": "^HSI",
+      "name": "항셍",
+      "unit": "pt",
+      "market": "홍콩",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Hong_Kong"
+    },
+    {
+      "group": "지수",
+      "symbol": "000001.SS",
+      "name": "상하이종합",
+      "unit": "pt",
+      "market": "중국",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Shanghai"
+    },
+    {
+      "group": "지수",
+      "symbol": "^TWII",
+      "name": "대만가권",
+      "unit": "pt",
+      "market": "대만",
+      "market_region": "ASIA",
+      "exchange_timezone": "Asia/Taipei"
+    }
+  ]
+}

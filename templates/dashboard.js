@@ -48,8 +48,10 @@ function render(){
  renderTable();
  renderAnalysis();
  renderBriefing();
+ renderAsia();
 }
 function updateFreshness(){
+ if(!$('asia').hidden){asiaNotice();return;}
  renderTemperature();
  const health=collectionHealth(data),now=Date.now();
  const staleCount=data.rows.filter(r=>priceHealth(r,now)==='stale').length;
@@ -77,7 +79,7 @@ function renderTable(){
  $('count').textContent=rows.length+'개 표시 / 대형주 상위 '+stockLimit+'개 선택 · 수집 전체 '+data.rows.length+'개 · 목록 기준일 '+(data.universe_date||'미확인');
 }
 function showDetail(symbol){
- const r=data.rows.find(r=>r.symbol===symbol);if(!r)return;
+ const r=findInstrument(symbol);if(!r)return;
  detailSymbol=symbol;
  $('detail-symbol').textContent=r.symbol+' / '+r.group;
  $('detail-title').textContent=r.name;
@@ -132,6 +134,7 @@ $('export-btn').addEventListener('click',()=>{
 });
 
 const views={
+ asia:['아시아 시장, 한눈에.','주요 아시아 지수의 가격·추세·기준 시각을 확인하세요.','MARKET OVERVIEW / ASIA'],
  overview:['미국 시장, 한눈에.','시장 흐름과 주요 지표의 변화를 확인하세요.','MARKET OVERVIEW / UNITED STATES'],
  watchlist:['관찰 종목, 더 넓게.','시가총액 상위 20·50·100·200개를 선택해 흐름을 비교하세요.','WATCHLIST / US LARGE CAPS'],
  technical:['기술적 분석, 현재 구간.','다섯 가지 지표로 가격 위치와 신호의 일치·충돌을 확인하세요.','TECHNICAL ANALYSIS / DAILY'],
@@ -148,6 +151,7 @@ function activateView(view,focus=false){
  const [title,description,eyebrow]=views[view];
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
+ updateFreshness();
 }
 document.querySelectorAll('[data-view]').forEach((b,i)=>{b.addEventListener('click',()=>activateView(b.dataset.view));b.addEventListener('keydown',e=>{
  const buttons=[...document.querySelectorAll('[data-view]')];
@@ -218,6 +222,7 @@ function signalMeta(value){
 function signalLabel(value){const m=signalMeta(value);return '<span class="'+m.css+'" title="'+m.label+'"><span aria-hidden="true">'+m.icon+'</span> '+esc(value||'미확인')+'</span>';}
 function eventHtml(event){const mapping={heat:['⚠','signal-up'],up:['▲','signal-up'],down:['▼','signal-down'],oversold:['↘','signal-down'],neutral:['●','signal-neutral']};const [icon,css]=mapping[event.kind]||mapping.neutral;return '<span class="event-chip '+css+'">'+icon+' '+esc(event.text)+'</span>';}
 function changesHtml(r,compact=false){
+ if(r.market_region==='ASIA')return '<span class="company">아시아 지수의 이전 저장 거래일 신호 비교는 준비 중입니다.</span>';
  if(!['^GSPC','^NDX'].includes(r.symbol)&&!(r.group==='대형주'&&r.snapshot_rank<=20))return '<span class="company">신호 비교 대상: S&P 500·나스닥100·상위 20개 주식</span>';
  const c=r.changes;if(r.status!=='ok')return '<span class="company">수집 실패 · 비교 보류</span>';if(!c?.available)return '<span class="company">비교 기준 없음 · 첫 기록</span>';
  const events=Array.isArray(c.events)?c.events:[];
@@ -253,7 +258,7 @@ function detailChart(r){
  const hasOverlay=h.some(p=>Number.isFinite(p.sma20));
  return '<div class="chart-controls" role="group" aria-label="차트 지표 표시"><label>표시 범위 <select id="detail-range" aria-label="차트 일봉 표시 범위">'+[30,60,90].map(n=>'<option value="'+n+'" '+(n===detailRange?'selected':'')+'>'+n+'개 일봉</option>').join('')+'</select></label>'+[['sma','SMA 20 / 50 / 200'],['bb','볼린저 밴드'],['fib','피보나치']].map(([key,label])=>'<label><input type="checkbox" data-chart-layer="'+key+'" '+(chartLayers[key]?'checked':'')+'> '+label+'</label>').join('')+'</div><svg class="chart overlay-chart" viewBox="0 0 '+w+' '+height+'" role="img" aria-label="'+esc(r.name)+' 가격과 이동평균·볼린저·피보나치 비교 차트">'+svg+'</svg><div class="chart-legend"><span>━ 종가</span><span style="color:#bc6c25">━ SMA 20</span><span style="color:#8757b4">━ SMA 50</span><span style="color:#326d88">━ SMA 200</span><span style="color:#719ac5">┄ 볼린저</span><span style="color:#8e7853">┄ 피보나치 60일</span></div><p class="toolbar-note">'+esc(new Date(h[0].time*1000).toISOString().slice(0,10))+' ~ '+esc(new Date(last.time*1000).toISOString().slice(0,10))+' · '+esc(r.unit)+' · 종가 기준 · 기간은 표시 범위이며 지표 계산 기간과 다릅니다.'+(!hasOverlay?' · 이전 보고서에는 차트 지표 이력이 없습니다.':'')+'</p>';
 }
-document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const range=Number(e.target.value);if([30,60,90].includes(range)){detailRange=range;const r=data.rows.find(r=>r.symbol===detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}return;}const key=e.target.dataset?.chartLayer;if(key&&Object.hasOwn(chartLayers,key)){chartLayers[key]=e.target.checked;const r=data.rows.find(r=>r.symbol===detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}});
+document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const range=Number(e.target.value);if([30,60,90].includes(range)){detailRange=range;const r=findInstrument(detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}return;}const key=e.target.dataset?.chartLayer;if(key&&Object.hasOwn(chartLayers,key)){chartLayers[key]=e.target.checked;const r=findInstrument(detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}});
 
 new ResizeObserver(()=>renderSectors()).observe($('sector-overview'));
 activateView('overview');
@@ -262,3 +267,5 @@ render();
 setInterval(updateFreshness,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFreshness();});
 
+
+$('asia-market-filter').addEventListener('change',renderAsia);
