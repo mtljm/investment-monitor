@@ -28,11 +28,6 @@ function calculateThreeLow(input,c,{fresh=r=>r?.status==='ok',blocked=false}={})
  return {metrics,risk,available,count,riskReady,environment,candidates,readyCount:candidates.filter(r=>r.ready).length};
 }
 // THREE_LOW_MODEL_END
-function threeLowNotice(){
- const notice=$('data-notice');notice.textContent='미국 수집 '+localTime(data.collected_at_utc)+' · 3저 추가 지표 '+localTime(data.three_low?.collected_at_utc)+' · 일봉 기준, 실시간 매매 신호가 아닙니다.';
- const h=collectionHealth(data),warning=h.invalid||h.late||!data.three_low;
- notice.parentElement.setAttribute('role',warning?'alert':'status');notice.parentElement.classList.toggle('collection-warning',!!warning);
-}
 function renderThreeLow(){
  const health=collectionHealth(data),result=calculateThreeLow(data,threeLowConfig,{fresh:r=>r?.status==='ok'&&priceHealth(r)==='current',blocked:health.invalid||health.late});
  const title=!result.available?'자료 확인 · 판정 보류':result.count!==3?'3저 전환 조건 대기 · '+result.count+'/3':!result.riskReady?'3저 전환 충족 · 위험회피 확인':'3저 전환 충족 · 기술주 조건 점검';
@@ -45,6 +40,7 @@ function renderThreeLow(){
  $('three-low-universe').textContent='표본은 현재 수집 대형주 중 자체 선정 정보기술 '+threeLowConfig.candidates.filter(r=>r.category==='정보기술').length+'개입니다. 플랫폼 '+threeLowConfig.candidates.filter(r=>r.category==='플랫폼').length+'개를 선택해 포함할 수 있으며 GICS 정보기술 업종과 구분합니다. 밸류에이션·실적 검증은 포함하지 않습니다.';
  const scope=$('three-low-scope').value,list=result.candidates.filter(r=>scope==='all'||r.category==='정보기술');
  $('three-low-count').textContent='포착 '+list.filter(r=>r.ready).length+'개 / 표본 '+list.length+'개 · 현재 수집된 대형주 범위 내 자체 선정 표본';
+ $('three-low-table-toggle').textContent='기술주 조건표 · 포착 '+list.filter(r=>r.ready).length+'개 / 표본 '+list.length+'개';
  $('three-low-rows').innerHTML=list.map(item=>{const r=item.row;return '<tr'+(r?' data-symbol="'+esc(r.symbol)+'" tabindex="0" aria-label="'+esc(r.name)+' 현재 지표 상세"':'')+'><td><b>'+esc(item.symbol)+'</b><span class="company">'+esc(r?.name||'현재 수집 범위 밖')+' · '+esc(item.category)+'</span></td><td><span class="badge '+(item.ready?'up':item.state==='과열 주의'?'signal-up':'')+'">'+esc(item.state)+'</span><span class="company">기술 '+item.score+'/6</span></td><td>'+num(r?.close)+'<span class="company">SMA20 '+pct(item.gap)+'</span></td><td>'+num(r?.rsi14)+'</td><td>'+(Number.isFinite(item.relative)?(item.relative>0?'+':'')+num(item.relative)+'%p':'—')+'</td><td>'+num(r?.volume_ratio)+'×<span class="company">OBV20 '+pct(r?.obv_flow20)+'</span></td><td class="three-low-checks">'+item.checks.map(check=>'<span class="'+(check.passed?'positive':'neutral')+'">'+(check.passed?'✓ ':'○ ')+esc(check.label)+'</span>').join('')+'</td></tr>';}).join('');
 }
 function initThreeLow(){document.addEventListener('change',e=>{if(e.target.id==='three-low-scope')renderThreeLow();});}

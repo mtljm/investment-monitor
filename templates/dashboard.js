@@ -50,12 +50,11 @@ function render(){
  renderBriefing();
  renderAsia();
  renderGurus();
- renderThreeLow();
 }
 function updateFreshness(){
- if(!$('three-low').hidden){threeLowNotice();renderThreeLow();return;}
  if(!$('gurus').hidden){gurusNotice();return;}
  if(!$('asia').hidden){asiaNotice();return;}
+ if(!$('overview').hidden)renderThreeLow();
  renderSectors();
  renderTemperature();
  const health=collectionHealth(data),now=Date.now();
@@ -139,7 +138,6 @@ $('export-btn').addEventListener('click',()=>{
 });
 
 const views={
- 'three-low':['3저 전환, 기술주 포착.','약달러·유가하락·금리하락과 기술주의 추세·모멘텀을 함께 확인하세요.','THREE LOWS / TECHNOLOGY WATCH'],
  gurus:['13F, 기관 포트폴리오.','분기말 공개 보유종목을 참고하고 기관별 공시 원문을 확인하세요.','GURU PORTFOLIOS / FORM 13F'],
  asia:['아시아 시장, 한눈에.','주요 아시아 지수의 가격·추세·기준 시각을 확인하세요.','MARKET OVERVIEW / ASIA'],
  overview:['미국 시장, 한눈에.','시장 흐름과 주요 지표의 변화를 확인하세요.','MARKET OVERVIEW / UNITED STATES'],
@@ -159,7 +157,6 @@ function activateView(view,focus=false){
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
  if(view==='gurus')renderGurus();
- if(view==='three-low')renderThreeLow();
  updateFreshness();
 }
 document.querySelectorAll('[data-view]').forEach((b,i)=>{b.addEventListener('click',()=>activateView(b.dataset.view));b.addEventListener('keydown',e=>{

@@ -17,6 +17,9 @@
 .three-low-checks {text-align:left;}
 .three-low-checks span {display:block;font-size:10px;line-height:1.65;}
 .three-low-method {margin-top:18px;}
+.three-low-stock-details {margin-top:10px;}
+.three-low-stock-details>summary,.three-low-method>summary {cursor:pointer;padding:10px 0;font-size:12px;font-weight:650;}
+.three-low-stock-details[open]>summary {margin-bottom:10px;}
 @media(max-width:650px){.three-low-macros{grid-template-columns:1fr;}.three-low-macros .info-box{padding:15px;}.three-low-intro p,.three-low-method p{font-size:11px;}}
 .guru-intro {margin-bottom:18px;}
 .guru-intro p {font-size:12px;line-height:1.85;}
