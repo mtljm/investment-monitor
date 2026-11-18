@@ -1,4 +1,23 @@
 /* Shared dashboard styles. Responsive overrides follow their base rules. */
+.three-low-intro {margin-bottom:16px;}
+.three-low-intro p,.three-low-method p {font-size:12px;line-height:1.85;}
+.three-low-macros {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.three-low-macros .info-box {min-width:0;padding:18px;}
+.three-low-macros p {font-size:12px;line-height:1.8;}
+.three-low-macros small {font-size:10px;color:var(--muted);line-height:1.8;}
+.three-low-value {font-size:24px;font-variant-numeric:tabular-nums;}
+.three-low-risk {padding:15px 0;display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:11px;}
+.three-low-table {min-width:900px;table-layout:fixed;}
+.three-low-table th,.three-low-table td {padding:12px 10px;white-space:normal;overflow-wrap:anywhere;vertical-align:middle;}
+.three-low-table th:first-child,.three-low-table td:first-child {width:150px;padding-left:16px;}
+.three-low-table th:nth-child(2) {width:130px;}
+.three-low-table th:nth-child(4) {width:65px;}
+.three-low-table th:last-child {width:185px;}
+.three-low-table .company {max-width:none;white-space:normal;line-height:1.7;}
+.three-low-checks {text-align:left;}
+.three-low-checks span {display:block;font-size:10px;line-height:1.65;}
+.three-low-method {margin-top:18px;}
+@media(max-width:650px){.three-low-macros{grid-template-columns:1fr;}.three-low-macros .info-box{padding:15px;}.three-low-intro p,.three-low-method p{font-size:11px;}}
 .guru-intro {margin-bottom:18px;}
 .guru-intro p {font-size:12px;line-height:1.85;}
 .guru-managers {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px;}
