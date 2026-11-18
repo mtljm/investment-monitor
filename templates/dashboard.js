@@ -260,7 +260,8 @@ function detailChart(r){
 }
 document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const range=Number(e.target.value);if([30,60,90].includes(range)){detailRange=range;const r=findInstrument(detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}return;}const key=e.target.dataset?.chartLayer;if(key&&Object.hasOwn(chartLayers,key)){chartLayers[key]=e.target.checked;const r=findInstrument(detailSymbol);if(r)$('detail-chart').innerHTML=detailChart(r);}});
 
-new ResizeObserver(()=>renderSectors()).observe($('sector-overview'));
+const sectorResize=new ResizeObserver(()=>renderSectors());
+for(const id of ['sector-overview','nasdaq-overview'])sectorResize.observe($(id));
 activateView('overview');
 
 render();

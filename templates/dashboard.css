@@ -2974,6 +2974,8 @@ footer {
   z-index:1;
 }
 
+.sector-heat-tile.heat-tiny > * { display:none; }
+
 .sector-heat-tile:focus-visible {
   outline:3px solid #172431;
   outline-offset:-4px;
