@@ -1,3 +1,4 @@
+import {publicGurusData} from './gurus.mjs';
 import {readAsiaReport} from './collect-asia.mjs';
 import {readDashboardTemplate} from './dashboard-template.mjs';
 import {dashboardContext} from './dashboard-context.mjs';
@@ -14,6 +15,7 @@ export function publicData(input){
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
+  ...(input.gurus?{gurus:publicGurusData(input.gurus)}:{}),
   ...(input.asia?{asia:publicAsiaData(input.asia)}:{}),
   ...(input.briefing?{briefing:{...Object.fromEntries(['tracked','rising','falling','uptrend','downtrend','hot','oversold','compared','event_count'].map(k=>[k,Number.isFinite(input.briefing[k])?input.briefing[k]:0])),events:(input.briefing.events||[]).slice(0,8).map(e=>({symbol:String(e.symbol),kind:String(e.kind),text:String(e.text)}))}}:{}),
   rows:input.rows.map(row=>{
@@ -85,6 +87,7 @@ export async function main(){
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
 
 
 

@@ -6,7 +6,7 @@ on:
       market:
         description: 업데이트 대상 (reuse는 양쪽 데이터 유지)
         type: choice
-        options: [us, asia, all, reuse]
+        options: [us, asia, gurus, all, reuse]
         default: reuse
   push:
     branches: [main]
@@ -45,3 +45,4 @@ jobs:
     uses: ./.github/workflows/publish-market.yml
     with:
       market: ${{  needs.plan.outputs.market  }}
+

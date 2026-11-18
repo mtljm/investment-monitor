@@ -7,6 +7,8 @@ const sharedFiles=new Set(['scripts/monitor.mjs','scripts/fetch-market.mjs','scr
 const usFiles=new Set(['config/monitor.json','scripts/dashboard-context.mjs']);
 const asiaFiles=new Set(['config/asia.json','scripts/collect-asia.mjs']);
 export function changedMarket(files){
+ const gurus=files.some(p=>['config/gurus.json','scripts/collect-gurus.mjs'].includes(p));
+ if(gurus)return files.some(p=>sharedFiles.has(p)||usFiles.has(p)||asiaFiles.has(p))?'all':'gurus';
  if(files.some(p=>sharedFiles.has(p)))return 'all';
  const us=files.some(p=>usFiles.has(p)),asia=files.some(p=>asiaFiles.has(p));
  return us&&asia?'all':us?'us':asia?'asia':'reuse';
@@ -27,7 +29,7 @@ export async function main(){
  }
  const mode=pagesMode(event,files,process.env.REFRESH_DATA!=='false');
  const market=event==='workflow_dispatch'?(process.env.PUBLISH_MARKET||'reuse'):event==='push'?changedMarket(files):'us';
- if(!['us','asia','all','reuse'].includes(market))throw Error('지원하지 않는 업데이트 대상');
+ if(!['us','asia','all','reuse','gurus'].includes(market))throw Error('지원하지 않는 업데이트 대상');
  if(process.env.GITHUB_OUTPUT)await appendFile(process.env.GITHUB_OUTPUT,'mode='+mode+'\nmarket='+market+'\n');
  console.log('업데이트 범위: '+market);
 }

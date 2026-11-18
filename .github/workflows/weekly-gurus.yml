@@ -1,0 +1,14 @@
+name: 13F 기관 포트폴리오 확인
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 23 * * 5' # 한국시간 토요일 08:00
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-market.yml
+    with:
+      market: gurus

@@ -36,6 +36,10 @@ jobs:
         if: inputs.market == 'asia' || inputs.market == 'all'
         timeout-minutes: 3
         run: node scripts/collect-asia.mjs
+      - name: 13F 기관 포트폴리오 확인
+        if: inputs.market == 'gurus' || inputs.market == 'all'
+        timeout-minutes: 3
+        run: node scripts/collect-gurus.mjs
       - name: 선택 시장만 병합하고 나머지는 최신 게시 자료 유지
         id: site
         env:
@@ -73,3 +77,4 @@ jobs:
           EXPECTED_SNAPSHOT_HASH: ${{  needs.build.outputs.snapshot_hash  }}
           PAGES_BASE_URL: https://mtljm.github.io/investment-monitor/
         run: node scripts/verify-public-site.mjs
+

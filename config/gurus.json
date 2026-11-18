@@ -1,0 +1,8 @@
+{
+  "managers": [
+    {"id":"berkshire","name":"Berkshire Hathaway","reference":"워런 버핏으로 널리 알려진 기관","cik":"1067983","path":"0001067983-berkshire-hathaway-inc"},
+    {"id":"pershing","name":"Pershing Square Inc.","reference":"빌 애크먼 · 2026년 공시 주체 변경 반영","cik":"2026053","path":"0002026053-pershing-square-inc"},
+    {"id":"duquesne","name":"Duquesne Family Office","reference":"스탠리 드러켄밀러","cik":"1536411","path":"0001536411-duquesne-family-office-llc"},
+    {"id":"appaloosa","name":"Appaloosa LP","reference":"데이비드 테퍼","cik":"1656456","path":"0001656456-appaloosa-lp"}
+  ]
+}
