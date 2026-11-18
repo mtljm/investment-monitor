@@ -1,0 +1,25 @@
+{
+  "macro": [
+    {"group":"시장지표","symbol":"DX-Y.NYB","name":"미국 달러지수 DXY","unit":"pt"},
+    {"group":"시장지표","symbol":"CL=F","name":"WTI 원유 선물","unit":"USD/배럴"}
+  ],
+  "dollar_change20_max": -1,
+  "oil_change20_max": -5,
+  "yield_change20_bp_max": -20,
+  "vix_max": 25,
+  "rsi_min": 45,
+  "rsi_max": 68,
+  "sma20_gap_max": 8,
+  "volume_ratio_min": 1.1,
+  "candidates": [
+    {"symbol":"AAPL","category":"정보기술"},
+    {"symbol":"NVDA","category":"정보기술"},
+    {"symbol":"MSFT","category":"정보기술"},
+    {"symbol":"AVGO","category":"정보기술"},
+    {"symbol":"MU","category":"정보기술"},
+    {"symbol":"AMD","category":"정보기술"},
+    {"symbol":"GOOGL","category":"플랫폼"},
+    {"symbol":"META","category":"플랫폼"},
+    {"symbol":"AMZN","category":"플랫폼"}
+  ]
+}

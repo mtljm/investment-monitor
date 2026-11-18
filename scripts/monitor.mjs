@@ -1,3 +1,4 @@
+import {validateThreeLow} from './three-low-config.mjs';
 import {fetchMarketJson} from './fetch-market.mjs';
 import {high52} from './high52.mjs';
 import {indicatorHistory} from './chart-series.mjs';
@@ -122,6 +123,8 @@ export async function main() {
   if(flag>=0&&!requested)throw new Error('--limit 값이 필요합니다.');
   const items=selectInstruments(config,requested);
   const rows=await collectInstruments(items);
+  const threeConfig=validateThreeLow(JSON.parse(await readFile(resolve(root,'config/three-low.json'),'utf8')));
+  const threeRows=await collectInstruments(threeConfig.macro,2);
   for(const row of rows){
     const proxySymbol=row.symbol==='^GSPC'?'SPY':row.symbol==='^NDX'?'QQQ':null;
     row.analysis=assessTechnical(row,proxySymbol?rows.find(r=>r.symbol===proxySymbol):null);
@@ -129,7 +132,7 @@ export async function main() {
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',
-    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows};
+    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows,three_low:{collected_at_utc:now.toISOString(),rows:threeRows}};
   const out = resolve(root,'reports');
   await mkdir(out,{recursive:true});
   const stamp = now.toISOString().replace(/[:.]/g,'-');
@@ -145,6 +148,7 @@ export async function main() {
 if (process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   main().catch(e=>{ console.error(e.message); process.exitCode=1; });
 }
+
 
 
 

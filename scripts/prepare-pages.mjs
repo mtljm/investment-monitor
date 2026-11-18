@@ -15,6 +15,7 @@ export function publicData(input){
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
+  ...(input.three_low?{three_low:publicThreeLow(input.three_low)}:{}),
   ...(input.gurus?{gurus:publicGurusData(input.gurus)}:{}),
   ...(input.asia?{asia:publicAsiaData(input.asia)}:{}),
   ...(input.briefing?{briefing:{...Object.fromEntries(['tracked','rising','falling','uptrend','downtrend','hot','oversold','compared','event_count'].map(k=>[k,Number.isFinite(input.briefing[k])?input.briefing[k]:0])),events:(input.briefing.events||[]).slice(0,8).map(e=>({symbol:String(e.symbol),kind:String(e.kind),text:String(e.text)}))}}:{}),
@@ -38,6 +39,10 @@ export function publicData(input){
    return safe;
   })
  };
+}
+export function publicThreeLow(input){
+ if(!Number.isFinite(Date.parse(input?.collected_at_utc))||!Array.isArray(input?.rows)||input.rows.length!==2||new Set(input.rows.map(r=>r.symbol)).size!==2||input.rows.some(r=>!['DX-Y.NYB','CL=F'].includes(r.symbol)||r.group!=='시장지표'))throw Error('3저 공개 지표 형식 오류');
+ return {collected_at_utc:input.collected_at_utc,rows:publicData({rows:input.rows}).rows};
 }
 export function publicAsiaData(input){
  if(!Array.isArray(input?.rows)||input.rows.length>12||!Number.isFinite(Date.parse(input.collected_at_utc)))throw Error('아시아 보고서 형식 오류');
