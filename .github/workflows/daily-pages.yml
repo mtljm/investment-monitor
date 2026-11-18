@@ -9,7 +9,6 @@ on:
         default: true
   schedule:
     - cron: '15 22 * * *' # 다음 날 한국시간 07:15 목표
-    - cron: '52 23 17 11 *' # TEMP: 2026-11-18 08:52 KST 예약 트리거 검증 후 제거
   push:
     branches: [main]
     paths:
