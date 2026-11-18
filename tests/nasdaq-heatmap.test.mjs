@@ -9,9 +9,10 @@ test('NDX map uses its own areas and metadata, omits zero tiles and greys missin
  const html=await readDashboardTemplate();assert.ok(!html.includes('__NASDAQ_WEIGHTS__'));assert.match(html,/실제 수익률이 아닙니다/);
  const src=html.match(/const sectorWeights=[\s\S]*?(?=let data=)/)[0];
  const els=Object.fromEntries(['sector','nasdaq'].flatMap(p=>['overview','weight-date','weight-source','weight-status'].map(k=>[p+'-'+k,{clientWidth:960,style:{},innerHTML:'',textContent:''}])));
- const ctx={$:id=>els[id],data:{rows:[{symbol:'XLK',status:'ok',change_1d_pct:2}]},stale:()=>false,esc:String,pct:String};
+ const ctx={document:{activeElement:null},$:id=>els[id],data:{rows:[{symbol:'XLK',status:'ok',change_1d_pct:2}]},stale:()=>false,esc:String,pct:String};
  vm.runInNewContext(src+';renderSectors();globalThis.rects=sectorRects(nasdaqWeights.items.filter(r=>r[2]>0),0,0,100,100);',ctx);
  assert.equal((els['nasdaq-overview'].innerHTML.match(/<button/g)||[]).length,9);assert.equal((els['sector-overview'].innerHTML.match(/<button/g)||[]).length,11);
  assert.equal(els['nasdaq-weight-date'].textContent,config.asOf);assert.equal(els['nasdaq-weight-source'].href,config.source);assert.match(els['nasdaq-overview'].innerHTML,/시세 미확인/);
  for(const r of ctx.rects)assert.ok(Math.abs(r.w*r.h-r.item[2]*100)<.00001);
 });
+

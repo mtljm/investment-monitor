@@ -16,9 +16,10 @@ test('하나의 설정으로 히트맵과 기준일을 생성하고 오래된 �
  const html=await readDashboardTemplate();assert.ok(!html.includes('__SECTOR_WEIGHTS__'));
  const source=html.match(/const sectorWeights=[\s\S]*?(?=let data=)/)?.[0];assert.ok(source);
  const els=Object.fromEntries(['sector-overview','sector-weight-date','sector-weight-source','sector-weight-status'].map(id=>[id,{clientWidth:345,style:{},innerHTML:'',textContent:''}]));
- const ctx={$:id=>els[id],data:{rows:[]},stale:()=>false,esc:String,pct:String,Date:class extends Date{static now(){return Date.parse('2027-01-01T00:00:00Z');}}};
+ const ctx={document:{activeElement:null},$:id=>els[id],data:{rows:[]},stale:()=>false,esc:String,pct:String,Date:class extends Date{static now(){return Date.parse('2027-01-01T00:00:00Z');}}};
  vm.runInNewContext(source+';renderSectors();',ctx);
  assert.equal(els['sector-weight-date'].textContent,config.asOf);
  assert.match(els['sector-weight-status'].textContent,/갱신 확인 필요/);
  assert.equal((els['sector-overview'].innerHTML.match(/<button/g)||[]).length,11);
 });
+

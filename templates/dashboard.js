@@ -52,6 +52,7 @@ function render(){
 }
 function updateFreshness(){
  if(!$('asia').hidden){asiaNotice();return;}
+ renderSectors();
  renderTemperature();
  const health=collectionHealth(data),now=Date.now();
  const staleCount=data.rows.filter(r=>priceHealth(r,now)==='stale').length;
@@ -270,3 +271,4 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFres
 
 
 $('asia-market-filter').addEventListener('change',renderAsia);
+

@@ -27,6 +27,14 @@ function collectionHealth(input,now=Date.now()){
  const behind=valid&&collected<due;
  return {invalid:!valid,late:behind&&now>=due+3600000,pending:behind&&now<due+3600000,due,expectedDay:expectedMarketDay(now)};
 }
+function asiaCollectionHealth(input,now=Date.now()){
+ const p=dateParts(now,'Asia/Seoul');
+ let due=Date.UTC(+p.year,+p.month-1,+p.day,8,30);
+ if(now<due)due-=86400000;
+ while([0,6].includes(new Date(due).getUTCDay()))due-=86400000;
+ const collected=Date.parse(input?.collected_at_utc),valid=Number.isFinite(collected)&&collected<=now+300000,behind=valid&&collected<due;
+ return {invalid:!valid,late:behind&&now>=due+3600000,pending:behind&&now<due+3600000,due};
+}
 function priceHealth(row,now=Date.now()){
  if(row.status!=='ok')return 'error';
  const time=Date.parse(row.bar_time_utc);
@@ -49,3 +57,4 @@ function csvCell(value){
  return '"'+text.replace(/"/g,'""')+'"';
 }
 // END DASHBOARD SAFETY HELPERS
+

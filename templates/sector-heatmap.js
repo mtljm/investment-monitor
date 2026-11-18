@@ -34,4 +34,9 @@ function renderSectorMap(sectorWeights,prefix,indexLabel){
 
 
 
-function renderSectors(){renderSectorMap(sectorWeights,"sector","S&P 500");renderSectorMap(nasdaqWeights,"nasdaq","나스닥 100 ICB");}
+function renderSectors(){
+ const focused=document.activeElement?.closest('.sector-heat-tile'),symbol=focused?.dataset.symbol,map=focused?.parentElement.id;
+ renderSectorMap(sectorWeights,"sector","S&P 500");renderSectorMap(nasdaqWeights,"nasdaq","나스닥 100 ICB");
+ if(symbol&&map)for(const tile of $(map).querySelectorAll('.sector-heat-tile'))if(tile.dataset.symbol===symbol){tile.focus({preventScroll:true});break;}
+}
+
