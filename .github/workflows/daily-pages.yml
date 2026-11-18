@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       refresh_data:
-        description: 새 시세 수집 (해제하면 게시 데이터로 화면만 배포)
+        description: 새 시세 수집 (해제하면 게시 데이터로 화면만 배포 수기 수정)
         type: boolean
         default: true
   schedule:
-    - cron: '15 22 * * *' # 다음 날 한국시간 07:15 목표
+    - cron: '35 1 * * *' # 다음 날 한국시간 10:35 목표
   push:
     branches: [main]
     paths:
