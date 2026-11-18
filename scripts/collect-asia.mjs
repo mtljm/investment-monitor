@@ -17,11 +17,15 @@ export async function collectAsia(config,collector=collectInstruments){
  return {collected_at_utc:now.toISOString(),collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',rows};
 }
 export async function readAsiaReport(fallback){try{return JSON.parse(await readFile(resolve(root,'reports/asia-latest.json'),'utf8'));}catch(e){if(e.code==='ENOENT')return fallback;throw e;}}
+export function assertCompleteAsia(report){
+ if(!Array.isArray(report?.rows)||!report.rows.length||report.rows.some(r=>r.status!=='ok'||!Number.isFinite(r.close)))throw Error('아시아 수집 실패: 기존 게시 자료를 유지합니다.');
+}
 export async function main(){
  const config=JSON.parse(await readFile(resolve(root,'config/asia.json'),'utf8'));
- const data=await collectAsia(config);await mkdir(resolve(root,'reports'),{recursive:true});
+ const data=await collectAsia(config);assertCompleteAsia(data);await mkdir(resolve(root,'reports'),{recursive:true});
  await writeFile(resolve(root,'reports/asia-latest.json'),JSON.stringify(data,null,2)+'\n');
  console.log('아시아 지수 수집 '+data.rows.filter(r=>r.status==='ok').length+'/'+data.rows.length+' · '+data.collected_at_kst);
  for(const r of data.rows)console.log(r.symbol+' '+r.name+' '+r.status+(r.status==='ok'?' '+r.close:' '+r.error));
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e.message);process.exitCode=1;});
+

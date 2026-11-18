@@ -3,12 +3,19 @@ import {appendFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const collectionFiles=new Set(['config/monitor.json','scripts/monitor.mjs','scripts/fetch-market.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs','scripts/dashboard-context.mjs']);
+const sharedFiles=new Set(['scripts/monitor.mjs','scripts/fetch-market.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs']);
+const usFiles=new Set(['config/monitor.json','scripts/dashboard-context.mjs']);
+const asiaFiles=new Set(['config/asia.json','scripts/collect-asia.mjs']);
+export function changedMarket(files){
+ if(files.some(p=>sharedFiles.has(p)))return 'all';
+ const us=files.some(p=>usFiles.has(p)),asia=files.some(p=>asiaFiles.has(p));
+ return us&&asia?'all':us?'us':asia?'asia':'reuse';
+}
 export function pagesMode(event,files=[],refresh=true){
  if(event==='schedule')return 'collect';
  if(event==='workflow_dispatch')return refresh?'collect':'reuse';
  if(event!=='push')throw Error('지원하지 않는 배포 이벤트');
- return files.some(p=>collectionFiles.has(p))?'collect':'reuse';
+ return changedMarket(files)==='reuse'?'reuse':'collect';
 }
 export async function main(){
  const event=process.env.GITHUB_EVENT_NAME;let files=[];
@@ -19,9 +26,10 @@ export async function main(){
   files=execFileSync('git',['diff','--name-only',before,'HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
  }
  const mode=pagesMode(event,files,process.env.REFRESH_DATA!=='false');
- const market=event==='workflow_dispatch'?(process.env.PUBLISH_MARKET||'us'):mode==='collect'?'us':'reuse';
+ const market=event==='workflow_dispatch'?(process.env.PUBLISH_MARKET||'reuse'):event==='push'?changedMarket(files):'us';
  if(!['us','asia','all','reuse'].includes(market))throw Error('지원하지 않는 업데이트 대상');
  if(process.env.GITHUB_OUTPUT)await appendFile(process.env.GITHUB_OUTPUT,'mode='+mode+'\nmarket='+market+'\n');
  console.log('업데이트 범위: '+market);
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e.message);process.exitCode=1;});
+

@@ -1,3 +1,4 @@
+import {assertCompleteAsia} from './collect-asia.mjs';
 import {readFile,appendFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';import {resolve} from 'node:path';import {fileURLToPath} from 'node:url';
 import {readPublishedSnapshot} from './reuse-pages.mjs';import {dashboardContext} from './dashboard-context.mjs';import {readDashboardTemplate} from './dashboard-template.mjs';import {writePublicSite} from './prepare-pages.mjs';
@@ -7,9 +8,9 @@ export function mergeMarketSnapshots(market,published,{us,asia}={}){
  if(!['us','asia','all','reuse'].includes(market))throw Error('지원하지 않는 업데이트 대상');
  if(!published?.data||!published.history)throw Error('최신 게시 스냅샷 필요');
  if(market==='reuse')return published;
- if(market==='asia'){checkFresh(asia,published.data.asia,'아시아');return {data:{...published.data,asia},history:published.history};}
+ if(market==='asia'){checkFresh(asia,published.data.asia,'아시아');assertCompleteAsia(asia);return {data:{...published.data,asia},history:published.history};}
  checkFresh(us,published.data,'미국');
- if(market==='all')checkFresh(asia,published.data.asia,'아시아');
+ if(market==='all'){checkFresh(asia,published.data.asia,'아시아');assertCompleteAsia(asia);}
  const context=dashboardContext(us,published.history);
  return {data:{...context.data,asia:market==='all'?asia:published.data.asia},history:context.history};
 }
@@ -26,3 +27,4 @@ export async function main(){
  console.log('게시 범위 '+market+' · 미국 '+result.data.collected_at_utc+' · 아시아 '+(result.data.asia?.collected_at_utc||'없음'));
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
