@@ -9,7 +9,6 @@ on:
         default: true
   schedule:
     - cron: '15 22 * * *' # 다음 날 한국시간 07:15 목표
-    - cron: '23 0 18 11 *' # TEMP: 2026-11-18 09:23 KST reactivation test
   push:
     branches: [main]
     paths:
