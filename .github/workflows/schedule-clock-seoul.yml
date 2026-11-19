@@ -3,7 +3,7 @@ run-name: Asia Seoul explicit · ${{ github.event_name }}
 on:
   workflow_dispatch:
   schedule:
-    - cron: '53 8 20 11 *'
+    - cron: '5 * * * *'
       timezone: Asia/Seoul
 permissions:
   actions: read
@@ -14,7 +14,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       PROBE_LABEL: 'Asia Seoul explicit'
-      EXPECTED_UTC: '2026-11-19T23:53:00Z'
+      CURRENT_CRON: '5 * * * *'
       TRIGGER_EVENT: ${{ github.event_name }}
       TRIGGER_CRON: ${{ github.event.schedule }}
     steps:
@@ -30,18 +30,33 @@ jobs:
             });
             if (!response.ok) throw Error('Run API HTTP '+response.status);
             const run = await response.json();
-            const expected = Date.parse(process.env.EXPECTED_UTC);
+            const created = Date.parse(run.created_at);
+            const comparable = process.env.TRIGGER_EVENT === 'schedule' && process.env.TRIGGER_CRON === process.env.CURRENT_CRON;
+            const reference = new Date(created);
+            reference.setUTCMinutes(5,0,0);
+            if (reference.getTime() > created) reference.setUTCHours(reference.getUTCHours()-1);
+            const previousResponse = await fetch(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/actions/workflows/${run.workflow_id}/runs?event=schedule&per_page=20`, {
+              headers: {Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json'},
+              signal: AbortSignal.timeout(15000)
+            });
+            if (!previousResponse.ok) throw Error('Previous runs API HTTP '+previousResponse.status);
+            const previousRuns = await previousResponse.json();
+            const previous = previousRuns.workflow_runs.filter(r=>String(r.id)!==String(run.id)&&Date.parse(r.created_at)<created).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at))[0];
             const result = {
               probe: process.env.PROBE_LABEL,
               event: process.env.TRIGGER_EVENT,
               triggered_cron: process.env.TRIGGER_CRON || null,
-              expected_utc: new Date(expected).toISOString(),
+              configured_cron: process.env.CURRENT_CRON,
+              reference_slot_utc: comparable ? reference.toISOString() : null,
+              reference_note: 'Nearest prior :05 slot, not the original scheduled-event timestamp',
               run_created_utc: run.created_at,
               run_started_utc: run.run_started_at,
               runner_utc: observed.toISOString(),
               runner_kst: new Intl.DateTimeFormat('sv-SE', {timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(observed)+' +09:00',
               github_http_date: response.headers.get('date'),
-              created_minus_expected_seconds: (Date.parse(run.created_at)-expected)/1000,
+              seconds_since_reference_slot: comparable ? (created-reference.getTime())/1000 : null,
+              previous_schedule_run_utc: previous?.created_at || null,
+              schedule_run_interval_seconds: process.env.TRIGGER_EVENT === 'schedule' && previous ? (created-Date.parse(previous.created_at))/1000 : null,
               runner_minus_created_seconds: (observed-Date.parse(run.created_at))/1000,
               url: run.html_url
             };
