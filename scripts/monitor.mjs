@@ -1,3 +1,4 @@
+import {collectEtfWatch} from './etf-watch.mjs';
 import {validateThreeLow} from './three-low-config.mjs';
 import {fetchMarketJson} from './fetch-market.mjs';
 import {high52} from './high52.mjs';
@@ -29,7 +30,8 @@ export function summarize(bars) {
     change:last.close-previous.close, change_1d_pct:change(1),
     change_5d_pct:change(5), change_20d_pct:change(20),
     sma20:sma(20), sma50:sma(50), sma200:sma(200),
-    volume_ratio:avgVolume && Number.isFinite(last.volume) ? last.volume/avgVolume : null
+    volume_ratio:avgVolume && Number.isFinite(last.volume) ? last.volume/avgVolume : null,
+    volume:Number.isFinite(last.volume)?last.volume:null
   };
 }
 async function collect(item) {
@@ -125,6 +127,9 @@ export async function main() {
   const rows=await collectInstruments(items);
   const threeConfig=validateThreeLow(JSON.parse(await readFile(resolve(root,'config/three-low.json'),'utf8')));
   const threeRows=await collectInstruments(threeConfig.macro,2);
+  const etfConfig=JSON.parse(await readFile(resolve(root,'config/etf-watch.json'),'utf8'));
+  const etfWatch=await collectEtfWatch(etfConfig,items,collectInstruments);
+  for(const row of etfWatch.rows)row.analysis=assessTechnical(row);
   for(const row of rows){
     const proxySymbol=row.symbol==='^GSPC'?'SPY':row.symbol==='^NDX'?'QQQ':null;
     row.analysis=assessTechnical(row,proxySymbol?rows.find(r=>r.symbol===proxySymbol):null);
@@ -132,7 +137,7 @@ export async function main() {
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',
-    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows,three_low:{collected_at_utc:now.toISOString(),rows:threeRows}};
+    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows,three_low:{collected_at_utc:now.toISOString(),rows:threeRows},etf_watch:etfWatch};
   const out = resolve(root,'reports');
   await mkdir(out,{recursive:true});
   const stamp = now.toISOString().replace(/[:.]/g,'-');

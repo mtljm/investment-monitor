@@ -1,0 +1,20 @@
+{
+  "candidates": [
+    {"symbol":"BITO","name":"ProShares Bitcoin ETF","concept":"bitcoin","concept_name":"비트코인","description":"비트코인 선물·스왑 노출 · 롤오버·분배로 현물 수익률과 차이"},
+    {"symbol":"IBIT","name":"iShares Bitcoin Trust ETF","concept":"bitcoin","concept_name":"비트코인","description":"현물 비트코인 가격 노출 · 암호자산 변동성"},
+    {"symbol":"BNDX","name":"Vanguard Total International Bond ETF","concept":"international_bonds","concept_name":"미국 외 채권","description":"미국 외 투자등급 채권 · 달러 환헤지"},
+    {"symbol":"TLT","name":"iShares 20+ Year Treasury Bond ETF","concept":"long_treasuries","concept_name":"미국 장기국채","description":"만기 20년 이상 미국 국채 · 금리 변화에 민감"},
+    {"symbol":"HYG","name":"iShares iBoxx $ High Yield Corporate Bond ETF","concept":"corporate_credit","concept_name":"회사채 신용","description":"달러 표시 하이일드 회사채 · 신용 위험"},
+    {"symbol":"LQD","name":"iShares iBoxx $ Investment Grade Corporate Bond ETF","concept":"corporate_credit","concept_name":"회사채 신용","description":"달러 표시 투자등급 회사채 · 금리·신용 위험"},
+    {"symbol":"SLV","name":"iShares Silver Trust","concept":"precious_metals","concept_name":"귀금속","description":"은 가격 노출 · 금보다 산업 수요 영향이 클 수 있음"},
+    {"symbol":"GLD","name":"SPDR Gold Shares","concept":"precious_metals","concept_name":"귀금속","description":"금 가격 노출 · 보관 비용 등이 수익률에 반영"},
+    {"symbol":"SGOV","name":"iShares 0-3 Month Treasury Bond ETF","concept":"cash_treasuries","concept_name":"초단기 미국 국채","description":"만기 0~3개월 미국 국채 · 분배락 시 가격 조정"},
+    {"symbol":"BIL","name":"SPDR Bloomberg 1-3 Month T-Bill ETF","concept":"cash_treasuries","concept_name":"초단기 미국 국채","description":"만기 1~3개월 미국 국채 · 분배락 시 가격 조정"},
+    {"symbol":"USO","name":"United States Oil Fund","concept":"energy_futures","concept_name":"에너지 선물","description":"WTI 원유 선물 · 현물과 다르며 롤오버 영향"},
+    {"symbol":"UNG","name":"United States Natural Gas Fund","concept":"energy_futures","concept_name":"에너지 선물","description":"천연가스 선물 · 높은 변동성과 롤오버 영향"},
+    {"symbol":"EEM","name":"iShares MSCI Emerging Markets ETF","concept":"emerging_equity","concept_name":"신흥국 주식","description":"미국 외 신흥국 주식 · 국가·통화 위험"},
+    {"symbol":"IEMG","name":"iShares Core MSCI Emerging Markets ETF","concept":"emerging_equity","concept_name":"신흥국 주식","description":"신흥국 대형·중형·소형주 · 국가·통화 위험"},
+    {"symbol":"EFA","name":"iShares MSCI EAFE ETF","concept":"developed_equity","concept_name":"미국 외 선진국 주식","description":"유럽·호주·극동 선진국 주식 · 미국·캐나다 제외"},
+    {"symbol":"VEA","name":"Vanguard FTSE Developed Markets ETF","concept":"developed_equity","concept_name":"미국 외 선진국 주식","description":"미국 외 선진국 주식 · 통화·지역 위험"}
+  ]
+}
