@@ -69,11 +69,12 @@ function updateFreshness(){
  notice.parentElement.classList.toggle('collection-warning',!!warning);
 }
 function displayRows(){return [...data.rows,...(Array.isArray(data.etf_watch?.rows)?data.etf_watch.rows.slice(0,5).filter(r=>!data.rows.some(v=>v.symbol===r.symbol)):[])];}
+function dollarVolume(r){return Number.isFinite(r.ranking_dollar_volume)?r.ranking_dollar_volume:Number.isFinite(r.close)&&Number.isFinite(r.volume)?r.close*r.volume:null;}
 function visibleRows(){
  const q=$('search').value.trim().toLowerCase(),trend=$('trend').value;
  const rows=displayRows().filter(r=>(r.group!=='대형주'||r.snapshot_rank<=stockLimit)&&(group==='all'||group==='ETF'&&r.group.endsWith('ETF')||r.group===group)&&(!q||(r.symbol+' '+r.name+' '+(r.concept_name||'')).toLowerCase().includes(q))&&(trend==='all'||trend==='error'&&r.status!=='ok'||trend==='up'&&gap(r)>0||trend==='down'&&gap(r)<0));
  return rows.sort((a,b)=>{
-  const av=sortKey==='sma20_gap'?gap(a):a[sortKey],bv=sortKey==='sma20_gap'?gap(b):b[sortKey];
+  const av=sortKey==='sma20_gap'?gap(a):sortKey==='dollar_volume'?dollarVolume(a):a[sortKey],bv=sortKey==='sma20_gap'?gap(b):sortKey==='dollar_volume'?dollarVolume(b):b[sortKey];
   if(av==null)return bv==null?0:1;if(bv==null)return -1;
   return(typeof av==='string'?av.localeCompare(bv):av-bv)*(ascending?1:-1);
  });
@@ -81,10 +82,10 @@ function visibleRows(){
 function renderTable(){
  const rows=visibleRows();
  $('watchlist').classList.toggle('etf-volume-view',['ETF','거래량 ETF'].includes(group));
- $('rows').innerHTML=rows.length?rows.map(r=>'<tr data-symbol="'+esc(r.symbol)+'" tabindex="0" aria-label="'+esc(r.name)+' 상세"><td><span class="symbol">'+esc(r.symbol)+'</span><span class="company">'+esc(r.name)+'</span>'+(r.concept_name?'<span class="company">'+esc(r.concept_name)+'</span>':'')+'</td><td>'+num(r.close)+'<span class="company">'+esc(r.unit)+'</span><span class="company high52-reading" title="'+esc(high52Meta(r))+'">'+esc(high52Text(r))+'</span></td><td class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</td><td class="'+cls(r.change_5d_pct)+'">'+pct(r.change_5d_pct)+'</td><td class="'+cls(r.change_20d_pct)+'">'+pct(r.change_20d_pct)+'</td><td><div style="width:90px;margin-left:auto">'+chart(r)+'</div></td><td class="'+cls(gap(r))+'">'+pct(gap(r))+'</td><td>'+(['대형주','지수 ETF','섹터 ETF','거래량 ETF'].includes(r.group)?num(r.volume,0)+'주<span class="company">20일 평균 '+num(r.volume_ratio)+'×</span>':'—')+'</td><td>'+badge(r)+'</td></tr>').join(''):'<tr><td colspan="9" class="empty">조건에 맞는 종목이 없습니다.</td></tr>';
+ $('rows').innerHTML=rows.length?rows.map(r=>'<tr data-symbol="'+esc(r.symbol)+'" tabindex="0" aria-label="'+esc(r.name)+' 상세"><td><span class="symbol">'+esc(r.symbol)+'</span><span class="company">'+esc(r.name)+'</span>'+(r.concept_name?'<span class="company">'+esc(r.concept_name)+'</span>':'')+'</td><td>'+num(r.close)+'<span class="company">'+esc(r.unit)+'</span><span class="company high52-reading" title="'+esc(high52Meta(r))+'">'+esc(high52Text(r))+'</span></td><td class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</td><td class="'+cls(r.change_5d_pct)+'">'+pct(r.change_5d_pct)+'</td><td class="'+cls(r.change_20d_pct)+'">'+pct(r.change_20d_pct)+'</td><td><div style="width:90px;margin-left:auto">'+chart(r)+'</div></td><td class="'+cls(gap(r))+'">'+pct(gap(r))+'</td><td>'+(['대형주','지수 ETF','섹터 ETF','거래량 ETF'].includes(r.group)?'$'+num(dollarVolume(r)/1e6)+'M<span class="company">'+num(r.volume,0)+'주</span><span class="company">20일 평균 '+num(r.volume_ratio)+'×</span>':'—')+'</td><td>'+badge(r)+'</td></tr>').join(''):'<tr><td colspan="9" class="empty">조건에 맞는 종목이 없습니다.</td></tr>';
  $('count').textContent=rows.length+'개 표시 / 대형주 상위 '+stockLimit+'개 선택 · 수집 전체 '+displayRows().length+'개 · 목록 기준일 '+(data.universe_date||'미확인');
  const etfs=data.etf_watch,note=$('etf-watch-note');note.hidden=!['ETF','거래량 ETF','all'].includes(group);
- note.textContent=etfs?'비중복 후보 '+etfs.candidate_count+'개 중 최신 일봉 '+(etfs.volume_day||'미확인')+' 거래량(주) 기준 최대 5개 · 동일 컨셉 1개 · '+(etfs.status==='ok'?'선정 확인됨':'갱신 실패 · 기존 자료/수집 상태 확인')+' · 전체 ETF 시장 순위가 아니며, 보유종목의 완전 비중복을 뜻하지 않습니다.':'거래량 ETF 선정 자료를 수집하면 표시됩니다.';
+ note.textContent=etfs?'비중복 후보 '+etfs.candidate_count+'개 중 최신 일봉 '+(etfs.volume_day||'미확인')+(etfs.ranking_method==='close_times_volume_usd'?' 추정 거래대금(종가 × 거래량, USD)':' 이전 거래량 자료 · 거래대금 순위 갱신 대기')+' 기준 최대 5개 · 동일 컨셉 1개 · '+(etfs.status==='ok'?'선정 확인됨':'갱신 실패 · 기존 자료/수집 상태 확인')+' · 전체 ETF 시장 순위가 아니며, 보유종목의 완전 비중복을 뜻하지 않습니다.':'거래대금 ETF 선정 자료를 수집하면 표시됩니다.';
 }
 function showDetail(symbol){
  const r=findInstrument(symbol);if(!r)return;
@@ -93,7 +94,7 @@ function showDetail(symbol){
  $('detail-title').textContent=r.name;
  $('detail-price').innerHTML='<strong style="font-size:26px">'+num(r.close)+'</strong> <span class="neutral">'+esc(r.unit)+'</span> <span class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</span>';
  $('detail-high52').textContent=high52Text(r)+' · '+high52Meta(r);
- $('detail-etf').hidden=!r.concept_name;$('detail-etf').textContent=r.concept_name?'컨셉: '+r.concept_name+' · '+(r.description||'')+' · 선정 일봉 '+(r.volume_day||'미확인')+' · 선정 거래량 '+num(r.ranking_volume,0)+'주':'';
+ $('detail-etf').hidden=!r.concept_name;$('detail-etf').textContent=r.concept_name?'컨셉: '+r.concept_name+' · '+(r.description||'')+' · 선정 일봉 '+(r.volume_day||'미확인')+' · 추정 거래대금 $'+num(dollarVolume(r)/1e6)+'M (종가 × 거래량) · 선정 거래량 '+num(r.ranking_volume,0)+'주':'';
  $('detail-chart').innerHTML=chart(r,true);
  if(Array.isArray(r.analysis?.cards)&&r.analysis.cards.length){
   $('detail-stats').innerHTML=technicalDetailHtml(r);
@@ -120,7 +121,7 @@ function showDetail(symbol){
 }
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').hidden=true,4200);}
 document.querySelectorAll('[data-group]').forEach(b=>b.addEventListener('click',()=>{
- group=b.dataset.group;if(['ETF','거래량 ETF'].includes(group)){sortKey='volume';ascending=false;}document.querySelectorAll('[data-group]').forEach(t=>{t.classList.toggle('active',t===b);t.setAttribute('aria-pressed',String(t===b));});renderTable();
+ group=b.dataset.group;if(['ETF','거래량 ETF'].includes(group)){sortKey='dollar_volume';ascending=false;}document.querySelectorAll('[data-group]').forEach(t=>{t.classList.toggle('active',t===b);t.setAttribute('aria-pressed',String(t===b));});renderTable();
 }));
 document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{ascending=sortKey===b.dataset.sort?!ascending:false;sortKey=b.dataset.sort;renderTable();}));
 $('search').addEventListener('input',renderTable);$('trend').addEventListener('change',renderTable);
@@ -283,4 +284,5 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFres
 
 
 $('asia-market-filter').addEventListener('change',renderAsia);
+
 

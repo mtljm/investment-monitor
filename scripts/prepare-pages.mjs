@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const allowed=['market','market_region','group','symbol','name','unit','snapshot_rank','status','bar_time_utc','quote_time_utc',
  'high_52w','high_52w_time_utc','drawdown_52w_pct','high_52w_complete','close','previous_close','change','change_1d_pct','change_5d_pct','change_20d_pct',
- 'volume','ranking_volume','volume_day','concept','concept_name','description','selection_rank','ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
+ 'dollar_volume','ranking_dollar_volume','volume','ranking_volume','volume_day','concept','concept_name','description','selection_rank','ema20','obv','obv_change20','obv_flow20','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram',
  'bb_middle','bb_upper','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','exchange_timezone','stale_calendar_days'];
 export function publicData(input){
  if(!Array.isArray(input.rows)||input.rows.length>223)throw new Error('시장 보고서 형식을 확인하세요.');
@@ -43,7 +43,7 @@ export function publicData(input){
 }
 export function publicEtfWatch(input){
  if(!Array.isArray(input?.rows)||input.rows.length>5||input.rows.some(r=>r.group!=='거래량 ETF')||new Set(input.rows.map(r=>r.symbol)).size!==input.rows.length||new Set(input.rows.map(r=>r.concept)).size!==input.rows.length)throw Error('거래량 ETF 공개 형식 오류');
- return {checked_at_utc:input.checked_at_utc,status:['ok','stale','error'].includes(input.status)?input.status:'error',candidate_count:input.candidate_count,valid_count:input.valid_count,volume_day:input.volume_day,rows:publicData({rows:input.rows}).rows};
+ return {ranking_method:input.ranking_method,checked_at_utc:input.checked_at_utc,status:['ok','stale','error'].includes(input.status)?input.status:'error',candidate_count:input.candidate_count,valid_count:input.valid_count,volume_day:input.volume_day,rows:publicData({rows:input.rows}).rows};
 }
 export function publicThreeLow(input){
  if(!Number.isFinite(Date.parse(input?.collected_at_utc))||!Array.isArray(input?.rows)||input.rows.length!==2||new Set(input.rows.map(r=>r.symbol)).size!==2||input.rows.some(r=>!['DX-Y.NYB','CL=F'].includes(r.symbol)||r.group!=='시장지표'))throw Error('3저 공개 지표 형식 오류');
