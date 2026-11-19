@@ -68,9 +68,10 @@ function updateFreshness(){
  notice.parentElement.setAttribute('role',warning?'alert':'status');
  notice.parentElement.classList.toggle('collection-warning',!!warning);
 }
+function displayRows(){return [...data.rows,...(Array.isArray(data.etf_watch?.rows)?data.etf_watch.rows.slice(0,5).filter(r=>!data.rows.some(v=>v.symbol===r.symbol)):[])];}
 function visibleRows(){
  const q=$('search').value.trim().toLowerCase(),trend=$('trend').value;
- const rows=data.rows.filter(r=>(r.group!=='대형주'||r.snapshot_rank<=stockLimit)&&(group==='all'||r.group===group)&&(!q||(r.symbol+' '+r.name).toLowerCase().includes(q))&&(trend==='all'||trend==='error'&&r.status!=='ok'||trend==='up'&&gap(r)>0||trend==='down'&&gap(r)<0));
+ const rows=displayRows().filter(r=>(r.group!=='대형주'||r.snapshot_rank<=stockLimit)&&(group==='all'||group==='ETF'&&r.group.endsWith('ETF')||r.group===group)&&(!q||(r.symbol+' '+r.name+' '+(r.concept_name||'')).toLowerCase().includes(q))&&(trend==='all'||trend==='error'&&r.status!=='ok'||trend==='up'&&gap(r)>0||trend==='down'&&gap(r)<0));
  return rows.sort((a,b)=>{
   const av=sortKey==='sma20_gap'?gap(a):a[sortKey],bv=sortKey==='sma20_gap'?gap(b):b[sortKey];
   if(av==null)return bv==null?0:1;if(bv==null)return -1;
@@ -79,8 +80,11 @@ function visibleRows(){
 }
 function renderTable(){
  const rows=visibleRows();
- $('rows').innerHTML=rows.length?rows.map(r=>'<tr data-symbol="'+esc(r.symbol)+'" tabindex="0" aria-label="'+esc(r.name)+' 상세"><td><span class="symbol">'+esc(r.symbol)+'</span><span class="company">'+esc(r.name)+'</span></td><td>'+num(r.close)+'<span class="company">'+esc(r.unit)+'</span><span class="company high52-reading" title="'+esc(high52Meta(r))+'">'+esc(high52Text(r))+'</span></td><td class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</td><td class="'+cls(r.change_5d_pct)+'">'+pct(r.change_5d_pct)+'</td><td class="'+cls(r.change_20d_pct)+'">'+pct(r.change_20d_pct)+'</td><td><div style="width:90px;margin-left:auto">'+chart(r)+'</div></td><td class="'+cls(gap(r))+'">'+pct(gap(r))+'</td><td>'+num(['대형주','지수 ETF','섹터 ETF'].includes(r.group)?r.volume_ratio:null)+'×</td><td>'+badge(r)+'</td></tr>').join(''):'<tr><td colspan="9" class="empty">조건에 맞는 종목이 없습니다.</td></tr>';
- $('count').textContent=rows.length+'개 표시 / 대형주 상위 '+stockLimit+'개 선택 · 수집 전체 '+data.rows.length+'개 · 목록 기준일 '+(data.universe_date||'미확인');
+ $('watchlist').classList.toggle('etf-volume-view',['ETF','거래량 ETF'].includes(group));
+ $('rows').innerHTML=rows.length?rows.map(r=>'<tr data-symbol="'+esc(r.symbol)+'" tabindex="0" aria-label="'+esc(r.name)+' 상세"><td><span class="symbol">'+esc(r.symbol)+'</span><span class="company">'+esc(r.name)+'</span>'+(r.concept_name?'<span class="company">'+esc(r.concept_name)+'</span>':'')+'</td><td>'+num(r.close)+'<span class="company">'+esc(r.unit)+'</span><span class="company high52-reading" title="'+esc(high52Meta(r))+'">'+esc(high52Text(r))+'</span></td><td class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</td><td class="'+cls(r.change_5d_pct)+'">'+pct(r.change_5d_pct)+'</td><td class="'+cls(r.change_20d_pct)+'">'+pct(r.change_20d_pct)+'</td><td><div style="width:90px;margin-left:auto">'+chart(r)+'</div></td><td class="'+cls(gap(r))+'">'+pct(gap(r))+'</td><td>'+(['대형주','지수 ETF','섹터 ETF','거래량 ETF'].includes(r.group)?num(r.volume,0)+'주<span class="company">20일 평균 '+num(r.volume_ratio)+'×</span>':'—')+'</td><td>'+badge(r)+'</td></tr>').join(''):'<tr><td colspan="9" class="empty">조건에 맞는 종목이 없습니다.</td></tr>';
+ $('count').textContent=rows.length+'개 표시 / 대형주 상위 '+stockLimit+'개 선택 · 수집 전체 '+displayRows().length+'개 · 목록 기준일 '+(data.universe_date||'미확인');
+ const etfs=data.etf_watch,note=$('etf-watch-note');note.hidden=!['ETF','거래량 ETF','all'].includes(group);
+ note.textContent=etfs?'비중복 후보 '+etfs.candidate_count+'개 중 최신 일봉 '+(etfs.volume_day||'미확인')+' 거래량(주) 기준 최대 5개 · 동일 컨셉 1개 · '+(etfs.status==='ok'?'선정 확인됨':'갱신 실패 · 기존 자료/수집 상태 확인')+' · 전체 ETF 시장 순위가 아니며, 보유종목의 완전 비중복을 뜻하지 않습니다.':'거래량 ETF 선정 자료를 수집하면 표시됩니다.';
 }
 function showDetail(symbol){
  const r=findInstrument(symbol);if(!r)return;
@@ -89,6 +93,7 @@ function showDetail(symbol){
  $('detail-title').textContent=r.name;
  $('detail-price').innerHTML='<strong style="font-size:26px">'+num(r.close)+'</strong> <span class="neutral">'+esc(r.unit)+'</span> <span class="'+cls(r.change_1d_pct)+'">'+pct(r.change_1d_pct)+'</span>';
  $('detail-high52').textContent=high52Text(r)+' · '+high52Meta(r);
+ $('detail-etf').hidden=!r.concept_name;$('detail-etf').textContent=r.concept_name?'컨셉: '+r.concept_name+' · '+(r.description||'')+' · 선정 일봉 '+(r.volume_day||'미확인')+' · 선정 거래량 '+num(r.ranking_volume,0)+'주':'';
  $('detail-chart').innerHTML=chart(r,true);
  if(Array.isArray(r.analysis?.cards)&&r.analysis.cards.length){
   $('detail-stats').innerHTML=technicalDetailHtml(r);
@@ -115,7 +120,7 @@ function showDetail(symbol){
 }
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').hidden=true,4200);}
 document.querySelectorAll('[data-group]').forEach(b=>b.addEventListener('click',()=>{
- group=b.dataset.group;document.querySelectorAll('[data-group]').forEach(t=>{t.classList.toggle('active',t===b);t.setAttribute('aria-pressed',String(t===b));});renderTable();
+ group=b.dataset.group;if(['ETF','거래량 ETF'].includes(group)){sortKey='volume';ascending=false;}document.querySelectorAll('[data-group]').forEach(t=>{t.classList.toggle('active',t===b);t.setAttribute('aria-pressed',String(t===b));});renderTable();
 }));
 document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{ascending=sortKey===b.dataset.sort?!ascending:false;sortKey=b.dataset.sort;renderTable();}));
 $('search').addEventListener('input',renderTable);$('trend').addEventListener('change',renderTable);
@@ -132,7 +137,7 @@ $('import-file').addEventListener('change',async e=>{
  }catch(error){toast('불러오기 실패: '+error.message);}finally{e.target.value='';}
 });
 $('export-btn').addEventListener('click',()=>{
- const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','high_52w','high_52w_time_utc','drawdown_52w_pct','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram','bb_upper','bb_middle','bb_lower','bb_percent_b','bb_width_pct','volume_ratio','status','bar_time_utc','quote_time_utc'];
+ const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','high_52w','high_52w_time_utc','drawdown_52w_pct','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram','bb_upper','bb_middle','bb_lower','bb_percent_b','bb_width_pct','volume','volume_ratio','status','bar_time_utc','quote_time_utc'];
  const csv='\ufeff'+[cols,...visibleRows().map(r=>cols.map(c=>r[c]))].map(row=>row.map(csvCell).join(',')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='market-monitor.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });

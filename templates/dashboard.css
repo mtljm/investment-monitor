@@ -1,4 +1,8 @@
 /* Shared dashboard styles. Responsive overrides follow their base rules. */
+#watchlist.etf-volume-view table {min-width:900px;}
+#watchlist.etf-volume-view th:nth-child(6),#watchlist.etf-volume-view td:nth-child(6) {display:none;}
+#watchlist.etf-volume-view th:nth-child(8) {width:135px;}
+#watchlist.etf-volume-view th:last-child,#watchlist.etf-volume-view td:last-child {width:95px;}
 .three-low-intro {margin-bottom:16px;}
 .three-low-intro p,.three-low-method p {font-size:12px;line-height:1.85;}
 .three-low-macros {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}

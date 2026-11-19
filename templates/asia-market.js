@@ -1,5 +1,5 @@
 // Asia remains a separate snapshot; US market statistics only use data.rows.
-function findInstrument(symbol){return data.rows.find(r=>r.symbol===symbol)||(data.asia?.rows||[]).find(r=>r.symbol===symbol);}
+function findInstrument(symbol){return displayRows().find(r=>r.symbol===symbol)||(data.asia?.rows||[]).find(r=>r.symbol===symbol);}
 function asiaNotice(){
  const a=data.asia,rows=a?.rows||[],failed=rows.filter(r=>r.status!=='ok').length,health=asiaCollectionHealth(a);
  const state=health.invalid?'수집 시각 확인 필요':health.late?'자동 갱신 지연 · 예정 시각 이후 새 수집이 없습니다.':health.pending?'예약 갱신 대기 중':'수집 일정 확인됨';
