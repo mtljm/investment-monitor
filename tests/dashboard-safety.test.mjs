@@ -11,14 +11,14 @@ vm.runInContext(helpers,ctx);
 const invoke=(fn,...args)=>vm.runInContext(`${fn}(...${JSON.stringify(args)})`,ctx);
 const ms=s=>Date.parse(s);
 test('scheduled collection: before due, one-hour grace, delayed, recovered and invalid timestamp',()=>{
- const input={collected_at_utc:'2026-11-16T22:16:00Z'};
- assert.equal(invoke('collectionHealth',input,ms('2026-11-17T22:14:00Z')).late,false);
- assert.equal(invoke('collectionHealth',input,ms('2026-11-17T22:15:00Z')).pending,true);
- assert.equal(invoke('collectionHealth',input,ms('2026-11-17T23:14:59Z')).late,false);
- assert.equal(invoke('collectionHealth',input,ms('2026-11-17T23:15:00Z')).late,true);
- assert.equal(invoke('collectionHealth',{collected_at_utc:'2026-11-17T22:17:00Z'},ms('2026-11-17T23:15:00Z')).late,false);
- assert.equal(invoke('collectionHealth',{collected_at_utc:'bad'},ms('2026-11-17T23:15:00Z')).invalid,true);
- assert.equal(invoke('collectionHealth',{collected_at_utc:'2026-11-20T00:00:00Z'},ms('2026-11-17T23:15:00Z')).invalid,true);
+ const input={collected_at_utc:'2026-11-16T22:38:00Z'};
+ assert.equal(invoke('collectionHealth',input,ms('2026-11-17T22:36:00Z')).late,false);
+ assert.equal(invoke('collectionHealth',input,ms('2026-11-17T22:37:00Z')).pending,true);
+ assert.equal(invoke('collectionHealth',input,ms('2026-11-17T23:36:59Z')).late,false);
+ assert.equal(invoke('collectionHealth',input,ms('2026-11-17T23:37:00Z')).late,true);
+ assert.equal(invoke('collectionHealth',{collected_at_utc:'2026-11-17T22:39:00Z'},ms('2026-11-17T23:37:00Z')).late,false);
+ assert.equal(invoke('collectionHealth',{collected_at_utc:'bad'},ms('2026-11-17T23:37:00Z')).invalid,true);
+ assert.equal(invoke('collectionHealth',{collected_at_utc:'2026-11-20T00:00:00Z'},ms('2026-11-17T23:37:00Z')).invalid,true);
 });
 test('US daily bars: missing one session warns; weekends, holidays, DST and preclose do not',()=>{
  const row={group:'대형주',status:'ok',bar_time_utc:'2026-11-16T14:30:00Z'};
@@ -45,7 +45,7 @@ test('CSV keeps negative and positive numeric cells while guarding formula text 
 });
 test('public page wires safety helpers and shows the current schedule',()=>{
  const html=publicHtml(template,{collected_at_utc:'2026-11-17T00:00:00Z',rows:[]});
- assert.ok(html.includes('매일 오전 7시 15분 목표'));
+ assert.ok(html.includes('매일 오전 7시 37분 목표'));
  assert.ok(!html.includes('매일 오전 8시'));
  assert.ok(html.includes('row.map(csvCell)'));
  assert.ok(html.includes('setInterval(updateFreshness,60000)'));
@@ -58,4 +58,5 @@ test('BTC daily freshness uses a 36-hour clock even on US weekends and holidays'
  assert.equal(invoke('priceHealth',row,ms('2026-11-15T11:59:00Z')),'current');
  assert.equal(invoke('priceHealth',row,ms('2026-11-15T12:01:00Z')),'stale');
 });
+
 

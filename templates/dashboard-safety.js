@@ -20,7 +20,7 @@ function expectedMarketDay(now=Date.now()){
 }
 function collectionHealth(input,now=Date.now()){
  const p=dateParts(now,'Asia/Seoul');
- let due=Date.UTC(+p.year,+p.month-1,+p.day,7-9,15);
+ let due=Date.UTC(+p.year,+p.month-1,+p.day,7-9,37);
  if(now<due)due-=86400000;
  const collected=Date.parse(input.collected_at_utc);
  const valid=Number.isFinite(collected)&&collected<=now+300000;
