@@ -1,0 +1,51 @@
+name: 시간대 비교 Seoul
+run-name: Asia Seoul explicit · ${{ github.event_name }}
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '53 8 20 11 *'
+      timezone: Asia/Seoul
+permissions:
+  actions: read
+jobs:
+  clock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PROBE_LABEL: 'Asia Seoul explicit'
+      EXPECTED_UTC: '2026-11-19T23:53:00Z'
+      TRIGGER_EVENT: ${{ github.event_name }}
+      TRIGGER_CRON: ${{ github.event.schedule }}
+    steps:
+      - name: Compare clocks and run creation time
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          (async () => {
+            const observed = new Date();
+            const response = await fetch(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`, {
+              headers: {Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json'},
+              signal: AbortSignal.timeout(15000)
+            });
+            if (!response.ok) throw Error('Run API HTTP '+response.status);
+            const run = await response.json();
+            const expected = Date.parse(process.env.EXPECTED_UTC);
+            const result = {
+              probe: process.env.PROBE_LABEL,
+              event: process.env.TRIGGER_EVENT,
+              triggered_cron: process.env.TRIGGER_CRON || null,
+              expected_utc: new Date(expected).toISOString(),
+              run_created_utc: run.created_at,
+              run_started_utc: run.run_started_at,
+              runner_utc: observed.toISOString(),
+              runner_kst: new Intl.DateTimeFormat('sv-SE', {timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(observed)+' +09:00',
+              github_http_date: response.headers.get('date'),
+              created_minus_expected_seconds: (Date.parse(run.created_at)-expected)/1000,
+              runner_minus_created_seconds: (observed-Date.parse(run.created_at))/1000,
+              url: run.html_url
+            };
+            console.log(JSON.stringify(result,null,2));
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '```json\n'+JSON.stringify(result,null,2)+'\n```\n');
+          })().catch(e=>{console.error(e.message);process.exitCode=1;});
+          NODE
