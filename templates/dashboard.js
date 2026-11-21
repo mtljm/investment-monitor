@@ -128,7 +128,7 @@ $('search').addEventListener('input',renderTable);$('trend').addEventListener('c
 document.addEventListener('click',e=>{const el=e.target.closest('[data-symbol]');if(el)showDetail(el.dataset.symbol);});
 document.addEventListener('keydown',e=>{const el=e.target.closest('[data-symbol]');if(el&&(e.key==='Enter'||e.key===' ')){e.preventDefault();showDetail(el.dataset.symbol);}});
 $('close-dialog').addEventListener('click',()=>$('detail').close());
-$('import-btn').addEventListener('click',()=>$('import-file').click());
+$('import-json-btn').addEventListener('click',()=>$('import-file').click());
 $('import-file').addEventListener('change',async e=>{
  try{
  const f=e.target.files[0];if(!f)return;if(f.size>5_000_000)throw new Error('5MB 이하 JSON을 선택하세요.');
