@@ -30,7 +30,7 @@ function render(){
  const available=data.rows.filter(r=>r.group==='대형주').length;
  if(stockLimit>available)stockLimit=[200,100,50,20].find(n=>n<=available)||20;
  $('stock-limit').value=String(stockLimit);
- $('scope-note').textContent=available<200?'현재 배포는 상위 '+available+'개 데이터입니다. 50·100·200 메뉴는 유지하며, 해당 범위 JSON을 불러오면 사용할 수 있습니다.':'최대 200개 데이터가 포함되어 있습니다.';
+ $('scope-note').textContent=available<200?'현재 배포는 상위 '+available+'개 데이터입니다. 50·100·200 메뉴는 유지하며, 해당 범위 데이터가 배포되면 사용할 수 있습니다.':'최대 200개 데이터가 포함되어 있습니다.';
  [...$('stock-limit').options].forEach(o=>o.disabled=Number(o.value)>available);
 
  const rows=data.rows;
@@ -128,15 +128,6 @@ $('search').addEventListener('input',renderTable);$('trend').addEventListener('c
 document.addEventListener('click',e=>{const el=e.target.closest('[data-symbol]');if(el)showDetail(el.dataset.symbol);});
 document.addEventListener('keydown',e=>{const el=e.target.closest('[data-symbol]');if(el&&(e.key==='Enter'||e.key===' ')){e.preventDefault();showDetail(el.dataset.symbol);}});
 $('close-dialog').addEventListener('click',()=>$('detail').close());
-$('import-json-btn').addEventListener('click',()=>$('import-file').click());
-$('import-file').addEventListener('change',async e=>{
- try{
- const f=e.target.files[0];if(!f)return;if(f.size>5_000_000)throw new Error('5MB 이하 JSON을 선택하세요.');
- const d=JSON.parse(await f.text());
- if(!Array.isArray(d.rows)||!d.rows.length||d.rows.length>223||d.rows.filter(r=>r?.group==='대형주').length>200||new Set(d.rows.map(r=>r?.symbol)).size!==d.rows.length||typeof d.collected_at_utc!=='string'||!Number.isFinite(Date.parse(d.collected_at_utc))||d.rows.some(r=>!r||typeof r.symbol!=='string'||typeof r.name!=='string'||!['ok','error'].includes(r.status)||!['지수','시장지표','지수 ETF','섹터 ETF','대형주'].includes(r.group)||(r.group==='대형주'&&(!Number.isInteger(r.snapshot_rank)||r.snapshot_rank<1||r.snapshot_rank>200))||r.history&&!Array.isArray(r.history)))throw new Error('모니터링 도구의 보고서 JSON 형식이 아닙니다.');
- data=d;render();toast('새 데이터를 불러왔습니다. 파일 내용은 외부로 전송되지 않습니다.');
- }catch(error){toast('불러오기 실패: '+error.message);}finally{e.target.value='';}
-});
 $('export-btn').addEventListener('click',()=>{
  const cols=['symbol','name','group','close','unit','change_1d_pct','change_5d_pct','change_20d_pct','high_52w','high_52w_time_utc','drawdown_52w_pct','sma20','sma50','sma200','rsi14','macd','macd_signal','macd_histogram','bb_upper','bb_middle','bb_lower','bb_percent_b','bb_width_pct','volume','volume_ratio','status','bar_time_utc','quote_time_utc'];
  const csv='\ufeff'+[cols,...visibleRows().map(r=>cols.map(c=>r[c]))].map(row=>row.map(csvCell).join(',')).join('\r\n');
