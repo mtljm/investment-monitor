@@ -3,7 +3,7 @@ function findInstrument(symbol){return displayRows().find(r=>r.symbol===symbol)|
 function asiaNotice(){
  const a=data.asia,rows=a?.rows||[],failed=rows.filter(r=>r.status!=='ok').length,health=asiaCollectionHealth(a);
  const state=health.invalid?'수집 시각 확인 필요':health.late?'자동 갱신 지연 · 예정 시각 이후 새 수집이 없습니다.':health.pending?'예약 갱신 대기 중':'수집 일정 확인됨';
- const notice=$('data-notice');notice.textContent=a?'아시아 수집 '+localTime(a.collected_at_utc)+' · '+state+' · 평일 17:30 KST 갱신 목표 · '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+'개 성공 · 각 시장 거래일·시세 시각을 확인하세요.':'아시아 데이터가 아직 수집되지 않았습니다.';
+ const notice=$('data-notice');notice.textContent=a?'아시아 수집 '+localTime(a.collected_at_utc)+' · '+state+' · 평일 오후 5시 30분 KST 갱신 목표 · '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+'개 성공 · 각 시장 거래일·시세 시각을 확인하세요.':'아시아 데이터가 아직 수집되지 않았습니다.';
  const warning=failed>0||!rows.length||health.invalid||health.late;
  notice.parentElement.setAttribute('role',warning?'alert':'status');notice.parentElement.classList.toggle('collection-warning',warning);
 }
