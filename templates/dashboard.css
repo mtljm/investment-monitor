@@ -1,8 +1,4 @@
 /* Shared dashboard styles. Responsive overrides follow their base rules. */
-#watchlist.etf-volume-view table {min-width:900px;}
-#watchlist.etf-volume-view th:nth-child(6),#watchlist.etf-volume-view td:nth-child(6) {display:none;}
-#watchlist.etf-volume-view th:nth-child(8) {width:135px;}
-#watchlist.etf-volume-view th:last-child,#watchlist.etf-volume-view td:last-child {width:95px;}
 .three-low-intro {margin-bottom:16px;}
 .three-low-intro p,.three-low-method p {font-size:12px;line-height:1.85;}
 .three-low-macros {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
@@ -1620,7 +1616,7 @@ main>* {
 
 #watchlist table {
   table-layout:fixed;
-  min-width:1110px;
+  min-width:900px;
 }
 
 #watchlist th,#watchlist td {
@@ -1641,12 +1637,12 @@ main>* {
   width:115px;
 }
 
-#watchlist th:nth-child(6) {
-  width:120px;
+#watchlist th:nth-child(7) {
+  width:140px;
 }
 
 #watchlist th:last-child {
-  width:110px;
+  width:85px;
 }
 
 #watchlist .company {
@@ -3128,4 +3124,5 @@ footer {
 @media(max-width:1100px){.asia-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.asia-index-grid{grid-template-columns:minmax(0,1fr)}.asia-tools select{min-width:140px}.asia-card .value{font-size:26px}}
 
 main:has(#asia:not([hidden])) footer>div:last-child{display:none}
+
 
