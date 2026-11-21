@@ -153,6 +153,9 @@ function activateView(view,focus=false){
  const [title,description,eyebrow]=views[view];
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
+ const batch=view==='asia'?['daily-asia.yml','아시아']:view==='gurus'?['weekly-gurus.yml','13F 구루']:['daily-us.yml','미국장'];
+ const batchLink=$('import-btn');batchLink.href='https://github.com/mtljm/investment-monitor/actions/workflows/'+batch[0];
+ batchLink.textContent=batch[1]+' 데이터 불러오기';batchLink.title='GitHub 로그인 후 Run workflow를 눌러 '+batch[1]+' 데이터를 갱신합니다.';
  if(view==='gurus')renderGurus();
  updateFreshness();
 }
