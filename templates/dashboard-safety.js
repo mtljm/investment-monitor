@@ -36,12 +36,13 @@ function asiaCollectionHealth(input,now=Date.now()){
  return {invalid:!valid,late:behind&&now>=due+3600000,pending:behind&&now<due+3600000,due};
 }
 function priceHealth(row,now=Date.now()){
+ if(row.collection_state==='retained')return 'retained';
  if(row.status!=='ok')return 'error';
  const time=Date.parse(row.bar_time_utc);
  if(!Number.isFinite(time)||time>now+300000)return 'unknown';
  if(row.market_region==='ASIA')return now-time>4*86400000?'stale':'current';
  if(row.symbol==='BTC-USD')return now-time>36*3600000?'stale':'current';
- if(['지수','대형주','지수 ETF','섹터 ETF'].includes(row.group)){
+ if(['지수','대형주','지수 ETF','섹터 ETF','거래량 ETF'].includes(row.group)){
   const expected=expectedMarketDay(now);
   if(!expected)return 'unknown';
   const p=dateParts(time,'America/New_York');
@@ -56,5 +57,16 @@ function csvCell(value){
  if(/^[\s\uFEFF]*[=+@-]|^[\t\r\n]/.test(text))text="'"+text;
  return '"'+text.replace(/"/g,'""')+'"';
 }
+function snapshotRows(input){
+ const base=Array.isArray(input?.rows)?input.rows:[],report=input?.etf_watch;
+ const extras=Array.isArray(report?.rows)?report.rows.slice(0,5).filter(r=>!base.some(b=>b.symbol===r.symbol)).map(r=>({...r,collection_state:report.status==='ok'?'fresh':'retained'})):[];
+ return [...base,...extras];
+}
+function collectionStats(input,now=Date.now()){
+ const rows=snapshotRows(input),counts={current:0,stale:0,unknown:0,error:0,retained:0,total:rows.length};
+ for(const row of rows)counts[priceHealth(row,now)]++;
+ return counts;
+}
 // END DASHBOARD SAFETY HELPERS
+
 

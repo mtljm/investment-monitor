@@ -35,5 +35,6 @@ export async function collectEtfWatch(config,existing,collector,get=fetchMarketJ
 }
 export function mergeEtfWatch(old,incoming){
  if(!incoming)return old;
- return incoming.status==='ok'?incoming:old?.rows?.length?{...old,status:'stale',checked_at_utc:incoming.checked_at_utc}:incoming;
+ return incoming.status==='ok'?{...incoming,last_success_at_utc:incoming.checked_at_utc}:old?.rows?.length?{...old,status:'stale',last_success_at_utc:old.last_success_at_utc||(old.status==='ok'?old.checked_at_utc:undefined),checked_at_utc:incoming.checked_at_utc}:incoming;
 }
+

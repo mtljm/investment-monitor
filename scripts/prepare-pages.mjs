@@ -43,7 +43,7 @@ export function publicData(input){
 }
 export function publicEtfWatch(input){
  if(!Array.isArray(input?.rows)||input.rows.length>5||input.rows.some(r=>r.group!=='거래량 ETF')||new Set(input.rows.map(r=>r.symbol)).size!==input.rows.length||new Set(input.rows.map(r=>r.concept)).size!==input.rows.length)throw Error('거래량 ETF 공개 형식 오류');
- return {ranking_method:input.ranking_method,checked_at_utc:input.checked_at_utc,status:['ok','stale','error'].includes(input.status)?input.status:'error',candidate_count:input.candidate_count,valid_count:input.valid_count,volume_day:input.volume_day,rows:publicData({rows:input.rows}).rows};
+ return {ranking_method:input.ranking_method,last_success_at_utc:input.last_success_at_utc,checked_at_utc:input.checked_at_utc,status:['ok','stale','error'].includes(input.status)?input.status:'error',candidate_count:input.candidate_count,valid_count:input.valid_count,volume_day:input.volume_day,rows:publicData({rows:input.rows}).rows};
 }
 export function publicThreeLow(input){
  if(!Number.isFinite(Date.parse(input?.collected_at_utc))||!Array.isArray(input?.rows)||input.rows.length!==2||new Set(input.rows.map(r=>r.symbol)).size!==2||input.rows.some(r=>!['DX-Y.NYB','CL=F'].includes(r.symbol)||r.group!=='시장지표'))throw Error('3저 공개 지표 형식 오류');
@@ -97,6 +97,7 @@ export async function main(){
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
  main().catch(e=>{console.error(e.message);process.exitCode=1;});
+
 
 
 
