@@ -52,6 +52,7 @@ function render(){
  renderGurus();
 }
 function updateFreshness(){
+ if(typeof IB_REPORTS!=='undefined'&&!$('ib').hidden){$('data-notice').textContent='리포트 요약 검토일 '+IB_REPORTS.reviewed_at+' · 시세 배치와 별도 · 새 원문 자동 번역 기능은 사용하지 않습니다.';$('data-notice').parentElement.setAttribute('role','status');$('data-notice').parentElement.classList.remove('collection-warning');return;}
  if(!$('gurus').hidden){gurusNotice();return;}
  if(!$('asia').hidden){asiaNotice();return;}
  if(!$('overview').hidden)renderThreeLow();
@@ -136,6 +137,7 @@ $('export-btn').addEventListener('click',()=>{
 });
 
 const views={
+ ib:['해외 IB, 관점 비교.','공개 시장 자료를 한국어로 요약하고 발표 시점과 발행 부문을 함께 확인하세요.','GLOBAL BANKS / MARKET INSIGHTS'],
  gurus:['13F, 기관 포트폴리오.','분기말 공개 보유종목을 참고하고 기관별 공시 원문을 확인하세요.','GURU PORTFOLIOS / FORM 13F'],
  asia:['아시아 시장, 한눈에.','주요 아시아 지수의 가격·추세·기준 시각을 확인하세요.','MARKET OVERVIEW / ASIA'],
  overview:['미국 시장, 한눈에.','시장 흐름과 주요 지표의 변화를 확인하세요.','MARKET OVERVIEW / UNITED STATES'],
@@ -155,9 +157,10 @@ function activateView(view,focus=false){
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
  const batch=view==='asia'?['daily-asia.yml','아시아']:view==='gurus'?['weekly-gurus.yml','13F 구루']:['daily-us.yml','미국장'];
- const batchLink=$('import-btn');batchLink.href='https://github.com/mtljm/investment-monitor/actions/workflows/'+batch[0];
+ const batchLink=$('import-btn');batchLink.hidden=view==='ib';batchLink.href='https://github.com/mtljm/investment-monitor/actions/workflows/'+batch[0];
  batchLink.textContent=batch[1]+' 데이터 불러오기';batchLink.title='GitHub 로그인 후 Run workflow를 눌러 '+batch[1]+' 데이터를 갱신합니다.';
  if(view==='gurus')renderGurus();
+ if(view==='ib')renderIbReports();
  updateFreshness();
 }
 document.querySelectorAll('[data-view]').forEach((b,i)=>{b.addEventListener('click',()=>activateView(b.dataset.view));b.addEventListener('keydown',e=>{
@@ -279,6 +282,8 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFres
 
 
 $('asia-market-filter').addEventListener('change',renderAsia);
+initIbReports();
+
 
 
 

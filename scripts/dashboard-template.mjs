@@ -22,16 +22,21 @@ export function validateSectorWeights(input,now=Date.now()){return validateWeigh
 export function validateNasdaqWeights(input,now=Date.now()){return validateWeights(input,now,true);}
 // Source files stay separate; all delivery formats remain self-contained HTML.
 export async function readDashboardTemplate(){
- const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','sector-heatmap.js','asia-market.js','gurus.js','three-low.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
+ const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','sector-heatmap.js','asia-market.js','gurus.js','three-low.js','ib-reports.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
  const weights=validateSectorWeights(JSON.parse(await readFile(new URL('../config/sector-weights.json',import.meta.url),'utf8')));
  const json=JSON.stringify(weights).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
  const nasdaq=validateNasdaqWeights(JSON.parse(await readFile(new URL('../config/nasdaq-sector-weights.json',import.meta.url),'utf8')));
  const nasdaqJson=JSON.stringify(nasdaq).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
  const three=validateThreeLow(JSON.parse(await readFile(new URL('../config/three-low.json',import.meta.url),'utf8')));
  const threeJson=JSON.stringify(three).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
- const js=scripts.join('\n').replace('__SECTOR_WEIGHTS__',()=>json).replace('__NASDAQ_WEIGHTS__',()=>nasdaqJson).replace('__THREE_LOW_CONFIG__',()=>threeJson);
+ const ib=JSON.parse(await readFile(new URL('../config/ib-reports.json',import.meta.url),'utf8'));
+ if(!Array.isArray(ib.reports)||ib.reports.length>100)throw Error('IB 리포트 형식 오류');
+ for(const r of ib.reports){const u=new URL(r.url);if(u.protocol!=='https:'||!['www.citigroup.com','www.goldmansachs.com','am.jpmorgan.com'].includes(u.hostname)||!/^\d{4}-\d{2}-\d{2}$/.test(r.published_at)||!Array.isArray(r.summary)||!r.title||!r.bank)throw Error('IB 리포트 출처/내용 오류');}
+ const ibJson=JSON.stringify(ib).replace(/</g,'\\u003c');
+ const js=scripts.join('\n').replace('__SECTOR_WEIGHTS__',()=>json).replace('__NASDAQ_WEIGHTS__',()=>nasdaqJson).replace('__THREE_LOW_CONFIG__',()=>threeJson).replace('__IB_REPORTS__',()=>ibJson);
  if(!html.includes('__DASHBOARD_CSS__')||!html.includes('__DASHBOARD_JS__'))throw new Error('대시보드 소스 삽입 위치가 없습니다.');
  if(/<\/style/i.test(css)||/<\/script/i.test(js))throw new Error('대시보드 소스에 닫기 태그를 사용할 수 없습니다.');
  return html.replace('__DASHBOARD_CSS__',()=>css).replace('__DASHBOARD_JS__',()=>js);
 }
+
 

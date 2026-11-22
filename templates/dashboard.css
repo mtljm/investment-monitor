@@ -3126,3 +3126,6 @@ footer {
 main:has(#asia:not([hidden])) footer>div:last-child{display:none}
 
 
+
+.ib-reports{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-top:16px}.ib-report{min-width:0}.ib-report p,.ib-report li{font-size:14px;line-height:1.8}.ib-report h2{font-size:20px}.ib-report h3{font-size:15px;margin-top:20px}.ib-report ul{padding-left:20px}.ib-age{color:#8a5b17}.ib-report a{overflow-wrap:anywhere}
+

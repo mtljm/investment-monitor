@@ -1,0 +1,70 @@
+{
+  "reviewed_at": "2026-11-22",
+  "update_mode": "reviewed",
+  "reports": [
+    {
+      "id": "citi-20261030",
+      "bank": "Citi",
+      "division": "Citi Research · 글로벌 경제",
+      "published_at": "2026-10-30",
+      "title": "불확실성 속 글로벌 경기의 회복력",
+      "original_title": "The Global Economy’s Tenuous Balance: Resilience Amid Uncertainty",
+      "url": "https://www.citigroup.com/global/insights/print/the-global-economys-tenuous-balance-resilience-amid-uncertainty",
+      "topics": [
+        "경기",
+        "금리",
+        "AI"
+      ],
+      "summary": [
+        "글로벌 성장률을 2026년 2.7%, 2027년 2.8%로 전망하며 미국과 AI 투자의 경기 지지력을 강조합니다.",
+        "에너지·공급망 충격이 인플레이션과 긴축 압력을 높인다고 봅니다.",
+        "AI 투자는 이어질 것으로 보지만 금융 과열·정책·사이버 위험을 함께 지적합니다."
+      ],
+      "watch": "유가와 물가, 장기금리 상승이 주식 밸류에이션에 주는 부담.",
+      "interpretation": "장기 지수 포트폴리오에서는 성장 전망과 금리 부담을 함께 점검하는 자료입니다. 이 해석은 원문의 매매 지시가 아닙니다."
+    },
+    {
+      "id": "gs-20261106",
+      "bank": "Goldman Sachs",
+      "division": "FICC and Equities · The Markets 대담",
+      "published_at": "2026-11-06",
+      "title": "중간선거 이후 주식시장 순환매",
+      "original_title": "The US Midterms: Reshaping the Stock Market",
+      "url": "https://www.goldmansachs.com/insights/the-markets/the-us-midterms-reshaping-the-stock-market",
+      "topics": [
+        "미국주식",
+        "AI",
+        "섹터"
+      ],
+      "summary": [
+        "Lou Miller는 중간선거가 진행 중인 순환매를 강화할 수 있다고 봅니다.",
+        "데이터센터 관련주의 가격 조정이 밸류에이션 부담을 줄였다고 평가합니다.",
+        "비싼 전통 방어주보다 현금흐름·이익의 질을 강조하며 헬스케어의 성장과 방어 특성에 주목합니다."
+      ],
+      "watch": "고용·물가·실적과 데이터센터 투자의 수익성.",
+      "interpretation": "기술주와 방어주의 이름보다 가격·현금흐름을 비교할 때 참고할 수 있습니다. 대담자 관점이며 골드만삭스 전체의 통일된 공식 전망은 아닙니다."
+    },
+    {
+      "id": "jpm-20261118",
+      "bank": "J.P. Morgan",
+      "division": "Asset Management · Gabriela Santos",
+      "published_at": "2026-11-18",
+      "title": "AI 조정 속 주식 투자 기회",
+      "original_title": "Where to invest in stocks amidst the AI selloff?",
+      "url": "https://am.jpmorgan.com/us/en/asset-management/liq/insights/market-insights/market-updates/on-the-minds-of-investors/where-to-invest-in-stocks-amidst-the-ai-selloff/",
+      "topics": [
+        "미국주식",
+        "AI",
+        "섹터"
+      ],
+      "summary": [
+        "AI 투자 논리는 유지되지만 시장의 초점이 설비 구축에서 실제 도입·수익화로 이동한다고 설명합니다.",
+        "하이퍼스케일러·소프트웨어뿐 아니라 금융·헬스케어·산업재의 생산성 수혜를 함께 봅니다.",
+        "모멘텀보다 기업의 질을 강조하며 포트폴리오 전체의 AI 집중도를 점검하라고 제안합니다."
+      ],
+      "watch": "AI 투자 자금조달 비용과 잉여현금흐름의 개선 여부.",
+      "interpretation": "나스닥·대형 기술주·지수 ETF에 겹쳐 있는 AI 노출을 살피는 데 참고할 수 있습니다. 원문의 요약과 도구의 해석은 구분합니다."
+    }
+  ]
+}
+

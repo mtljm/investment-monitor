@@ -10,7 +10,7 @@ __DASHBOARD_CSS__
 <body>
 <div class="shell">
 <aside class="sidebar"><div class="brand">investment<b>.</b><br>monitor<small>PERSONAL MARKET DESK</small></div>
-<nav class="nav" role="tablist" aria-label="모니터링 화면" aria-orientation="vertical"><button id="nav-overview" class="active" role="tab" data-view="overview" aria-controls="overview" aria-selected="true" tabindex="0"><i>◈</i>시장 개요</button><button id="nav-asia" role="tab" data-view="asia" aria-controls="asia" aria-selected="false" tabindex="-1"><i>◎</i>아시아 지수</button><button id="nav-watchlist" role="tab" data-view="watchlist" aria-controls="watchlist" aria-selected="false" tabindex="-1"><i>▤</i>관찰 종목</button><button id="nav-technical" role="tab" data-view="technical" aria-controls="technical" aria-selected="false" tabindex="-1"><i>⌁</i>기술적 분석</button><button id="nav-data-status" role="tab" data-view="data-status" aria-controls="data-status" aria-selected="false" tabindex="-1"><i>◷</i>데이터 상태</button><button id="nav-gurus" role="tab" data-view="gurus" aria-controls="gurus" aria-selected="false" tabindex="-1"><i>◉</i>13F 구루</button></nav>
+<nav class="nav" role="tablist" aria-label="모니터링 화면" aria-orientation="vertical"><button id="nav-overview" class="active" role="tab" data-view="overview" aria-controls="overview" aria-selected="true" tabindex="0"><i>◈</i>시장 개요</button><button id="nav-asia" role="tab" data-view="asia" aria-controls="asia" aria-selected="false" tabindex="-1"><i>◎</i>아시아 지수</button><button id="nav-watchlist" role="tab" data-view="watchlist" aria-controls="watchlist" aria-selected="false" tabindex="-1"><i>▤</i>관찰 종목</button><button id="nav-technical" role="tab" data-view="technical" aria-controls="technical" aria-selected="false" tabindex="-1"><i>⌁</i>기술적 분석</button><button id="nav-data-status" role="tab" data-view="data-status" aria-controls="data-status" aria-selected="false" tabindex="-1"><i>◷</i>데이터 상태</button><button id="nav-gurus" role="tab" data-view="gurus" aria-controls="gurus" aria-selected="false" tabindex="-1"><i>◉</i>13F 구루</button><button id="nav-ib" role="tab" data-view="ib" aria-controls="ib" aria-selected="false" tabindex="-1"><i>▧</i>해외 IB 리포트</button></nav>
 <div class="side-note">PORTFOLIO DIRECTION<div class="allocation"><span></span></div><strong>80% 장기 · 20% 단기</strong><br>지수 중심 장기 운용과<br>기술적 매매를 위한 시장 점검<br><br>보유 자산은 추후 연결합니다.</div></aside>
 <main id="main">
 <header class="topline"><span class="eyebrow" id="view-eyebrow">MARKET OVERVIEW / UNITED STATES</span><span class="live"><span class="dot"></span>수동 수집 · 일봉 기준</span></header>
@@ -47,13 +47,14 @@ __DASHBOARD_CSS__
 
 </section><div class="bottom-grid" id="data-status" role="tabpanel" aria-labelledby="nav-data-status" tabindex="0" hidden><section class="info-box"><h3>수집 상태</h3><div id="status"></div></section><section class="info-box"><h3>읽기 전에</h3><p>최신 일봉은 장중에 변할 수 있습니다. 종목별 기준 시각은 상세 화면에서 확인하세요.</p><p>5일·20일은 거래 관측치 기준이며, 수익률에 배당 재투자는 포함하지 않습니다.</p><p>페이지를 다시 여는 것만으로 시세가 갱신되지는 않습니다. 예약 배치 또는 데이터 불러오기에서 GitHub Actions를 실행한 뒤 페이지를 새로고침하세요.</p></section></div>
 <footer><div>INVESTMENT MONITOR · 개인 시장 관찰 도구<br>출처: Yahoo Finance · 시세 지연 및 수집 오류 가능</div><div><a id="universe-link" href="https://stockanalysis.com/list/largest-us-companies/" target="_blank" rel="noopener noreferrer">대형주 선정 출처 ↗</a> · <a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs" target="_blank" rel="noopener noreferrer">섹터 ETF 출처 ↗</a><br><span id="universe-date"></span></div></footer>
-</main></div>
+<section id="ib" role="tabpanel" aria-labelledby="nav-ib" tabindex="0" hidden><div class="info-box"><h2>해외 IB · 한국어 요약</h2><p>공개 원문을 읽고 재구성한 짧은 한국어 요약입니다. 전문 번역이나 기관 전체의 합의 전망이 아닙니다. 발행 부문·원문 발표일을 확인하세요.</p><p id="ib-update"></p><div class="tools"><select id="ib-bank" aria-label="리포트 기관"><option value="all">모든 기관</option><option>Citi</option><option>Goldman Sachs</option><option>J.P. Morgan</option></select><input id="ib-search" type="search" aria-label="리포트 검색" placeholder="기관·주제·내용 검색"></div></div><div id="ib-reports" class="ib-reports"></div></section></main></div>
 <dialog id="detail" aria-labelledby="detail-title"><div class="dialog-head"><div><div class="eyebrow" id="detail-symbol"></div><h2 class="dialog-title" id="detail-title"></h2><div id="detail-price"></div></div><button class="btn" id="close-dialog" aria-label="상세 화면 닫기">닫기 ✕</button></div><p id="detail-etf" class="high52-detail" hidden></p><p id="detail-high52" class="high52-detail"></p><div id="detail-chart"></div><div class="indicator-layout" id="detail-stats"></div><p class="dialog-meta" id="detail-meta"></p></dialog><div id="toast" role="status" hidden></div>
 <script id="monitor-data" type="application/json">__MONITOR_DATA__</script>
 <script>
 __DASHBOARD_JS__
 </script>
 </body></html>
+
 
 
 

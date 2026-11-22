@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import {readFile} from 'node:fs/promises';
+const report=JSON.parse(await readFile(new URL('../config/ib-reports.json',import.meta.url),'utf8'));
+const source=(await readFile(new URL('../templates/ib-reports.js',import.meta.url),'utf8')).replace('__IB_REPORTS__',()=>JSON.stringify(report));
+function render(bank='all',query=''){const nodes={'ib-bank':{value:bank},'ib-search':{value:query},'ib-update':{},'ib-reports':{}};vm.runInNewContext(source+';renderIbReports();',{$:id=>nodes[id],esc:s=>String(s).replaceAll('<','&lt;').replaceAll('>','&gt;'),Date});return nodes;}
+test('공개 리포트는 최신순이며 요약과 도구 해석·갱신 방식을 구분한다',()=>{const nodes=render(),html=nodes['ib-reports'].innerHTML;assert.equal((html.match(/<article/g)||[]).length,3);assert.ok(html.indexOf('J.P. Morgan')<html.indexOf('Goldman Sachs'));assert.ok(html.includes('도구의 해석'));assert.ok(html.includes('발표 후'));assert.ok(nodes['ib-update'].textContent.includes('자동 수집·번역은 아직 연결하지 않았습니다'));for(const r of report.reports)assert.ok(html.includes(r.url));});
+test('기관과 한국어 주제 검색을 함께 적용하며 검색 실패를 표시한다',()=>{assert.equal((render('Citi','금리')['ib-reports'].innerHTML.match(/<article/g)||[]).length,1);assert.ok(render('Citi','없는검색어')['ib-reports'].innerHTML.includes('검색 결과가 없습니다'));});
