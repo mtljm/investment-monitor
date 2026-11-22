@@ -3129,3 +3129,104 @@ main:has(#asia:not([hidden])) footer>div:last-child{display:none}
 
 .ib-reports{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-top:16px}.ib-report{min-width:0}.ib-report p,.ib-report li{font-size:14px;line-height:1.8}.ib-report h2{font-size:20px}.ib-report h3{font-size:15px;margin-top:20px}.ib-report ul{padding-left:20px}.ib-age{color:#8a5b17}.ib-report a{overflow-wrap:anywhere}
 
+
+/* Device layouts: keep this final block after component styles. */
+.menu-toggle {display:none;}
+.skip-link {position:fixed;top:8px;left:12px;z-index:100;padding:12px 18px;background:white;color:var(--ink);border:2px solid var(--nav);border-radius:8px;transform:translateY(-150%);}
+.skip-link:focus {transform:none;}
+:focus-visible {outline:3px solid #bd762d;outline-offset:3px;}
+body {font-size:16px;}
+main {align-self:start;margin:0 auto;}
+.nav button {font-size:14px;}
+.subtitle,.info-box p,.toolbar-note,.brief-grid p,.temperature-top p {font-size:14px;}
+.notice {font-size:13px;line-height:1.8;}
+.section-heading small,.stamp,.high52-index,.macro-stamp,.macro-open,.macro-basis,.heat-note,.table-foot,footer {font-size:12px;}
+.macro-metrics,.three-low-macros p,.three-low-macros small,.three-low-risk,.temperature-method,.temperature-method p,.guru-manager small,.guru-manager span {font-size:13px;}
+.btn,.tools input,.tools select,.tabs .tab,.chart-controls label {min-height:44px;}
+.tools input,.tools select {font-size:14px;}
+.table-scroll {scrollbar-width:auto;scrollbar-color:#8397a4 #edf1f5;}
+.analysis-table {width:100%;min-width:1480px;table-layout:fixed;}
+.analysis-table-scroll {overflow:auto;}
+.analysis-table th,.analysis-table td {padding:14px 10px;font-size:13px;overflow-wrap:normal;}
+.analysis-table .company,.analysis-table .badge,.analysis-table .event-chip,.analysis-table .sma-group small {font-size:12px;}
+.analysis-table th:first-child,.analysis-table td:first-child {position:sticky;left:0;width:148px;background:white;z-index:1;padding-left:16px;box-shadow:3px 0 5px #142a350a;}
+.analysis-table thead th:first-child {z-index:3;background:#fafbfc;}
+.analysis-table .sma-group>span {grid-template-columns:26px minmax(0,1fr);gap:6px;white-space:nowrap;}
+.analysis-table .sma-group b {overflow-wrap:normal;}
+.table-hint {margin:0;padding:8px 22px 12px;font-size:13px;color:var(--muted);}
+@media(min-width:761px) {
+ .sidebar {overflow-y:auto;}
+ .hero {gap:24px;}
+ .hero h1 {font-size:clamp(28px,2.5vw,40px);}
+ .index-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .macro-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .panel-top {align-items:flex-start;gap:20px;}
+ main:has(#technical:not([hidden])) {padding-left:32px;padding-right:32px;}
+}
+@media(min-width:1280px) {
+ .index-grid,.macro-grid {grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+@media(max-width:760px) {
+ .sidebar {position:sticky;top:0;z-index:20;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:10px 16px;border:0;box-shadow:0 2px 10px #142a3518;}
+ .brand {font-size:14px;line-height:1.3;}
+ .menu-toggle {display:flex;align-items:center;justify-content:space-between;gap:10px;justify-self:end;max-width:100%;min-height:44px;padding:8px 12px;border:1px solid #627d8b;border-radius:8px;background:#28414d;color:white;font-size:14px;}
+ .menu-toggle>span:first-child {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+ .menu-toggle>span:last-child {white-space:nowrap;font-size:12px;color:#dbe5e9;}
+ .sidebar .nav {display:none;grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:calc(100dvh - 90px);overflow-y:auto;}
+ .sidebar .nav.is-open {display:grid;}
+ .sidebar .nav button {min-height:48px;font-size:14px;padding:10px 12px;}
+ main,main:has(#technical:not([hidden])) {padding:18px 16px 24px;}
+ #main {scroll-margin-top:80px;}
+ .topline {gap:8px;padding-bottom:12px;}
+ .topline .eyebrow {font-size:10px;letter-spacing:1px;}
+ .live {font-size:11px;padding:4px 8px;}
+ .hero {margin:18px 0;}
+ .hero>div>.eyebrow {display:none;}
+ .hero h1 {font-size:26px;margin:0 0 8px;}
+ .subtitle {font-size:14px;margin:0;line-height:1.7;}
+ .actions {margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+ .actions .btn {font-size:13px;}
+ .notice {padding:12px;font-size:12px;margin-bottom:18px;}
+ .index-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+ .index-card {padding:14px 12px;}
+ .index-card .value {font-size:clamp(20px,5.5vw,26px);}
+ .card-title {font-size:13px;flex-wrap:wrap;gap:4px;}
+ .card-title span {font-size:11px;}
+ .index-card .change {font-size:14px;}
+ .index-card .change .neutral {display:block;font-size:12px;}
+ .high52-index,.stamp {font-size:12px;line-height:1.6;}
+ .macro-grid,.three-low-macros {grid-template-columns:minmax(0,1fr);}
+ .macro .value {font-size:26px;}
+ .macro .unit {font-size:13px;}
+ .macro-history .spark {height:64px;}
+ .macro-metrics {font-size:13px;}
+ .macro-open,.macro-stamp {font-size:12px;}
+ .section-heading {align-items:flex-start;flex-direction:column;gap:4px;margin-top:26px;}
+ .section-heading h2 {font-size:18px;}
+ .section-heading small {font-size:12px;line-height:1.6;}
+ .tools {display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%;}
+ .tools input[type=search] {grid-row:auto;grid-column:auto;width:100%;min-width:0;}
+ .tools input,.tools select {font-size:16px;width:100%;}
+ .panel-top {gap:14px;}
+ .tabs {gap:16px;}
+ .tabs .tab {font-size:14px;}
+ .table-foot {font-size:12px;gap:8px;}
+ .table-hint {padding:8px 16px 12px;}
+ .info-box p,.three-low-intro p,.three-low-method p,.guru-intro p {font-size:14px;}
+ .guru-manager strong {font-size:14px;}
+ dialog {width:calc(100% - 16px);max-height:calc(100dvh - 16px);padding:16px;overscroll-behavior:contain;}
+ .dialog-head {position:sticky;top:-16px;z-index:5;background:white;padding:12px 0;border-bottom:1px solid var(--line);}
+ .dialog-head .btn {min-width:64px;min-height:44px;}
+ .chart-controls {gap:8px;}
+ .chart-controls label {font-size:13px;display:flex;align-items:center;gap:6px;}
+ .chart-controls select {min-height:36px;font-size:16px;}
+ footer {font-size:12px;line-height:1.8;}
+}
+@media(max-width:360px) {
+ .index-grid {grid-template-columns:minmax(0,1fr);}
+ .sidebar {padding-inline:12px;gap:8px;}
+}
+@media(min-width:761px) and (max-width:1100px) {
+ .nav button {padding-inline:10px;gap:8px;font-size:13px;white-space:nowrap;}
+ .nav i {width:16px;flex-shrink:0;}
+}
