@@ -16,3 +16,5 @@ test('여러 날 유지된 상승 근거와 완료 주봉이 함께 맞을 때�
 
 import {changedMarket} from '../scripts/pages-mode.mjs';
 test('일봉 이력 스키마 변경 시 화면 재사용 대신 새 데이터를 수집한다',()=>{assert.equal(changedMarket(['scripts/chart-series.mjs']),'all');});
+
+test('FTD 후보 상승률은 1% 이상이며 1% 미만은 제외한다',()=>{for(const [pct,expected] of [[1,true],[1.2,true],[0.99,false]]){const b=attempt(4).slice(0,25);b[24]={...b[24],close:b[23].close*(1+pct/100)};const result=model.reversalAttempt(b,b);assert.equal(!!result.ftd,expected);}});
