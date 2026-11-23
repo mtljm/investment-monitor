@@ -1,3 +1,4 @@
+import {publicBreadth,publicLeaders} from './market-confirmation.mjs';
 import {publicGurusData} from './gurus.mjs';
 import {readAsiaReport} from './collect-asia.mjs';
 import {readDashboardTemplate} from './dashboard-template.mjs';
@@ -15,6 +16,8 @@ export function publicData(input){
  return {
   collected_at_utc:input.collected_at_utc,collected_at_kst:input.collected_at_kst,
   universe_date:input.universe_date,
+  ...(input.market_breadth?{market_breadth:publicBreadth(input.market_breadth)}:{}),
+  ...(input.leaders?{leaders:publicLeaders(input.leaders)}:{}),
   ...(input.etf_watch?{etf_watch:publicEtfWatch(input.etf_watch)}:{}),
   ...(input.three_low?{three_low:publicThreeLow(input.three_low)}:{}),
   ...(input.gurus?{gurus:publicGurusData(input.gurus)}:{}),

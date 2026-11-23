@@ -66,3 +66,5 @@ node scripts/render-dashboard.mjs  # 기존 JSON으로 HTML 재생성
 관찰종목 대형주에는 시가총액 상위 선택 범위와 함께 버크셔 해서웨이 B(BRK-B)를 직접 추가합니다. config/monitor.json의 watchlist_additions를 사용하며 순위 목록을 갱신해도 유지됩니다.
 
 시장 개요의 상승 전환 확인표는 바닥 유지·일봉 회복·거래량 동반 상승 유지·대형주 확산·완료 주봉·VIX 완화를 구분합니다. 자체 조건과 한계는 [상승 전환 확인표](docs/trend-confirmation.md)를 참고하세요.
+
+시장 폭과 주도주: NYSE·Nasdaq 전체 상승/하락 거래량 10:1과 반복 여부, 상위 200개+버크셔의 자체 주도주 후보·증감·진입/이탈을 별도 표시합니다. 자세한 대상·계산·누락 처리는 [시장 폭과 주도주](docs/market-participation.md)를 참고하세요.

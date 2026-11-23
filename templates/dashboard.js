@@ -60,7 +60,7 @@ function updateFreshness(){
  if(typeof IB_REPORTS!=='undefined'&&!$('ib').hidden){$('data-notice').textContent='리포트 요약 검토일 '+IB_REPORTS.reviewed_at+' · 시세 배치와 별도 · 새 원문 자동 번역 기능은 사용하지 않습니다.';$('data-notice').parentElement.setAttribute('role','status');$('data-notice').parentElement.classList.remove('collection-warning');return;}
  if(!$('gurus').hidden){gurusNotice();return;}
  if(!$('asia').hidden){asiaNotice();return;}
- if(!$('overview').hidden){renderThreeLow();renderReversal();}
+ if(!$('overview').hidden){renderThreeLow();renderReversal();renderParticipation();}
  renderSectors();
  renderTemperature();
  const health=collectionHealth(data),now=Date.now();

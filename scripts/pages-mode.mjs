@@ -3,7 +3,7 @@ import {appendFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const sharedFiles=new Set(['scripts/monitor.mjs','scripts/chart-series.mjs','scripts/fetch-market.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs']);
+const sharedFiles=new Set(['scripts/monitor.mjs','scripts/chart-series.mjs','scripts/market-confirmation.mjs','scripts/fetch-market.mjs','scripts/high52.mjs','scripts/technical-indicators.mjs','scripts/chart-series.mjs','scripts/market-analysis.mjs']);
 const usFiles=new Set(['config/monitor.json','config/etf-watch.json','scripts/etf-watch.mjs','config/three-low.json','scripts/three-low-config.mjs','scripts/dashboard-context.mjs']);
 const asiaFiles=new Set(['config/asia.json','scripts/collect-asia.mjs']);
 export function changedMarket(files){

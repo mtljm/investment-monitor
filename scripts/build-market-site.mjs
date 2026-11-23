@@ -1,3 +1,4 @@
+import {mergeBreadth} from './market-confirmation.mjs';
 import {mergeEtfWatch} from './etf-watch.mjs';
 import {mergeGurus} from './gurus.mjs';
 import {assertCompleteAsia} from './collect-asia.mjs';
@@ -15,7 +16,7 @@ export function mergeMarketSnapshots(market,published,{us,asia,gurus}={}){
  checkFresh(us,published.data,'미국');
  if(market==='all'){checkFresh(asia,published.data.asia,'아시아');assertCompleteAsia(asia);}
  const context=dashboardContext(us,published.history);
- return {data:{...context.data,etf_watch:mergeEtfWatch(published.data.etf_watch,us.etf_watch),asia:market==='all'?asia:published.data.asia,...(gurus?{gurus:mergeGurus(published.data.gurus,gurus)}:published.data.gurus?{gurus:published.data.gurus}:{})},history:context.history};
+ return {data:{...context.data,market_breadth:mergeBreadth(published.data.market_breadth,us.market_breadth),etf_watch:mergeEtfWatch(published.data.etf_watch,us.etf_watch),asia:market==='all'?asia:published.data.asia,...(gurus?{gurus:mergeGurus(published.data.gurus,gurus)}:published.data.gurus?{gurus:published.data.gurus}:{})},history:context.history};
 }
 export async function main(){
  const market=process.env.PUBLISH_MARKET;

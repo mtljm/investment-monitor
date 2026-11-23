@@ -22,7 +22,7 @@ export function validateSectorWeights(input,now=Date.now()){return validateWeigh
 export function validateNasdaqWeights(input,now=Date.now()){return validateWeights(input,now,true);}
 // Source files stay separate; all delivery formats remain self-contained HTML.
 export async function readDashboardTemplate(){
- const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','trend-reversal.js','sector-heatmap.js','asia-market.js','gurus.js','three-low.js','ib-reports.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
+ const [html,css,...scripts]=await Promise.all(['dashboard.html','dashboard.css','dashboard-safety.js','market-temperature.js','trend-reversal.js','market-participation.js','sector-heatmap.js','asia-market.js','gurus.js','three-low.js','ib-reports.js','dashboard.js'].map(p=>readFile(new URL(p,templates),'utf8')));
  const weights=validateSectorWeights(JSON.parse(await readFile(new URL('../config/sector-weights.json',import.meta.url),'utf8')));
  const json=JSON.stringify(weights).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
  const nasdaq=validateNasdaqWeights(JSON.parse(await readFile(new URL('../config/nasdaq-sector-weights.json',import.meta.url),'utf8')));

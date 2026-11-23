@@ -1,3 +1,4 @@
+import {collectBreadth,scanLeaders,closedCutoff} from './market-confirmation.mjs';
 import {collectEtfWatch} from './etf-watch.mjs';
 import {validateThreeLow} from './three-low-config.mjs';
 import {fetchMarketJson} from './fetch-market.mjs';
@@ -134,7 +135,12 @@ export async function main() {
   const requested=flag>=0?process.argv[flag+1]:undefined;
   if(flag>=0&&!requested)throw new Error('--limit 값이 필요합니다.');
   const items=selectInstruments(config,requested);
-  const rows=await collectInstruments(items);
+  const scanItems=selectInstruments(config,200);
+  const scanned=await collectInstruments(scanItems);
+  const selectedSymbols=new Set(items.map(r=>r.symbol));
+  const rows=scanned.filter(r=>selectedSymbols.has(r.symbol));
+  const leaders=scanLeaders(scanned,closedCutoff());
+  const market_breadth=await collectBreadth();
   const threeConfig=validateThreeLow(JSON.parse(await readFile(resolve(root,'config/three-low.json'),'utf8')));
   const threeRows=await collectInstruments(threeConfig.macro,2);
   const etfConfig=JSON.parse(await readFile(resolve(root,'config/etf-watch.json'),'utf8'));
@@ -147,7 +153,7 @@ export async function main() {
   const now = new Date();
   const result = {collected_at_utc:now.toISOString(),
     collected_at_kst:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'medium'}).format(now)+' KST',
-    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows,three_low:{collected_at_utc:now.toISOString(),rows:threeRows},etf_watch:etfWatch};
+    universe_date:config.universe_date,universe_source:config.universe_source,sector_source:config.sector_source,rows,leaders,market_breadth,three_low:{collected_at_utc:now.toISOString(),rows:threeRows},etf_watch:etfWatch};
   const out = resolve(root,'reports');
   await mkdir(out,{recursive:true});
   const stamp = now.toISOString().replace(/[:.]/g,'-');
