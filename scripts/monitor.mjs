@@ -103,7 +103,17 @@ export function selectInstruments(config,requested) {
   const ranks=stocks.map(r=>r.snapshot_rank);
   if(stocks.length>200||ranks.some(r=>!Number.isInteger(r)||r<1||r>200)||new Set(ranks).size!==ranks.length)throw new Error('대형주 순위가 잘못되었습니다.');
   if(stocks.length<limit||Array.from({length:limit},(_,i)=>i+1).some(r=>!ranks.includes(r)))throw new Error('선택 범위의 순위 목록이 부족합니다. update-universe.mjs를 실행하세요.');
-  return config.instruments.filter(r=>r.group!=='대형주'||r.snapshot_rank<=limit);
+  const selected=config.instruments.filter(r=>r.group!=='대형주'||r.snapshot_rank<=limit);
+  const additions=config.watchlist_additions??[];
+  if(!Array.isArray(additions)||additions.length>20)throw new Error('직접 추가 관찰종목은 최대 20개입니다.');
+  const extraSymbols=new Set();
+  for(const item of additions){
+    if(!item||item.group!=='대형주'||!/^[A-Z][A-Z0-9.-]{0,14}$/.test(item.symbol)||!item.name||item.unit!=='USD'||extraSymbols.has(item.symbol)||item.snapshot_rank!==undefined)throw new Error('직접 추가 관찰종목 형식을 확인하세요.');
+    if(config.instruments.some(r=>r.symbol===item.symbol&&r.group!=='대형주'))throw new Error('직접 추가 관찰종목이 다른 그룹과 중복됩니다.');
+    extraSymbols.add(item.symbol);
+    if(!selected.some(r=>r.symbol===item.symbol))selected.push({...item,watchlist_pinned:true});
+  }
+  return selected;
 }
 export async function collectInstruments(items,workerCount=4) {
   const results=new Array(items.length);

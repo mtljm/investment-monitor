@@ -2144,5 +2144,13 @@
   ],
   "stock_limit": 200,
   "sector_source": "https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs",
-  "sector_note": "S&P 500의 GICS 11개 섹터에 대응하는 Select Sector SPDR ETF를 관찰 대상으로 사용. 보유 또는 매수 추천을 의미하지 않음."
+  "sector_note": "S&P 500의 GICS 11개 섹터에 대응하는 Select Sector SPDR ETF를 관찰 대상으로 사용. 보유 또는 매수 추천을 의미하지 않음.",
+  "watchlist_additions": [
+    {
+      "group": "대형주",
+      "symbol": "BRK-B",
+      "name": "버크셔 해서웨이 B · Berkshire Hathaway",
+      "unit": "USD"
+    }
+  ]
 }

@@ -7,7 +7,7 @@ test('대형주 범위와 별개로 섹터 11개를 수집한다',()=>{
   for(const n of [20,50,100,200]){
     const rows=selectInstruments(config,n);
     assert.equal(rows.filter(r=>r.group==='섹터 ETF').length,11);
-    assert.equal(rows.length,n+23);
+    assert.equal(rows.length,n+23+rows.filter(r=>r.watchlist_pinned).length);
     assert.equal(new Set(rows.map(r=>r.symbol)).size,rows.length);
   }
 });

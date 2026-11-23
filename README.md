@@ -62,3 +62,5 @@ node scripts/render-dashboard.mjs  # 기존 JSON으로 HTML 재생성
 - 화면 배포 및 선택 업데이트: `daily-pages.yml`에서 `us / asia / all / reuse`를 선택합니다. 기본 `reuse`는 시세 수집 없이 화면만 게시합니다. 기존 `refresh_data` 체크박스는 시장 선택으로 대체했습니다.
 - 공통 게시 `publish-market.yml`의 단일 잠금으로 수집·최신 스냅샷 읽기·배포·공개 데이터 확인을 직렬화합니다. 실행 중 작업은 취소하지 않습니다. GitHub concurrency 특성상 대기 실행이 여러 개 쌓이면 이전 대기 실행이 대체될 수 있습니다.
 - 시각 변경 시 `config/batch-schedules.json`과 두 워크플로 cron을 함께 수정합니다. 테스트가 두 설정의 일치를 검사합니다. GitHub 예약 실행은 지연·누락될 수 있으며 분리만으로 기존 예약 미생성 문제가 해결됐다고 볼 수는 없습니다.
+
+관찰종목 대형주에는 시가총액 상위 선택 범위와 함께 버크셔 해서웨이 B(BRK-B)를 직접 추가합니다. config/monitor.json의 watchlist_additions를 사용하며 순위 목록을 갱신해도 유지됩니다.
