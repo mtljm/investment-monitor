@@ -64,3 +64,5 @@ node scripts/render-dashboard.mjs  # 기존 JSON으로 HTML 재생성
 - 시각 변경 시 `config/batch-schedules.json`과 두 워크플로 cron을 함께 수정합니다. 테스트가 두 설정의 일치를 검사합니다. GitHub 예약 실행은 지연·누락될 수 있으며 분리만으로 기존 예약 미생성 문제가 해결됐다고 볼 수는 없습니다.
 
 관찰종목 대형주에는 시가총액 상위 선택 범위와 함께 버크셔 해서웨이 B(BRK-B)를 직접 추가합니다. config/monitor.json의 watchlist_additions를 사용하며 순위 목록을 갱신해도 유지됩니다.
+
+시장 개요의 상승 전환 확인표는 바닥 유지·일봉 회복·거래량 동반 상승 유지·대형주 확산·완료 주봉·VIX 완화를 구분합니다. 자체 조건과 한계는 [상승 전환 확인표](docs/trend-confirmation.md)를 참고하세요.

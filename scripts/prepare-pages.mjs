@@ -35,7 +35,7 @@ export function publicData(input){
     for(const k of ['high','low','high_time','low_time','position_pct'])safe.fibonacci[k]=Number.isFinite(f[k])?f[k]:null;
    }
    if(row.changes)safe.changes={available:row.changes.available===true,baseline_day:row.changes.baseline_day,current_day:row.changes.current_day,events:(row.changes.events||[]).slice(0,10).map(e=>({kind:String(e.kind),text:String(e.text)}))};
-   safe.history=(row.history||[]).slice(-90).map(p=>Object.fromEntries(['time','close','sma20','sma50','sma200','bb_middle','bb_upper','bb_lower'].filter(k=>p[k]!==undefined).map(k=>[k,Number.isFinite(p[k])?p[k]:null])));
+   safe.history=(row.history||[]).slice(-90).map(p=>Object.fromEntries(['time','close','high','low','volume','sma20','sma50','sma200','bb_middle','bb_upper','bb_lower'].filter(k=>p[k]!==undefined).map(k=>[k,Number.isFinite(p[k])?p[k]:null])));
    if(row.status!=='ok')safe.error='수집 실패';
    return safe;
   })
