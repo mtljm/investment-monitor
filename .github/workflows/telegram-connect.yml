@@ -1,5 +1,5 @@
-name: Telegram 연결 확인
-run-name: Telegram 봇 및 개인 대화 확인
+name: 05 알림 · Telegram 연결 확인
+run-name: 05 알림 · Telegram 개인 대화 연결 확인 · 수동
 
 on:
   workflow_dispatch:

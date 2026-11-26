@@ -1,5 +1,5 @@
-name: 화면 배포 및 선택 업데이트
-run-name: 화면 배포 · ${{  github.event_name  }} · ${{  inputs.market || 'auto'  }}
+name: 03 배포 · 화면 및 선택 데이터 갱신
+run-name: 03 배포 · ${{ github.event_name }} · ${{ inputs.market || 'auto' }}
 on:
   workflow_dispatch:
     inputs:

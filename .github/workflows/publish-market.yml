@@ -1,4 +1,4 @@
-name: 시장별 공통 게시
+name: 99 내부 · 공통 수집 및 배포
 on:
   workflow_call:
     inputs:

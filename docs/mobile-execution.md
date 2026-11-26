@@ -2,9 +2,11 @@
 
 평소에는 [Telegram 브리핑](telegram-briefing.md)을 확인하고, 추가 갱신이 필요할 때 수동 실행합니다.
 
+[Actions 기능별 안내](github-actions.md)에서 사이트 갱신·파일 수집·알림을 구분할 수 있습니다.
+
 ## 수동 실행
 
-1. GitHub에 로그인하고 [수동 실행 화면](https://github.com/mtljm/investment-monitor/actions/workflows/market-monitor.yml)을 엽니다.
+1. GitHub에 로그인하고 [04 수집 · 미국 20종목 다운로드](https://github.com/mtljm/investment-monitor/actions/workflows/market-monitor.yml)을 엽니다.
 2. **Run workflow → main → Run workflow**를 누릅니다.
 3. 완료된 실행의 **Artifacts**에서 ZIP을 내려받아 압축을 풉니다.
 4. `dashboard.html`을 JavaScript 지원 브라우저로 엽니다.

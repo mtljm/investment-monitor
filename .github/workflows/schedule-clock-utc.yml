@@ -1,5 +1,5 @@
-name: 시간대 비교 UTC
-run-name: UTC default · ${{ github.event_name }}
+name: 90 진단 · 예약 시계 UTC
+run-name: 90 진단 · UTC · ${{ github.event_name }}
 on:
   workflow_dispatch:
   schedule:

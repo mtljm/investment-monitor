@@ -1,5 +1,5 @@
-name: 아시아장 업데이트
-run-name: 아시아장만 갱신 · ${{  github.event_name  }}
+name: 01 시장 · 아시아장 갱신
+run-name: 01 시장 · 아시아장 · ${{ github.event_name }}
 on:
   workflow_dispatch:
   schedule:

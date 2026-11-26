@@ -1,5 +1,5 @@
-name: 시장 모니터 수동 실행 (20종목)
-run-name: 미국 시장 20종목 수동 수집
+name: 04 수집 · 미국 20종목 다운로드
+run-name: 04 수집 · 미국 20종목 · 수동
 
 on:
   workflow_dispatch:

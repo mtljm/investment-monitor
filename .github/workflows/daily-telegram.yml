@@ -1,5 +1,5 @@
-name: Telegram 수동 시험 전송
-run-name: 미국 시장 오전 브리핑 Telegram 전송
+name: 05 알림 · Telegram 시험 전송
+run-name: 05 알림 · Telegram 브리핑 전송 · 수동
 
 on:
   workflow_dispatch:

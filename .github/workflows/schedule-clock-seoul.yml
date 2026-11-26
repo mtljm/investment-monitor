@@ -1,5 +1,5 @@
-name: 시간대 비교 Seoul
-run-name: Asia Seoul explicit · ${{ github.event_name }}
+name: 90 진단 · 예약 시계 서울
+run-name: 90 진단 · 서울 · ${{ github.event_name }}
 on:
   workflow_dispatch:
   schedule:

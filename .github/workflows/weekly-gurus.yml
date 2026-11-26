@@ -1,4 +1,5 @@
-name: 13F 기관 포트폴리오 확인
+name: 02 기관 · 13F 포트폴리오 갱신
+run-name: 02 기관 · 13F · ${{ github.event_name }}
 on:
   workflow_dispatch:
   schedule:
