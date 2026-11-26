@@ -1,6 +1,6 @@
 # Telegram 오전 브리핑
 
-**현재 수동 시험 전송만 지원합니다.** 정기 전송 예약은 설정되어 있지 않습니다. [Actions 기능별 안내](github-actions.md)를 참고하세요.
+**현재 검증·연결 확인·시험 전송을 하나의 수동 워크플로에서 선택합니다.** 정기 전송 예약은 설정되어 있지 않습니다. [Actions 기능별 안내](github-actions.md)를 참고하세요.
 GitHub 예약 실행은 지연·누락될 수 있으며, 휴장일에는 최근 거래일 자료와 기준일을 표시합니다.
 
 - 대상: 대형주 20개 + 지수 ETF 4개 + 섹터 ETF 11개 + 지수·지표 8개 = **43개**
@@ -9,11 +9,10 @@ GitHub 예약 실행은 지연·누락될 수 있으며, 휴장일에는 최근 
 
 ## 수동 전송
 
-[Actions Variables](https://github.com/mtljm/investment-monitor/settings/variables/actions)의
-`TELEGRAM_DELIVERY_ENABLED`는 예약을 생성하지 않습니다. 현재 워크플로는 수동 실행만 받으며 이 변수와 무관하게 실행됩니다.
+기존 `TELEGRAM_DELIVERY_ENABLED` 변수는 사용하지 않습니다. 기본 `validate`는 외부 연결 없는 검증이며, 실제 전송은 `operation: send`를 선택해야 합니다.
 
-[05 알림 · Telegram 시험 전송](https://github.com/mtljm/investment-monitor/actions/workflows/daily-telegram.yml)의 **Run workflow**로 시험 전송할 수 있습니다.
-수동 전송은 위 활성화 변수와 무관하게 실행됩니다.
+[03 알림 · Telegram (send)](https://github.com/mtljm/investment-monitor/actions/workflows/daily-telegram.yml)의 **Run workflow → operation: send**로 시험 전송할 수 있습니다.
+`connect`는 연결 확인만, `send`는 실제 메시지·파일 전송을 실행합니다.
 받은 ZIP의 압축을 풀고 JavaScript 지원 브라우저로 HTML을 여세요.
 
 ## 봇 연결·재설정
@@ -21,7 +20,7 @@ GitHub 예약 실행은 지연·누락될 수 있으며, 휴장일에는 최근 
 1. 공식 [@BotFather](https://t.me/BotFather)에 `/newbot`을 보내 봇을 만듭니다. 사용자명은 `bot`으로 끝나야 합니다.
 2. [Actions Secrets](https://github.com/mtljm/investment-monitor/settings/secrets/actions)에 토큰을 `TELEGRAM_BOT_TOKEN`으로 등록합니다.
 3. **생성한 봇의 개인 대화**에 `/connect_investment_monitor`를 보냅니다.
-4. [05 알림 · Telegram 연결 확인](https://github.com/mtljm/investment-monitor/actions/workflows/telegram-connect.yml)을 실행합니다.
+4. [03 알림 · Telegram (connect)](https://github.com/mtljm/investment-monitor/actions/workflows/daily-telegram.yml)을 **operation: connect**로 실행합니다.
 5. 비공개 실행 요약에서 본인 봇과 대화 ID를 확인하고, ID를 `TELEGRAM_CHAT_ID` Secret으로 등록합니다.
 6. 시험 전송과 휴대폰 HTML 동작을 확인합니다.
 

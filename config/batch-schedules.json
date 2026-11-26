@@ -9,6 +9,10 @@
     "time": "17:30",
     "cron": "30 8 * * 1-5",
     "days": "weekdays"
+  },
+  "gurus": {
+    "time": "08:00",
+    "cron": "0 23 * * 5",
+    "days": "saturday"
   }
 }
-

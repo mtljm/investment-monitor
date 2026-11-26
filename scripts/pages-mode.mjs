@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {appendFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
@@ -19,6 +20,17 @@ export function pagesMode(event,files=[],refresh=true){
  if(event!=='push')throw Error('지원하지 않는 배포 이벤트');
  return changedMarket(files)==='reuse'?'reuse':'collect';
 }
+const batchSchedules=JSON.parse(readFileSync(new URL('../config/batch-schedules.json',import.meta.url),'utf8'));
+export function scheduledMarket(cron){
+ const matches=['us','asia','gurus'].filter(key=>batchSchedules[key]?.cron===cron);
+ if(matches.length!==1)throw Error('알 수 없거나 중복된 예약 cron: '+cron);
+ return matches[0];
+}
+export function publishMarket(event,files=[],requested='reuse',cron=''){
+ const market=event==='schedule'?scheduledMarket(cron):event==='push'?changedMarket(files):event==='workflow_dispatch'?requested:null;
+ if(!['us','asia','gurus','all','reuse'].includes(market))throw Error('지원하지 않는 업데이트 대상 또는 이벤트');
+ return market;
+}
 export async function main(){
  const event=process.env.GITHUB_EVENT_NAME;let files=[];
  if(event==='push'){
@@ -27,9 +39,8 @@ export async function main(){
   try{execFileSync('git',['cat-file','-e',before],{stdio:'ignore'});}catch{execFileSync('git',['fetch','--no-tags','--depth=1','origin',before],{stdio:'inherit'});}
   files=execFileSync('git',['diff','--name-only',before,'HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
  }
- const mode=pagesMode(event,files,process.env.REFRESH_DATA!=='false');
- const market=event==='workflow_dispatch'?(process.env.PUBLISH_MARKET||'reuse'):event==='push'?changedMarket(files):'us';
- if(!['us','asia','all','reuse','gurus'].includes(market))throw Error('지원하지 않는 업데이트 대상');
+ const market=publishMarket(event,files,process.env.PUBLISH_MARKET||'reuse',process.env.EVENT_CRON||'');
+ const mode=market==='reuse'?'reuse':'collect';
  if(process.env.GITHUB_OUTPUT)await appendFile(process.env.GITHUB_OUTPUT,'mode='+mode+'\nmarket='+market+'\n');
  console.log('업데이트 범위: '+market);
 }

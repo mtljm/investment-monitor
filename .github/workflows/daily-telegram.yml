@@ -1,19 +1,25 @@
-name: 05 알림 · Telegram 시험 전송
-run-name: 05 알림 · Telegram 브리핑 전송 · 수동
+name: 03 알림 · Telegram
+run-name: 03 알림 · Telegram · ${{ inputs.operation }}
 
 on:
   workflow_dispatch:
+    inputs:
+      operation:
+        description: validate는 외부 연결 없이 검증, connect는 연결 확인, send는 실제 전송
+        type: choice
+        options: [validate, connect, send]
+        default: validate
 
 permissions:
   contents: read
 
 concurrency:
-  group: market-monitor-manual
+  group: ${{ inputs.operation == 'connect' && 'telegram-setup' || 'market-monitor-manual' }}
   cancel-in-progress: false
 
 jobs:
   brief:
-    if: github.event_name == 'workflow_dispatch' || vars.TELEGRAM_DELIVERY_ENABLED == 'true'
+    if: inputs.operation == 'send'
     name: 오전 브리핑 수집 및 개인 대화 전송
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -72,3 +78,35 @@ jobs:
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
+
+  connect:
+    if: inputs.operation == 'connect'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Node.js 준비
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - name: 개인 대화 ID 확인
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: node scripts/telegram-connect.mjs
+
+  validate:
+    if: inputs.operation == 'validate'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: 외부 연결 없는 Telegram 검증
+        run: node --test tests/telegram.test.mjs tests/sector.test.mjs tests/technical-indicators.test.mjs

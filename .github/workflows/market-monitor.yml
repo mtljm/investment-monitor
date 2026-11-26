@@ -1,5 +1,5 @@
-name: 04 수집 · 미국 20종목 다운로드
-run-name: 04 수집 · 미국 20종목 · 수동
+name: 02 파일 · 미국 20종목 다운로드
+run-name: 02 파일 · 미국 20종목 · 수동
 
 on:
   workflow_dispatch:

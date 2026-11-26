@@ -1,13 +1,17 @@
-name: 03 배포 · 화면 및 선택 데이터 갱신
-run-name: 03 배포 · ${{ github.event_name }} · ${{ inputs.market || 'auto' }}
+name: 01 시장 · 예약 및 화면 갱신
+run-name: 01 시장 · ${{ github.event_name }} · ${{ inputs.market || github.event.schedule || 'auto' }}
 on:
   workflow_dispatch:
     inputs:
       market:
-        description: 업데이트 대상 (reuse는 양쪽 데이터 유지)
+        description: 업데이트 대상 (reuse는 미국·아시아·기관 자료 유지)
         type: choice
         options: [us, asia, gurus, all, reuse]
         default: reuse
+  schedule:
+    - cron: '37 22 * * *' # 미국: 매일 07:37 KST
+    - cron: '30 8 * * 1-5' # 아시아: 평일 17:30 KST
+    - cron: '0 23 * * 5' # 기관: 토요일 08:00 KST
   push:
     branches: [main]
     paths:
@@ -37,6 +41,7 @@ jobs:
       - name: 업데이트 범위 결정
         id: plan
         env:
+          EVENT_CRON: ${{ github.event.schedule }}
           BEFORE_SHA: ${{  github.event.before  }}
           PUBLISH_MARKET: ${{  inputs.market  }}
         run: node scripts/pages-mode.mjs

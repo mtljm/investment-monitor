@@ -6,7 +6,7 @@
 
 ## 수동 실행
 
-1. GitHub에 로그인하고 [04 수집 · 미국 20종목 다운로드](https://github.com/mtljm/investment-monitor/actions/workflows/market-monitor.yml)을 엽니다.
+1. GitHub에 로그인하고 [02 파일 · 미국 20종목 다운로드](https://github.com/mtljm/investment-monitor/actions/workflows/market-monitor.yml)을 엽니다.
 2. **Run workflow → main → Run workflow**를 누릅니다.
 3. 완료된 실행의 **Artifacts**에서 ZIP을 내려받아 압축을 풉니다.
 4. `dashboard.html`을 JavaScript 지원 브라우저로 엽니다.

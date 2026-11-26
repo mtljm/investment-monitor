@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 import {filingList,chooseFiling,parseHoldings,collectManager} from '../scripts/collect-gurus.mjs';
 import {publicGurusData,mergeGurus} from '../scripts/gurus.mjs';
 import {mergeMarketSnapshots} from '../scripts/build-market-site.mjs';
-import {changedMarket} from '../scripts/pages-mode.mjs';
+import {changedMarket,scheduledMarket} from '../scripts/pages-mode.mjs';
 function row(period,kind,accession,value=100){return '<tr><td data-order="'+period+'"><a href="/13f/'+accession+'-test">Q3</a></td><td>1</td><td data-order="'+value+'">100</td><td>A</td><td>'+kind+'</td><td data-order="2026-11-16">11/16/2026</td><td>'+accession+'</td></tr>';}
 const positions={data:[['AAA','A Inc','COM','001',60,60,6,null,null],['AAA','A Inc','COM','001',20,20,2,null,null],['BBB','B Inc','COM','002',20,20,4,null,null],['OPT','Options','COM','003',10,10,1,null,'CALL']]};
 test('13F 목록에서 최신 분기·정정본을 고르고 추가 공시 합산은 보류한다',()=>{
@@ -31,6 +31,6 @@ test('수집 실패 시 이전 기관 자료를 유지하고 공개 필드만 �
  assert.equal(changedMarket(['config/gurus.json']),'gurus');assert.equal(changedMarket(['scripts/collect-gurus.mjs','config/asia.json']),'all');
 });
 test('13F 주간 갱신은 공통 잠금을 공유하며 시세 수집을 요구하지 않는다',async()=>{
- const schedule=await readFile(new URL('../.github/workflows/weekly-gurus.yml',import.meta.url),'utf8');
- assert.match(schedule,/0 23 \* \* 5/);assert.match(schedule,/market: gurus/);assert.match(schedule,/publish-market.yml/);
+ const schedule=await readFile(new URL('../.github/workflows/daily-pages.yml',import.meta.url),'utf8');
+ assert.match(schedule,/0 23 \* \* 5/);assert.equal(scheduledMarket('0 23 * * 5'),'gurus');assert.match(schedule,/publish-market.yml/);
 });
