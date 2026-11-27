@@ -56,6 +56,7 @@ function renderCollectionStatus(){
  $('status').innerHTML='<div class="progress-row"><span>미국시장 수집 구성</span><span>'+collectionSummary()+'</span></div><div class="progress-row"><span>최신 거래일 확인 / 전체</span><span>'+s.current+' / '+s.total+'</span></div><div class="progress-row"><span>이전 자료 유지</span><span>'+s.retained+'개</span></div><div class="progress-row"><span>수집 실패 / 거래일 확인 / 판단 불가</span><span>'+s.error+' / '+s.stale+' / '+s.unknown+'</span></div><div class="progress-row"><span>갱신 방식</span><span>스크립트 수동 실행</span></div>';
 }
 function updateFreshness(){
+ renderOverviewPulse();
  renderCollectionStatus();
  if(typeof IB_REPORTS!=='undefined'&&!$('ib').hidden){$('data-notice').textContent='리포트 요약 검토일 '+IB_REPORTS.reviewed_at+' · 시세 배치와 별도 · 새 원문 자동 번역 기능은 사용하지 않습니다.';$('data-notice').parentElement.setAttribute('role','status');$('data-notice').parentElement.classList.remove('collection-warning');return;}
  if(!$('gurus').hidden){gurusNotice();return;}
@@ -161,9 +162,9 @@ function activateView(view,focus=false){
  const [title,description,eyebrow]=views[view];
  $('view-title').textContent=title;$('view-subtitle').textContent=description;$('view-eyebrow').textContent=eyebrow;
  $('export-btn').hidden=view!=='watchlist';
- const batch=view==='asia'?['daily-asia.yml','아시아']:view==='gurus'?['weekly-gurus.yml','13F 구루']:['daily-us.yml','미국장'];
- const batchLink=$('import-btn');batchLink.hidden=view==='ib';batchLink.href='https://github.com/mtljm/investment-monitor/actions/workflows/'+batch[0];
- batchLink.textContent=batch[1]+' 데이터 불러오기';batchLink.title='GitHub 로그인 후 Run workflow를 눌러 '+batch[1]+' 데이터를 갱신합니다.';
+ const batch=view==='asia'?['asia','아시아']:view==='gurus'?['gurus','13F 구루']:['us','미국장'];
+ const batchLink=$('import-btn');batchLink.hidden=view==='ib';batchLink.href='https://github.com/mtljm/investment-monitor/actions/workflows/daily-pages.yml';
+ batchLink.textContent='데이터 갱신 ↗';batchLink.title='GitHub Actions에서 Run workflow → market: '+batch[0]+'를 선택해 '+batch[1]+' 데이터를 갱신합니다.';
  if(view==='gurus')renderGurus();
  if(view==='ib')renderIbReports();
  updateFreshness();
@@ -290,6 +291,7 @@ document.addEventListener('change',e=>{if(e.target.id==='detail-range'){const ra
 
 const sectorResize=new ResizeObserver(()=>renderSectors());
 for(const id of ['sector-overview','nasdaq-overview'])sectorResize.observe($(id));
+initOverviewLayout();
 activateView('overview');
 initGurus();
 initThreeLow();
