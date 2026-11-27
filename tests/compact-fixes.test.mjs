@@ -38,7 +38,15 @@ test('아시아 평일 17:30 예정·18:30 지연 경고와 주말·복구를 �
 test('주기적 갱신 검사에서 히트맵 상태도 갱신한다',async()=>{
  const js=await readFile(new URL('../templates/dashboard.js',import.meta.url),'utf8');
  const fn='function updateFreshness(){'+js.split('function updateFreshness(){')[1].split('function visibleRows(){')[0];
- let refreshed=0;const notice={parentElement:{setAttribute(){},classList:{toggle(){}}}};
- const ctx={$:id=>['asia','gurus','overview'].includes(id)?{hidden:true}:notice,data:{rows:[]},renderCollectionStatus(){},collectionStats:()=>({stale:0,unknown:0,error:0,retained:0}),renderSectors:()=>refreshed++,renderTemperature(){},collectionHealth:()=>({expectedDay:'2026-11-17'}),priceHealth(){},localTime:()=>''};
- vm.runInNewContext(fn+';updateFreshness();',ctx);assert.equal(refreshed,1);
+ let refreshed=0,pulse=0;const notice={parentElement:{setAttribute(){},classList:{toggle(){}}}};
+ const ctx={$:id=>['asia','gurus','overview'].includes(id)?{hidden:true}:notice,data:{rows:[]},renderCollectionStatus(){},collectionStats:()=>({stale:0,unknown:0,error:0,retained:0}),renderSectors:()=>refreshed++,renderOverviewPulse:()=>pulse++,renderTemperature(){},collectionHealth:()=>({expectedDay:'2026-11-17'}),priceHealth(){},localTime:()=>''};
+ vm.runInNewContext(fn+';updateFreshness();',ctx);assert.equal(refreshed,1);assert.equal(pulse,1);
+});
+
+test('핵심 요약은 최신 집계와 후보만 확인으로 표시하고 지연·날짜 불일치를 보류한다',async()=>{
+ const source=await readFile(new URL('../templates/overview-layout.js',import.meta.url),'utf8');const el={innerHTML:''};let health={expectedDay:'2026-11-25',late:false,invalid:false};
+ const ctx={$:()=>el,data:{market_breadth:{status:'ok',history:[{day:'2026-11-25'}]},leaders:{day:'2026-11-25',valid:199,expected:201,candidates:[{},{}]}},collectionHealth:()=>health,displayRows:()=>[],collectionSummary:()=>'',esc:String};
+ vm.runInNewContext(source+';renderOverviewPulse();',ctx);assert.match(el.innerHTML,/집계 확인/);assert.match(el.innerHTML,/2개/);
+ health.late=true;vm.runInNewContext('renderOverviewPulse();',ctx);assert.match(el.innerHTML,/확인 필요/);assert.match(el.innerHTML,/기준일 확인/);assert.ok(!el.innerHTML.includes('>2개<'));
+ health.late=false;health.expectedDay='2026-11-26';vm.runInNewContext('renderOverviewPulse();',ctx);assert.match(el.innerHTML,/기준일 확인/);
 });
